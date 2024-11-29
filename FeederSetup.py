@@ -48,8 +48,12 @@ import shutil
 import pyodbc
 import pypyodbc
 import odbc
+import psycopg2
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
 
-print("*******Feeder and BOM data Verification version--py_V-1.0.0 interface_GUI/D17-23*******")
+print("*******Feeder and BOM data Verification version--py_V-1.1.0 interface_GUI/D1823*******")
 
 dL1 = input("Enter BOM Name :")
 dL2 = input("Enter Feeder Name :")
@@ -164,7 +168,6 @@ except ValueError:
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
-
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
 
@@ -272,7 +275,6 @@ except ValueError:
 
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
-
    
     Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
     wb1 = load_workbook(Feeder_List_OPT)
@@ -287,7 +289,6 @@ except ValueError:
     print(ws1)
 
     print(ws2)
-
 
     for row in range(1, 10):
         #copy from wb1
@@ -959,7 +960,6 @@ except ValueError:
 pass
 print('The file does not exist.')
 
-
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -1035,7 +1035,6 @@ except ValueError:
 
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
-
 
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -1135,7 +1134,6 @@ except ValueError:
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
 
-    
     Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
     wb1 = load_workbook(Feeder_List_OPB)
     ws1 = wb1.active
@@ -1277,7 +1275,6 @@ except ValueError:
 
     dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
 
-
     print(dt_H1.drop(index=[1, 2]))
 
     dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
@@ -1318,7 +1315,6 @@ except ValueError:
 
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
-
 
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -1438,7 +1434,6 @@ except ValueError:
     print(ws1)
 
     print(ws2)
-
 
     for row in range(1, 10):
         #copy from wb1
@@ -1611,7 +1606,6 @@ except ValueError:
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
-
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
 
@@ -1716,7 +1710,6 @@ except ValueError:
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
 
-    
     Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
     wb1 = load_workbook(Feeder_List_OPB)
     ws1 = wb1.active
@@ -1827,7 +1820,6 @@ except ValueError:
     pass
 print('The file does not exist.')
 
-
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -1859,7 +1851,6 @@ except ValueError:
     dt_H1['Col1'] = dt_H1['JobName'].str[13:]
 
     dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
-
 
     print(dt_H1.drop(index=[1, 2]))
 
@@ -1901,7 +1892,6 @@ except ValueError:
 
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
-
 
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -2009,7 +1999,6 @@ except ValueError:
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
 
-   
     Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
     wb1 = load_workbook(Feeder_List_OPT)
     ws1 = wb1.active
@@ -2023,7 +2012,6 @@ except ValueError:
     print(ws1)
 
     print(ws2)
-
 
     for row in range(1, 10):
         #copy from wb1
@@ -2196,7 +2184,6 @@ except ValueError:
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
-
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
 
@@ -2303,7 +2290,6 @@ except ValueError:
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
 
-    
     Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
     wb1 = load_workbook(Feeder_List_OPB)
     ws1 = wb1.active
@@ -2706,8 +2692,7 @@ except ValueError:
 
     pass
     print('The file does not exist.')
-
-    
+ 
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2771,7 +2756,6 @@ df3 = df3.copy()
 df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].map({True: 'Match', False: 'Miss_Match'})
 df3.sort_values(by='BOM and Feeder Compare', inplace=True, ascending=False)
 
-
 df4 = df3['BOM and Feeder Compare'].value_counts()
 #df4 = df3['Size'].value_counts()
 df5 = df3['Side'].value_counts()
@@ -2819,8 +2803,6 @@ def highlight_row(row):
 
 # Apply the styling function to the DataFrame
 styled_dbf3 = dbf3.style.apply(highlight_row, axis=1)
-
-
 
 # Save the styled DataFrame to Excel
 with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
@@ -2875,7 +2857,6 @@ df2_3 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-III
 df2_3.sort_values(by='Feeder Location', inplace=True, ascending=True)
 df2_4 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
 df2_4.sort_values(by='Feeder Location', inplace=True, ascending=True)
-
 
 with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx") as writer:
     df2.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
@@ -2945,35 +2926,59 @@ os.getcwd()
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
 Chd = os.getcwd()
 
+# Excel file path
 df_PM1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Part Master")
-
 with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx") as writer:
     df_PM1.to_excel(writer, sheet_name="T_PBAR", index=False)
+excel_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx'
 
+# Access database connection parameters
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
 shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_Part Master/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb')
+access_db_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb'
+driver = 'Microsoft Access Driver (*.mdb, *.accdb)'
+user = ''
+password = ''
+
+# Set up the connection string
+conn_str = f"DRIVER={{{driver}}};DBQ={access_db_path};UID={user};PWD={password};"
+
+# Connect to the Access database
 print(pyodbc.drivers())
+conn = pyodbc.connect(conn_str)
+cursor = conn.cursor()
+
+# Read Excel data into a pandas DataFrame
 print('Open Excel....')
-df_PM1 = pd.read_excel('PartMaster.xlsx', sheet_name='T_PBAR')
-print(df_PM1.head(10))
+df = pd.read_excel(excel_file_path)
+print(df.head(10))
+
+# Define the table name in the Access database
 print('open MS Access....')
+table_name = 'T_PBAR'
 
-cnnstr = (
-    r"Driver={Microsoft Access Driver (*.mdb, *.accdb)};"
-    r"DBQ=D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Upload\MODEL.mdb"
-)
+# Check if the table exists
+existing_tables = [table[2] for table in cursor.tables(tableType='TABLE')]
+if table_name in existing_tables:
+    # Append data to the existing table
+    for _, row in df.iterrows():
+        insert_query = f'''
+        INSERT INTO {table_name} ({', '.join(df.columns)})
+        VALUES ({', '.join(map(lambda x: f"'{row[x]}'", df.columns))})
+        '''
+        cursor.execute(insert_query)
+        conn.commit()
+        print('writing to access')
+else:
+    print(f"The table '{table_name}' does not exist in the Access database.")
 
-cnnurl = f"access+pyodbc:///?odbc_connect={urllib.parse.quote_plus(cnnstr)}"
-acc_engine = create_engine(cnnurl)
-print('writing to access')
-df_PM1.to_sql("T_PBAR",acc_engine,index=False, if_exists='append')
-
+# Close the database connection
+conn.close()
 print('write complete')
 
 ##########################################################################################################################################
 
 ##########################################################################################################################################
-
 
 #AVL#@@#
 
@@ -3057,7 +3062,6 @@ if desired_column_name2 in df_AL1.columns:
     # Insert the new column next to the desired column
     df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value)
 
-
 #PTN_3>>
 
 desired_column_name3 = 'PTN_3'
@@ -3109,7 +3113,6 @@ if column_to_replace3 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace3}' does not exist in the DataFrame.")
-
 
 #PTN_4>>
 
@@ -3163,7 +3166,6 @@ if column_to_replace4 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace4}' does not exist in the DataFrame.")
 
-
 #PTN_5>>
 
 desired_column_name5 = 'PTN_5'
@@ -3215,7 +3217,6 @@ if column_to_replace5 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace5}' does not exist in the DataFrame.")
-
 
 #PTN_6>>
 
@@ -3269,7 +3270,6 @@ if column_to_replace6 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace6}' does not exist in the DataFrame.")
 
-
 #PTN_7>>
 
 desired_column_name7 = 'PTN_7'
@@ -3321,7 +3321,6 @@ if column_to_replace7 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace7}' does not exist in the DataFrame.")
-
 
 #PTN_8>>
 
@@ -3375,7 +3374,6 @@ if column_to_replace8 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace8}' does not exist in the DataFrame.")
 
-
 #PTN_9>>
 
 desired_column_name9 = 'PTN_9'
@@ -3427,7 +3425,6 @@ if column_to_replace9 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace9}' does not exist in the DataFrame.")
-
 
 #PTN_10>>
 
@@ -3481,7 +3478,6 @@ if column_to_replace10 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace10}' does not exist in the DataFrame.")
 
-
 #PTN_11>>
 
 desired_column_name11 = 'PTN_11'
@@ -3533,7 +3529,6 @@ if column_to_replace11 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace11}' does not exist in the DataFrame.")
-
 
 #PTN_12>>
 
@@ -3587,7 +3582,6 @@ if column_to_replace12 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace12}' does not exist in the DataFrame.")
 
-
 #PTN_13>>
 
 desired_column_name13 = 'PTN_13'
@@ -3640,7 +3634,6 @@ if column_to_replace13 in df_AL1.columns:
 else:
     print(f"Column '{column_to_replace13}' does not exist in the DataFrame.")
 
-
 #PTN_14>>
 
 desired_column_name14 = 'PTN_14'
@@ -3692,7 +3685,6 @@ if column_to_replace14 in df_AL1.columns:
     print(df_AL1)
 else:
     print(f"Column '{column_to_replace14}' does not exist in the DataFrame.")
-
 
 #PTN_15>>
 
@@ -3999,6 +3991,18 @@ MC1 = content.replace('+', '')
 # Write the modified content back to the text file
 with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
     output_file.write(MC1)'''
+
+# Specify the path to your text file
+txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+# Read the content of the text file
+with open(txt_file_path, 'r') as file:
+    content = file.read()
+MC0 = content.replace('.0', '')
+# Write the modified content back to the text file
+with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+    output_file.write(MC0)
+
 print(f"AVL CREATED: D:/NX_BACKWORK/r'AVL.txt")
 
 # Specify the path to your text file
@@ -4012,7 +4016,6 @@ df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
 #read_file = pd.read_table (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.txt', sep='"')
 #read_file.to_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVList.xlsx', index=None)
 #read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.csv', index = None, header= None)
-
 
 #Feeder List change
 
@@ -4056,7 +4059,6 @@ def copy_data_with_offset(source_file, destination_file, source_sheet_name, dest
 # Example usage:
 copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "NXT&AMX1_B", "NXT", offset=5)
 # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
 
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
 Chd = os.getcwd()
@@ -4168,7 +4170,6 @@ def copy_data_with_offset(source_file, destination_file, source_sheet_name, dest
 copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "NXT&AMX1_T", "NXT", offset=5)
 # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
 
-
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
 Chd = os.getcwd()
 
@@ -4240,8 +4241,6 @@ def copy_data_with_offset(source_file, destination_file, source_sheet_name, dest
 # Example usage:
 copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "AIMEX 3", offset=5)
 # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-
 
 ##########################################################################################################################################
 
@@ -4466,5 +4465,8 @@ os.rename(src_8, dL1 +"_T"+".xlsx")
 
 src_9 = 'Line X Sample B.xlsx'
 os.rename(src_9, dL1 +"_B"+".xlsx")
+time.sleep (2)
 
 window.close()
+
+time.sleep (5)
