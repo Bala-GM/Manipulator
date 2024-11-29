@@ -50,13 +50,17 @@ import pypyodbc
 import odbc
 import psycopg2
 import mysql.connector as sql  #1
-#import MySQLdb as sql
+import MySQLdb as sql
 from sqlite3 import dbapi2 as sqlite
 import sqlite3
 from datetime import datetime #2
+import pyfiglet
+from pyfiglet import figlet_format
 
-print("*******Feeder and BOM data Verification version--py_V-1.2.0 interface_GUI/D3123*******")
+print("*******Feeder and BOM data Verification version--py_V1.4.0 interface_GUI/J0324*89P13******")
 
+bil1 = pyfiglet.figlet_format("Version--PY-V1.4 interface_GUI/J0324", width = 300)
+print(bil1)
 # Get the current date and time
 current_datetime = datetime.now()
 
@@ -106,6 +110,9 @@ Chd = os.getcwd()
 
 ##########################################################################################################################################
 
+bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
+print(bil2)
+
 ##########################################################################################################################################
 
 #LINE1T
@@ -119,6 +126,18 @@ try:
         dt_H1 = pd.read_csv(file_path)
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '351'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
 
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -409,7 +428,19 @@ try:
         dt_H1 = pd.read_csv(file_path)
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
-      
+
+            # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '351'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
     
@@ -702,6 +733,18 @@ try:
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
 
+                # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '401'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
 
@@ -987,6 +1030,18 @@ try:
 
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
+
+                     # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '401'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
       
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -1267,6 +1322,18 @@ try:
         dt_H1 = pd.read_csv(file_path)
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+                    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '171'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
 
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -1557,6 +1624,18 @@ try:
 
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+                        # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '171'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
       
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -1844,6 +1923,18 @@ try:
         dt_H1 = pd.read_csv(file_path)
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+                        # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '228'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
 
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -2135,6 +2226,18 @@ try:
 
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+                        # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 3:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '228'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
       
     dt_H1['TotalSlots'] = ''
     dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
@@ -2409,6 +2512,9 @@ print('The file does not exist.')
 
 ##########################################################################################################################################
 
+bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
+print(bil3)
+
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2493,6 +2599,9 @@ else:
 
 ##########################################################################################################################################
 
+bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
+print(bil4)
+
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2545,52 +2654,90 @@ else:
 
 ##########################################################################################################################################
 
+bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
+print(bil5)
+
 ##########################################################################################################################################
 
 ##########################################################################################################################################
 
 #BOM MANIPULATE
 
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
-Chd = os.getcwd()
-
-file_path = 'BOM.xlsx'
-directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
-
-print(os.path.isfile(file_path))
-print(os.path.isfile(directory_path))
-
 try:
+    # BOM MANIPULATION
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    file_path = 'BOM.xlsx'
+
     if os.path.isfile(file_path):
-        dt_H1 = pd.read_csv(file_path)
+        ds1 = pd.read_excel(file_path, index_col=False)
+    else:
+        # Try reading as '.xls' format if '.xlsx' fails
+        file_path = 'BOM.xls'
+        ds1 = pd.read_excel(file_path, index_col=False)
+
+    dfbom1 = ds1
 
 except ValueError:
-    ds1 = pd.read_excel(file_path,index_col=False) 
+    dfbom1 = pd.read_excel(file_path,index_col=False) 
 
-    column_list =['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity','Material Group']
-    column_list =['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty','SMT/THT/Mech']
+except Exception as e:
+    # Handle the exception gracefully
+    error_message = f"An error occurred: {e}"
 
-    ds1.rename(
-        columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
-        inplace=True,
-    )
+    # Show error message in a pop-up box
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Error", error_message)
+    sys.exit(1)  # Exit the program with an error code
 
-    ds1.rename(
-        columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
-        inplace=True,
-    )
+# Define your column lists
+column_list_1 = ['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity', 'Material Group']
+column_list_2 = ['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty', 'SMT/THT/Mech']
 
-    print(ds1)
+# Check which column list is present in the DataFrame
+if all(column in ds1.columns for column in column_list_1):
+    columns_to_use = column_list_1
+elif all(column in ds1.columns for column in column_list_2):
+    columns_to_use = column_list_2
+else:
+    # Show error message if none of the column lists is present
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    missing_columns = [column for column_list in [column_list_1, column_list_2] for column in column_list if column not in ds1.columns]
+    error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+    error_msgbm1 = f"The following columns are missing: in SAP BOM\n'Material'\n'AltItemGroup'\n'Priority'\n'Long. Description'\n'Ref.Designator/Circuit Reference'\n'Quantity'\n'Material Group'"
+    error_msgbm2 = f"The following columns are missing: in Internal BOM\n'Internal P/N'\n'Group'\n'Priority'\n'Description'\n'Ref.Designator'\n'Qty'\n'SMT/THT/Mech'"
+    messagebox.showerror("Error", error_message)
+    messagebox.showerror("Error", error_msgbm1)
+    messagebox.showerror("Error", error_msgbm2)
+    sys.exit(1)  # Exit the program with an error code
 
-    ds2 = ds1[ds1['Priority'].isin([0, 1])]
+# Continue with the rest of your code using 'columns_to_use'
+print(f"Using columns: {columns_to_use}")
+
+# Rest of your code here
+# ...
+
+ds1.rename(
+    columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
+    inplace=True,
+)
+
+ds1.rename(
+    columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
+    inplace=True,
+)
+
+print(ds1)
+
+ds2 = ds1[ds1['Priority'].isin([0, 1])]
 
 #file_name ="output.xlsx"
 #ds1.to_excel(file_name)
 
-    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
-        ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
-        ds2.to_excel(writer, sheet_name="BOM", index=False)
+with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
+    ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+    ds2.to_excel(writer, sheet_name="BOM", index=False)
 
     pass
     print('The file does not exist.')
@@ -2633,11 +2780,33 @@ except ValueError:
 
     ds2['B_Ref_List'] = ds2['B_Ref_List'] .str.strip('[]').str.split(',')
 
+    print(ds2)
+
     ds2.to_dict()
 
     ds2.explode ('B_Ref_List',ignore_index=True)
 
-    ds3 = ds2.explode('B_Ref_List',ignore_index=True)
+    ds3 = ds2.explode('B_Ref_List',ignore_index=True) # split the Ref below example code
+
+    '''import pandas as pd
+
+    # Sample DataFrame
+    data = {'ID': [1, 2], 'B_Ref_List': [['R1', 'R2'], ['R3', 'R4', 'R5']]}
+
+    ds2 = pd.DataFrame(data)
+
+    # Explode 'B_Ref_List'
+    ds3 = ds2.explode('B_Ref_List', ignore_index=True)
+
+    # Display the result
+    print(ds3)
+    Output:
+        ID B_Ref_List
+    0   1         R1
+    1   1         R2
+    2   2         R3
+    3   2         R4
+    4   2         R5'''
 
     ds2 = ds2[['Group','Priority','B_Part_No']]
     dc1 = ds2[['B_Part_No']]
@@ -2647,7 +2816,7 @@ except ValueError:
     dc1.insert(3,'PBARQTY', 10000)
     dc1.insert(4,'PBARFTYP', 3)
 
-    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
     dfs2 = ds2[['Group','Priority','B_Part_No']]
     dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("15","A")
     dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("14","B")
@@ -2684,7 +2853,6 @@ except ValueError:
 
     ds1.dropna(subset=['RefList'], inplace=True)
     ds3.dropna(subset=['B_Ref_List'], inplace=True)
-
 
 #ONLY AVL PARTMASTER AND GOUPING
     dsn1 = dsn1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
@@ -2775,13 +2943,18 @@ except ValueError:
         dcn1.to_excel(writer, sheet_name="Part Master", index=False)
         dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
         ds3.to_excel(writer, sheet_name="BOM_Data", index=False)
-
+    #df2.to_excel(writer, sheet_name="AVL_SHEET", index=True) this line record upto 1 & 0
+    #dc1.to_excel(writer, sheet_name="Part Master", index=False) this line record uoto 1 & 0 
+    #ds2.to_excel(writer, sheet_name="AVL GROUP", index=False) this line record upto PTN1
     pass
     print('The file does not exist.')
 
 ##########################################################################################################################################
 
 ##########################################################################################################################################
+
+bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
+print(bil6)
 
 ##########################################################################################################################################
 
@@ -2847,6 +3020,9 @@ print('write complete')
 
 ##########################################################################################################################################
 
+bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
+print(bil7)
+
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2890,7 +3066,20 @@ if desired_column_name in df_AL1.columns:
 
 print(df_AL1)
 
-df_AL1['AVL Name']=df_AL1['PTN_1']
+try:
+
+    df_AL1['AVL Name']=df_AL1['PTN_1']
+
+except Exception as e:
+    # Handle the exception gracefully
+    error_message = f"An error occurred:\nSomething went wrong while assigning AVL values {e}"
+    error_msg1 = f"Check SF-02 is deleted\nCheck AVL Priority assign Properly {e}"
+    # Show error message in a pop-up box
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Error", error_message)
+    messagebox.showerror("AVL Error", error_msg1)
+    #sys.exit(1)  # Exit the program with an error code
 
 first_column = df_AL1.pop('AVL Name')
 
@@ -3893,6 +4082,9 @@ df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
 
 ##########################################################################################################################################
 
+bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
+print(bil8)
+
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -3960,6 +4152,10 @@ df7 = df3['B_Part_No'].value_counts()
 #df8 = df3['B_Ref.List'].value_counts()
 df9 = df3['F_Part_No'].value_counts()
 #df10 = df3['FeederName'].value_counts()
+df11 = len(df1['B_Ref_List'])
+print(f'Total count of rows in the "B_Ref_List" column: {df11}')
+df12 = len(df2['F_Ref_List'])
+print(f'Total count of rows in the "F_Ref_List" column: {df12}')
 print('***')
 dbf1 = print(df1)
 print('***')
@@ -4017,20 +4213,27 @@ with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Feeder
         #df8.to_excel(writer, sheet_name="B_Ref.List",index=TRUE)
         df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
         #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
-
+        # Save the count to an Excel file
+        count_df = pd.DataFrame({'Name Column Count': [df11]})
+        count_df.to_excel(writer, sheet_name="BOM Count", index=TRUE)
+        count_df = pd.DataFrame({'Name Column Count': [df12]})
+        count_df.to_excel(writer, sheet_name="Feeder Count", index=TRUE)
 ##########################################################################################################################################
 
 ##########################################################################################################################################
-        
-##########################################################################################################################################
 
-##########################################################################################################################################
+bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
+print(bil9)
 
 for i in range(100):
     row = "="*i + ">"
     sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
     sys.stdout.flush()
     time.sleep(0.1)
+
+##########################################################################################################################################
+
+##########################################################################################################################################
 
 print("FeederSetup_Verification__Compelete $ PROCESS $")
 
@@ -4240,23 +4443,27 @@ for i in range(100):
     sys.stdout.flush()
     time.sleep(0.1)
 
-print("FeederSetup___Compelete $ PROCESS $")
+print("FeederSetup___Uploading in Progress $ PROCESS $")
 
 # Load Excel sheets into pandas dataframes
 dfmc1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
 dfmc2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+dfmc3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM Count")
+dfmc4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder Count")
 #df3 = pd.read_excel('excel_sheet3.xlsx')
 
 print(dfmc1)
 print(dfmc2)
-
+print(dfmc3)
+print(dfmc4)
 # Compare the count of rows in the dataframes
 count1 = len(dfmc1)
 count2 = len(dfmc2)
-#count3 = len(df3)
+count3 = len(dfmc3)
+count4 = len(dfmc4)
 
 # Check if the counts are the same
-if count1 == count2: #== count3:
+if count1 == count2 == count3 == count4:
     # Proceed to the next line of code
     print("Counts are the same. Proceeding to the next line of code.")
     # Your next line of code here
@@ -4306,21 +4513,11 @@ if count1 == count2: #== count3:
 
 ##########################################################################################################################################
 
-else:
-    # Skip the lines below if counts are different
-    print("Counts are different. Skipping the process.")
-
 ##########################################################################################################################################
 
 ##########################################################################################################################################
 
 #Upload data to merge and del side and Module
-        
-# Check if the counts are the same
-if count1 == count2: #== count3:
-    # Proceed to the next line of code
-    print("Counts are the same. Proceeding to the next line of code.")
-    # Your next line of code here
     
     os.getcwd()
 
@@ -4369,21 +4566,15 @@ if count1 == count2: #== count3:
 
 ##########################################################################################################################################
 
-else:
-    # Skip the lines below if counts are different
-    print("Counts are different. Skipping the process.")
+    bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
+    print(bil10)
+
 
 ##########################################################################################################################################
 
 ##########################################################################################################################################
 
 #Feeder List change
-
-# Check if the counts are the same
-if count1 == count2: #== count3:
-    # Proceed to the next line of code
-    print("Counts are the same. Proceeding to the next line of code.")
-    # Your next line of code here
 
     shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx')
     shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx')
@@ -4612,21 +4803,11 @@ if count1 == count2: #== count3:
 
 ##########################################################################################################################################
 
-else:
-    # Skip the lines below if counts are different
-    print("Counts are different. Skipping the process.")
-
 ##########################################################################################################################################
 
 ##########################################################################################################################################
 
 #CREATEBACKUPFOLDER
-
-# Check if the counts are the same
-if count1 == count2: #== count3:
-    # Proceed to the next line of code
-    print("Counts are the same. Proceeding to the next line of code.")
-    # Your next line of code here
 
     yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output"
 
@@ -4763,10 +4944,18 @@ if count1 == count2: #== count3:
 
     time.sleep (5)
 
+    print('Feeder Setup Generation Complete')
+
 else:
-        # Abort the process
-        print("Counts are different. Aborting the process.")
-        # Exit the script
+    # Abort the process
+    print("Counts are different. Aborting the process.")
+    # Show error message
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    error_message = "Counts are different. Aborting the Feeder Loading Process\nCheck the Feeder Verfied for Miss_Match."
+    messagebox.showerror("Error", error_message)
+    # Exit the script
+
 sys.exit()
 
 #pyinstaller -F -i "SYRMA.ico" FeederSetup.py
