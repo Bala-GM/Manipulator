@@ -54,13 +54,11 @@ import MySQLdb as sql
 from sqlite3 import dbapi2 as sqlite
 import sqlite3
 from datetime import datetime #2
-import pyfiglet
-from pyfiglet import figlet_format
 
-print("*******Feeder and BOM data Verification version--py_V1.4.0 interface_GUI/J0324*89P13******")
+print("*******Feeder and BOM data Verification Version--PY_V-1.5.0 interface_GUI/J0324-89P13*******")
 
-bil1 = pyfiglet.figlet_format("Version--PY-V1.4 interface_GUI/J0324", width = 300)
-print(bil1)
+'''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
+
 # Get the current date and time
 current_datetime = datetime.now()
 
@@ -110,8 +108,8 @@ Chd = os.getcwd()
 
 ##########################################################################################################################################
 
-bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
-print(bil2)
+#bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
+print('******FeederSetup Progress******')
 
 ##########################################################################################################################################
 
@@ -2512,8 +2510,8 @@ print('The file does not exist.')
 
 ##########################################################################################################################################
 
-bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
-print(bil3)
+#bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
+print("******FeederSetup Progress Merge******")
 
 ##########################################################################################################################################
 
@@ -2599,8 +2597,8 @@ else:
 
 ##########################################################################################################################################
 
-bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
-print(bil4)
+#bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
+print("******Program Master List******")
 
 ##########################################################################################################################################
 
@@ -2654,8 +2652,8 @@ else:
 
 ##########################################################################################################################################
 
-bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
-print(bil5)
+#bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
+print("******BOM Manipulation******")
 
 ##########################################################################################################################################
 
@@ -2953,8 +2951,8 @@ except ValueError:
 
 ##########################################################################################################################################
 
-bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
-print(bil6)
+#bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
+print("******Part Master Process******")
 
 ##########################################################################################################################################
 
@@ -3020,8 +3018,8 @@ print('write complete')
 
 ##########################################################################################################################################
 
-bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
-print(bil7)
+#bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
+print("******AVL Progress******")
 
 ##########################################################################################################################################
 
@@ -4082,8 +4080,8 @@ df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
 
 ##########################################################################################################################################
 
-bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
-print(bil8)
+#bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
+print("******Feeder Verification******")
 
 ##########################################################################################################################################
 
@@ -4222,8 +4220,8 @@ with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Feeder
 
 ##########################################################################################################################################
 
-bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
-print(bil9)
+#bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
+print("******FeederSetup Verification Result******")
 
 for i in range(100):
     row = "="*i + ">"
@@ -4566,8 +4564,8 @@ if count1 == count2 == count3 == count4:
 
 ##########################################################################################################################################
 
-    bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
-    print(bil10)
+    #bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
+    print("******Feeder Loading List Progress******")
 
 
 ##########################################################################################################################################
