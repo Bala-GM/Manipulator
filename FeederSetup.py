@@ -49,11 +49,16 @@ import pyodbc
 import pypyodbc
 import odbc
 import psycopg2
-import MySQLdb as sql
+import mysql.connector as sql  #1
+#import MySQLdb as sql
 from sqlite3 import dbapi2 as sqlite
 import sqlite3
+from datetime import datetime #2
 
-print("*******Feeder and BOM data Verification version--py_V-1.1.0 interface_GUI/D1823*******")
+print("*******Feeder and BOM data Verification version--py_V-1.2.0 interface_GUI/D3123*******")
+
+# Get the current date and time
+current_datetime = datetime.now()
 
 dL1 = input("Enter BOM Name :")
 dL2 = input("Enter Feeder Name :")
@@ -159,13 +164,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -449,13 +454,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
 
@@ -741,13 +746,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
 
@@ -1027,13 +1032,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -1307,13 +1312,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -1597,13 +1602,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -1884,13 +1889,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -2175,13 +2180,13 @@ except ValueError:
     dt_H1.insert(18, 'MODIFIED  DATE', '')
     dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
     dt_H1.insert(20, 'BOM ECO NUMBER', '')
-    
+    dt_H1['Verify-DateTime'] = datetime.now()
     dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
     dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
     dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
     dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
 
-    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER']]
+    dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
 
     print(dt_H1)
@@ -2578,11 +2583,14 @@ except ValueError:
 
     print(ds1)
 
+    ds2 = ds1[ds1['Priority'].isin([0, 1])]
+
 #file_name ="output.xlsx"
 #ds1.to_excel(file_name)
 
     with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
-        ds1.to_excel(writer, sheet_name="BOM", index=False)
+        ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+        ds2.to_excel(writer, sheet_name="BOM", index=False)
 
     pass
     print('The file does not exist.')
@@ -2600,8 +2608,9 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
-    ds1 = pd.read_excel(file_path, usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
-
+    ds1 = pd.read_excel(file_path, sheet_name="BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
+    dsn1 = pd.read_excel(file_path, sheet_name="Orginal_BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False)
+    
     ds1 = ds1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
     ds1['RefList'] = ds1['RefList'].str.replace("_x000D_","")
     ds1['RefList'] = ds1['RefList'].str.replace(" ","")
@@ -2676,6 +2685,83 @@ except ValueError:
     ds1.dropna(subset=['RefList'], inplace=True)
     ds3.dropna(subset=['B_Ref_List'], inplace=True)
 
+
+#ONLY AVL PARTMASTER AND GOUPING
+    dsn1 = dsn1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+    dsn1['RefList'] = dsn1['RefList'].str.replace("_x000D_","")
+    dsn1['RefList'] = dsn1['RefList'].str.replace(" ","")
+    dsn1['RefList'] = dsn1['RefList'].str.replace("\n","")
+    print(dsn1)
+
+#ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+    dsn2 = dsn1.explode('RefList')
+
+    dsn2['RefList'] = dsn2['RefList'].str.replace(" "," ")
+
+#ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+    print(dsn2)
+
+    dsn2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+    dsn2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+    dsn2['B_Ref_List'] = dsn2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+    dsn2.to_dict()
+
+    dsn2.explode ('B_Ref_List',ignore_index=True)
+
+    dsn3 = dsn2.explode('B_Ref_List',ignore_index=True)
+
+    dsn2 = dsn2[['Group','Priority','B_Part_No']]
+    dcn1 = dsn2[['B_Part_No']]
+    dcn1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+    dcn1['PBARPTN'] = dcn1['PBARNO']
+    dcn1['PBARBAR'] = dcn1['PBARNO']
+    dcn1.insert(3,'PBARQTY', 10000)
+    dcn1.insert(4,'PBARFTYP', 3)
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+    dfsn2 = dsn2[['Group','Priority','B_Part_No']]
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("15","A")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("14","B")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("13","C")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("12","D")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("11","E")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("10","F")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("9","PTN_9")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("8","PTN_8")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("7","PTN_7")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("6","PTN_6")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("5","PTN_5")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("4","PTN_4")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("3","PTN_3")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("2","PTN_2")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("1","PTN_1")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("0","PTN_0")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("A","PTN_15")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("B","PTN_14")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("C","PTN_13")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("D","PTN_12")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("E","PTN_11")
+    dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("F","PTN_10")
+    dfsn2.dropna(subset=['Group'], inplace=True)
+    dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+    dsn3.head()
+
+    T10_col = dsn3.pop('B_Ref_List') # col-1
+
+    dsn3.insert(0, 'B_Ref_List', T10_col)
+
+    dsn3 = dsn3[['B_Ref_List','B_Part_No','Long Des']]
+
+    dsn1.dropna(subset=['RefList'], inplace=True)
+    dsn3.dropna(subset=['B_Ref_List'], inplace=True)
+
+
     with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx") as writer:
 
     #dt_H.to_excel(writer, sheet_name="Home", index=False)  
@@ -2685,15 +2771,13 @@ except ValueError:
     #df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
     #df4.to_excel(writer, sheet_name="FL_Verify", index=False)
         ds1.to_excel(writer, sheet_name="BOM", index=False)
-        ds2.to_excel(writer, sheet_name="AVL GROUP", index=False)
-        dc1.to_excel(writer, sheet_name="Part Master", index=False)
-        df2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+        dsn2.to_excel(writer, sheet_name="AVL GROUP", index=False)
+        dcn1.to_excel(writer, sheet_name="Part Master", index=False)
+        dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
         ds3.to_excel(writer, sheet_name="BOM_Data", index=False)
 
     pass
     print('The file does not exist.')
- 
-##########################################################################################################################################
 
 ##########################################################################################################################################
 
@@ -2701,225 +2785,8 @@ except ValueError:
 
 ##########################################################################################################################################
 
-#FEEDERVERIFICATIONCODEBOMANDFEEDER
-
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
-Chd = os.getcwd()
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
-df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM_Data')
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
-df2 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederCol')
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
-df111 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM')
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
-df112 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederSetup')
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
-    df1.to_excel(writer, sheet_name="BOM_Data", index=False)
-    df2.to_excel(writer, sheet_name="FeederCol", index=False)
-    df111.to_excel(writer, sheet_name="BOM", index=False)
-    df112.to_excel(writer, sheet_name="FeederSetup", index=False)
-
-xls = pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
-df1 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM_Data')
-df2 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederCol')
-df111 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM')
-df112 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederSetup')
+##########################################################################################################################################
     
-df2['Feeder Reference'] = df2['F_Ref_List']
-df1.rename(columns = {'B_Ref_List':'F_Ref_List'}, inplace = True)
-    #df1['B_Ref.List'] = df1['F_Ref_List']
-df3 = pd.merge(df1 , df2, on='F_Ref_List', how='left')
-df3.rename(columns = {'F_Ref_List':'BOM Reference'}, inplace = True)
-df1.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
-print(df1,df2)
-
-df111.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
-df111 = df111[['F_Part_No','Long Des']]
-df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner')
-df113.rename(columns = {'F_Part_No':'Part Number'}, inplace = True)
-df113.rename(columns = {'Location':'Feeder Location'}, inplace = True)
-df113.rename(columns = {'Long Des':'Part Description'}, inplace = True)
-df113.rename(columns = {'F_Ref_List':'Reference'}, inplace = True)
-df113 = df113[['Feeder Location','FeederName','Type','Size','FeedPitch','Part Height','Part Number','Part Description','Reference','QTY','Side','ModelName']]
-
-df3["BOM and Feeder Compare"] = (df3["B_Part_No"] == df3["F_Part_No"])
-df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('TRUE','MATCH')
-df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('FALSE','MISS_MATCH')
-
-df3 = df3.copy()
-df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].map({True: 'Match', False: 'Miss_Match'})
-df3.sort_values(by='BOM and Feeder Compare', inplace=True, ascending=False)
-
-df4 = df3['BOM and Feeder Compare'].value_counts()
-#df4 = df3['Size'].value_counts()
-df5 = df3['Side'].value_counts()
-#df6 = df3['F_Ref_List'].value_counts()
-df7 = df3['B_Part_No'].value_counts()
-#df8 = df3['B_Ref.List'].value_counts()
-df9 = df3['F_Part_No'].value_counts()
-#df10 = df3['FeederName'].value_counts()
-print('***')
-dbf1 = print(df1)
-print('***')
-dbf2 = print(df2)
-print('***')
-dbf2 = df2.copy()
-dbf1 = df1.copy()
-dbf2_col = dbf2.pop('Feeder Reference')
-dbf2.insert(1, 'Feeder Reference', dbf2_col)
-dbf2.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
-dbf3 = pd.merge(dbf2 , dbf1, on='B_Ref_List', how='left')
-
-dbf3["Feeder and BOM Compare"] = (dbf3["F_Part_No"] == dbf3["B_Part_No"])
-dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('TRUE','MATCH')
-dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('FALSE','MISS_MATCH')
-
-dbf3 = dbf3.copy()
-dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].map({True: 'Match', False: 'Miss_Match'})
-dbf3.sort_values(by='Feeder and BOM Compare', inplace=True, ascending=False)
-
-dbf4 = dbf3['Feeder and BOM Compare'].value_counts() 
-
-# Define a function for row styling
-def highlight_row(row):
-    return ['background-color: lightgreen' if 'Match' in row.values else
-            'background-color: yellow' if 'Miss_Match' in row.values else
-            '' for _ in row]
-
-# Apply the styling function to the DataFrame
-styled_df3 = df3.style.apply(highlight_row, axis=1)
-
-# Define a function for row styling
-def highlight_row(row):
-    return ['background-color: lightgreen' if 'Match' in row.values else
-            'background-color: yellow' if 'Miss_Match' in row.values else
-            '' for _ in row]
-
-# Apply the styling function to the DataFrame
-styled_dbf3 = dbf3.style.apply(highlight_row, axis=1)
-
-# Save the styled DataFrame to Excel
-with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
-
-        styled_df3.to_excel(writer, sheet_name="Verify_data_BAF", index=False, engine='openpyxl')
-        df4.to_excel(writer, sheet_name="BOM and Feeder Compare",index=TRUE)
-        #dbf2.to_excel(writer, sheet_name="Verify_data_FAB", index=False)
-        styled_dbf3.to_excel(writer, sheet_name="Verify_data_FAB", index=False, engine='openpyxl')
-        dbf4.to_excel(writer, sheet_name="Feeder and BOM Compare",index=TRUE)
-        df113.to_excel(writer, sheet_name="Upload_data", index=False)
-        df1.to_excel(writer, sheet_name="BOM_data", index=False)
-        df2.to_excel(writer, sheet_name="Feeder_data", index=False)
-        df5.to_excel(writer, sheet_name="Side",index=TRUE)
-        #df6.to_excel(writer, sheet_name="F_Ref_List",index=TRUE)
-        df7.to_excel(writer, sheet_name="B_Part_No",index=TRUE)
-        #df8.to_excel(writer, sheet_name="B_Ref.List",index=TRUE)
-        df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
-        #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
-
-##########################################################################################################################################
-
-##########################################################################################################################################
-
-##########################################################################################################################################
-
-##########################################################################################################################################
-
-#SEPRATEFEEDERLISTDATA
-
-os.getcwd()
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
-Chd = os.getcwd()
-
-df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Upload_data")
-
-df1.sort_values(by='Side', inplace=True, ascending=True)
-df2_1 = df1
-#del.TOP
-df1 = df1[df1["Side"].str.contains("TOP")==False]
-df2 = df1[df1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
-df2.sort_values(by='Feeder Location', inplace=True, ascending=True)
-df3 = df1[df1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
-df3.sort_values(by='Feeder Location', inplace=True, ascending=True)
-df4 = df1[df1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
-df4.sort_values(by='Feeder Location', inplace=True, ascending=True)
-#del.BOT
-df2_1 = df2_1[df2_1["Side"].str.contains("BOT")==False]
-df2_2 = df2_1[df2_1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
-df2_2.sort_values(by='Feeder Location', inplace=True, ascending=True)
-df2_3 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
-df2_3.sort_values(by='Feeder Location', inplace=True, ascending=True)
-df2_4 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
-df2_4.sort_values(by='Feeder Location', inplace=True, ascending=True)
-
-with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx") as writer:
-    df2.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
-    df3.to_excel(writer, sheet_name="AMX2_B", index=False)
-    df4.to_excel(writer, sheet_name="AMX3_B", index=False)
-    
-    df2_2.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
-    df2_3.to_excel(writer, sheet_name="AMX2_T", index=False)
-    df2_4.to_excel(writer, sheet_name="AMX3_T", index=False)
-
-##########################################################################################################################################
-
-##########################################################################################################################################
-
-#Upload data to merge and del side and Module
-    
-os.getcwd()
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-df1 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_B")
-df1["Remarks"] = df1['Side'].astype(str) +"--"+ df1['ModelName']
-del df1['Side']
-del df1['ModelName']
-
-df2 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_B")
-df2["Remarks"] = df2['Side'].astype(str) +"--"+ df2['ModelName']
-del df2['Side']
-del df2['ModelName']
-
-df3 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_B")
-df3["Remarks"] = df3['Side'].astype(str) +"--"+ df3['ModelName']
-del df3['Side']
-del df3['ModelName']
-
-df4 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_T")
-df4["Remarks"] = df4['Side'].astype(str) +"--"+ df4['ModelName']
-del df4['Side']
-del df4['ModelName']
-
-df5 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_T")
-df5["Remarks"] = df5['Side'].astype(str) +"--"+ df5['ModelName']
-del df5['Side']
-del df5['ModelName']
-
-df6 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_T")
-df6["Remarks"] = df6['Side'].astype(str) +"--"+ df6['ModelName']
-del df6['Side']
-del df6['ModelName']
-
-with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx") as writer:
-    df1.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
-    df2.to_excel(writer, sheet_name="AMX2_B", index=False)
-    df3.to_excel(writer, sheet_name="AMX3_B", index=False)
-    df4.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
-    df5.to_excel(writer, sheet_name="AMX2_T", index=False)
-    df6.to_excel(writer, sheet_name="AMX3_T", index=False)
-
-##########################################################################################################################################
-
-##########################################################################################################################################
-
 #PART MASTER
 
 os.getcwd()
@@ -2975,6 +2842,10 @@ else:
 # Close the database connection
 conn.close()
 print('write complete')
+
+##########################################################################################################################################
+
+##########################################################################################################################################
 
 ##########################################################################################################################################
 
@@ -4017,230 +3888,6 @@ df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
 #read_file.to_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVList.xlsx', index=None)
 #read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.csv', index = None, header= None)
 
-#Feeder List change
-
-shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx')
-shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx')
-
-##BOT FEEDER LIST
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'NXT&AMX1_B'
-
-# Destination Excel file
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
-destination_sheet_name = 'NXT'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "NXT&AMX1_B", "NXT", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'AMX2_B'
-
-# Destination Excel file
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
-destination_sheet_name = 'AIMEX 2'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX2_B", "AIMEX 2", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'AMX3_B'
-
-# Destination Excel file 
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
-destination_sheet_name = 'AIMEX 3'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX3_B", "AIMEX 3", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-##TOP FEEDER LIST
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'NXT&AMX1_T'
-
-# Destination Excel file
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
-destination_sheet_name = 'NXT'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "NXT&AMX1_T", "NXT", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'AMX2_T'
-
-# Destination Excel file
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
-destination_sheet_name = 'AIMEX 2'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX2_T", "AIMEX 2", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
-
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
-
-# Source Excel file
-source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
-source_sheet_name = 'AMX3_T'
-
-# Destination Excel file
-destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
-destination_sheet_name = 'AIMEX 3'
-
-def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
-    # Load the source workbook
-    source_workbook = openpyxl.load_workbook(source_file)
-    source_sheet = source_workbook[source_sheet_name]
-
-    # Load the destination workbook
-    destination_workbook = openpyxl.load_workbook(destination_file)
-    destination_sheet = destination_workbook[destination_sheet_name]
-
-    # Iterate through the source sheet and copy data to the destination sheet with an offset
-    for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
-        # Offset the row index by the specified offset
-        destination_row = row_index + offset
-
-        # Copy data to the destination sheet
-        for col_index, value in enumerate(row, start=1):
-            destination_sheet.cell(row=destination_row, column=col_index, value=value)
-
-    # Save the changes to the destination workbook
-    destination_workbook.save(destination_file)
-
-# Example usage:
-copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "AIMEX 3", offset=5)
-# Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
 
 ##########################################################################################################################################
 
@@ -4250,71 +3897,134 @@ copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "
 
 ##########################################################################################################################################
 
-#CREATEBACKUPFOLDER
-
-yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output"
-
-if not os.path.isdir(yourfolder):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder)
-
-yourfolder1 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\BOM"
-
-if not os.path.isdir(yourfolder1):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder1)
-
-yourfolder2 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\FeederSetup"
-
-if not os.path.isdir(yourfolder2):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder2)
-
-yourfolder3 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Upload"
-
-if not os.path.isdir(yourfolder3):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder3)
-
-yourfolder4 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Verified"
-
-if not os.path.isdir(yourfolder4):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder4)
+#FEEDER VERIFICATION CODE BOM AND FEEDER AS VISE VERSA
 
 os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
 Chd = os.getcwd()
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM_Data')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+df2 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederCol')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+df111 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+df112 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederSetup')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+    df1.to_excel(writer, sheet_name="BOM_Data", index=False)
+    df2.to_excel(writer, sheet_name="FeederCol", index=False)
+    df111.to_excel(writer, sheet_name="BOM", index=False)
+    df112.to_excel(writer, sheet_name="FeederSetup", index=False)
 
-file_path = 'BOM_List_OP.xlsx'
-directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+xls = pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+df1 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM_Data')
+df2 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederCol')
+df111 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM')
+df112 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederSetup')
+    
+df2['Feeder Reference'] = df2['F_Ref_List']
+df1.rename(columns = {'B_Ref_List':'F_Ref_List'}, inplace = True)
+    #df1['B_Ref.List'] = df1['F_Ref_List']
+df3 = pd.merge(df1 , df2, on='F_Ref_List', how='left')
+df3.rename(columns = {'F_Ref_List':'BOM Reference'}, inplace = True)
+df1.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+print(df1,df2)
 
-print(os.path.isfile(file_path))
-print(os.path.isfile(directory_path))
+df111.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+df111 = df111[['F_Part_No','Long Des']]
+df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner')
+df113.rename(columns = {'F_Part_No':'Part Number'}, inplace = True)
+df113.rename(columns = {'Location':'Feeder Location'}, inplace = True)
+df113.rename(columns = {'Long Des':'Part Description'}, inplace = True)
+df113.rename(columns = {'F_Ref_List':'Reference'}, inplace = True)
+df113 = df113[['Feeder Location','FeederName','Type','Size','FeedPitch','Part Height','Part Number','Part Description','Reference','QTY','Side','ModelName']]
 
-try:
-    if os.path.isfile(file_path):
-        dt_H1 = pd.read_csv(file_path)
+df3["BOM and Feeder Compare"] = (df3["B_Part_No"] == df3["F_Part_No"])
+df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('TRUE','MATCH')
+df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('FALSE','MISS_MATCH')
 
-except ValueError:
-    if os.path.exists("BOM_List_OP.xlsx"):
-        os.remove("BOM_List_OP.xlsx")
-else:
-    print("The file does not exist")
+df3 = df3.copy()
+df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].map({True: 'Match', False: 'Miss_Match'})
+df3.sort_values(by='BOM and Feeder Compare', inplace=True, ascending=False)
 
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
+df4 = df3['BOM and Feeder Compare'].value_counts()
+#df4 = df3['Size'].value_counts()
+df5 = df3['Side'].value_counts()
+#df6 = df3['F_Ref_List'].value_counts()
+df7 = df3['B_Part_No'].value_counts()
+#df8 = df3['B_Ref.List'].value_counts()
+df9 = df3['F_Part_No'].value_counts()
+#df10 = df3['FeederName'].value_counts()
+print('***')
+dbf1 = print(df1)
+print('***')
+dbf2 = print(df2)
+print('***')
+dbf2 = df2.copy()
+dbf1 = df1.copy()
+dbf2_col = dbf2.pop('Feeder Reference')
+dbf2.insert(1, 'Feeder Reference', dbf2_col)
+dbf2.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+dbf3 = pd.merge(dbf2 , dbf1, on='B_Ref_List', how='left')
 
-if os.path.exists("Feeder_List_OPT.xlsx"):
-  os.remove("Feeder_List_OPT.xlsx")
-else:
-  print("The file does not exist")
+dbf3["Feeder and BOM Compare"] = (dbf3["F_Part_No"] == dbf3["B_Part_No"])
+dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('TRUE','MATCH')
+dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('FALSE','MISS_MATCH')
 
-if os.path.exists("Feeder_List_OPB.xlsx"):
-  os.remove("Feeder_List_OPB.xlsx")
-else:
-  print("The file does not exist")
+dbf3 = dbf3.copy()
+dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].map({True: 'Match', False: 'Miss_Match'})
+dbf3.sort_values(by='Feeder and BOM Compare', inplace=True, ascending=False)
+
+dbf4 = dbf3['Feeder and BOM Compare'].value_counts() 
+
+# Define a function for row styling
+def highlight_row(row):
+    return ['background-color: lightgreen' if 'Match' in row.values else
+            'background-color: yellow' if 'Miss_Match' in row.values else
+            '' for _ in row]
+
+# Apply the styling function to the DataFrame
+styled_df3 = df3.style.apply(highlight_row, axis=1)
+
+# Define a function for row styling
+def highlight_row(row):
+    return ['background-color: lightgreen' if 'Match' in row.values else
+            'background-color: yellow' if 'Miss_Match' in row.values else
+            '' for _ in row]
+
+# Apply the styling function to the DataFrame
+styled_dbf3 = dbf3.style.apply(highlight_row, axis=1)
+
+# Save the styled DataFrame to Excel
+with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+
+        styled_df3.to_excel(writer, sheet_name="Verify_data_BAF", index=False, engine='openpyxl')
+        df4.to_excel(writer, sheet_name="BOM and Feeder Compare",index=TRUE)
+        #dbf2.to_excel(writer, sheet_name="Verify_data_FAB", index=False)
+        styled_dbf3.to_excel(writer, sheet_name="Verify_data_FAB", index=False, engine='openpyxl')
+        dbf4.to_excel(writer, sheet_name="Feeder and BOM Compare",index=TRUE)
+        df113.to_excel(writer, sheet_name="Upload_data", index=False)
+        df1.to_excel(writer, sheet_name="BOM_data", index=False)
+        df2.to_excel(writer, sheet_name="Feeder_data", index=False)
+        df5.to_excel(writer, sheet_name="Side",index=TRUE)
+        #df6.to_excel(writer, sheet_name="F_Ref_List",index=TRUE)
+        df7.to_excel(writer, sheet_name="B_Part_No",index=TRUE)
+        #df8.to_excel(writer, sheet_name="B_Ref.List",index=TRUE)
+        df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
+        #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+        
+##########################################################################################################################################
+
+##########################################################################################################################################
 
 for i in range(100):
     row = "="*i + ">"
@@ -4322,18 +4032,13 @@ for i in range(100):
     sys.stdout.flush()
     time.sleep(0.1)
 
-logwindow = sg.Multiline(size=(160, 40), font=('Courier', 9))
-print = logwindow.print
-layout = [[logwindow],[sg.Button('Quit')]]
+print("FeederSetup_Verification__Compelete $ PROCESS $")
 
-# Create the window
-window = sg.Window("FeederSetup", layout, finalize=True)
+# Print the current date
+print("Current Date:", current_datetime.date())
 
-print("FeederSetup___Compelete $ PROCESS $")
-
-sys.stdout.write("\n")
-
-#################################################################
+# Print the current time
+print("Current Time:", current_datetime.time())
 
 os.getcwd()
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
@@ -4344,6 +4049,7 @@ df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
 dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
 df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
 df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
 dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
 dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
 dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
@@ -4377,6 +4083,10 @@ ds3 = print("Compare Count:")
 ds3 = print(df3)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
+ds4 = print("Compare Count:")
+ds4 = print(df4)
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
 print("Feeder duplicate Reference")
 print(dfsg21)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -4393,80 +4103,670 @@ print("Miss Match Row Feeder to BOM")
 print(dfsg32) 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-##########################################################################################################################################
+# Define the PySimpleGUI layout
+layout = [
+    [sg.Multiline(size=(160, 40), font=('Courier', 9), key='-LOGWINDOW-')],
+    [sg.Button('Save to Excel'), sg.Button('Quit')]
+]
 
-# Create an event loop
-while True:
-    event, values = window.read(timeout=1)
-    if event == sg.WIN_CLOSED or event == 'Quit':
-        break
+# Create the window
+window = sg.Window("FeederSetup", layout, finalize=True)
 
-##########################################################################################################################################
+def print_to_log(*args, **kwargs):
+    window['-LOGWINDOW-'].print(*args, **kwargs)
+    window.Refresh()
 
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+def save_to_excel(log_contents):
+    # Get the current date and time
+    current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Line_X"
+    # Split log contents into lines
+    lines = log_contents.strip().split('\n')
 
-if not os.path.isdir(yourfolder):
-    print('Folder Not Exist')
-    os.makedirs(yourfolder)
+    # Create a DataFrame with each line in a new row
+    df = pd.DataFrame({'LogContents': lines})
 
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
-Chd = os.getcwd()
+    # Save the DataFrame to the same Excel file with a new sheet
+    excel_file_path = 'FeederVerify.xlsx'
+    with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+        df.to_excel(writer, sheet_name=f'Log_{current_datetime}', index=False)
 
-#shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Upload-Data.xlsx')
-#shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/PartMaster.xlsx')
-shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/MODEL.mdb')
-shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample T.xlsx')
-shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample B.xlsx')
+    return f"Log saved to {excel_file_path}, Sheet: Log_{current_datetime}"
 
-##########################################################################################################################################
+print_to_log("FeederSetup___Compelete $ PROCESS $")
+
+sys.stdout.write("\n")
+
+#################################################################
 
 os.getcwd()
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
 Chd = os.getcwd()
 
-#shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/BOM_List_OP.xlsx')
-#shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederSetup.xlsx')
-shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederVerify.xlsx')
-shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/AVL.CSV')
+xls=pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
+dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
+df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
+df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
+dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
+dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
+dbf3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_FAB")
+dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
+dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
+dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
+dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+rc = len(df1)
+rc1 = len(dfs1)
+
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+print_to_log(Chd,'\\__BOM__\\',dL1)
+print_to_log(Chd,'\\__FeederSetup__\\',dL2)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+ds1 = print_to_log("BOM Count:",rc)
+print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+ds9 = print_to_log("Feeder Count:",rc1)
+print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+ds2 = print_to_log("BOT & TOP Count:")
+ds2 = print_to_log(df2)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+ds3 = print_to_log("Compare Count:")
+ds3 = print_to_log(df3)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+ds4 = print_to_log("Compare Count:")
+ds4 = print_to_log(df4)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+print_to_log("Feeder duplicate Reference")
+print_to_log(dfsg21)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+print_to_log("BOM duplicate Reference")
+print_to_log(dfsg22)
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+print_to_log("Miss Match Row BOM to Feeder")
+print_to_log(dfsg31) 
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+print_to_log("Miss Match Row Feeder to BOM")
+print_to_log(dfsg32) 
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 ##########################################################################################################################################
 
-os.getcwd()
-Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X')
-Chd = os.getcwd()
+# Create an event loop
+while True:
+    event, values = window.read()
 
-#src_1 = 'Upload-Data.xlsx'
-#os.rename(src_1, dL2 +"_UD"+".xlsx")
+    if event == sg.WIN_CLOSED or event == 'Quit':
+        break
+    elif event == 'Save to Excel':
+        # Get the contents of the log window
+        log_contents = values['-LOGWINDOW-']
 
-#src_2 = 'PartMaster.xlsx'
-#os.rename(src_2, dL2 +"_PM"+".xlsx")
+        # Save to Excel and get the log information
+        log_info = save_to_excel(log_contents)
 
-src_3 = 'MODEL.mdb'
-os.rename(src_3, dL2 +"_PM-Model"+".mdb")
+        print_to_log(log_info)
 
-#src_4 = 'BOM_List_OP.xlsx'
-#os.rename(src_4, dL1 +"_BOM"+".xlsx")
-
-#src_5 = 'FeederSetup.xlsx'
-#os.rename(src_5, dL2 +"_FS"+".xlsx")
-
-src_6 = 'FeederVerify.xlsx'
-os.rename(src_6, dL2 +"_FV"+".xlsx")
-
-src_7 = 'AVL.csv'
-os.rename(src_7, dL1 +"_AVL"+".csv")
-
-src_8 = 'Line X Sample T.xlsx'
-os.rename(src_8, dL1 +"_T"+".xlsx")
-
-src_9 = 'Line X Sample B.xlsx'
-os.rename(src_9, dL1 +"_B"+".xlsx")
 time.sleep (2)
-
+# Close the window
 window.close()
 
-time.sleep (5)
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+# Process to Next Upload if Match count ok
+
+os.getcwd()
+
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+
+for i in range(100):
+    row = "="*i + ">"
+    sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
+    sys.stdout.flush()
+    time.sleep(0.1)
+
+print("FeederSetup___Compelete $ PROCESS $")
+
+# Load Excel sheets into pandas dataframes
+dfmc1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+dfmc2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+#df3 = pd.read_excel('excel_sheet3.xlsx')
+
+print(dfmc1)
+print(dfmc2)
+
+# Compare the count of rows in the dataframes
+count1 = len(dfmc1)
+count2 = len(dfmc2)
+#count3 = len(df3)
+
+# Check if the counts are the same
+if count1 == count2: #== count3:
+    # Proceed to the next line of code
+    print("Counts are the same. Proceeding to the next line of code.")
+    # Your next line of code here
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+#CREATE & SEPRATE FEEDER LOADING LIST DATA
+
+    os.getcwd()
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Upload_data")
+
+    df1.sort_values(by='Side', inplace=True, ascending=True)
+    df2_1 = df1
+#del.TOP
+    df1 = df1[df1["Side"].str.contains("TOP")==False]
+    df2 = df1[df1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+    df2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    df3 = df1[df1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+    df3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    df4 = df1[df1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+    df4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+#del.BOT
+    df2_1 = df2_1[df2_1["Side"].str.contains("BOT")==False]
+    df2_2 = df2_1[df2_1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+    df2_2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    df2_3 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+    df2_3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    df2_4 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+    df2_4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx") as writer:
+        df2.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+        df3.to_excel(writer, sheet_name="AMX2_B", index=False)
+        df4.to_excel(writer, sheet_name="AMX3_B", index=False)
+    
+        df2_2.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+        df2_3.to_excel(writer, sheet_name="AMX2_T", index=False)
+        df2_4.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+else:
+    # Skip the lines below if counts are different
+    print("Counts are different. Skipping the process.")
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+#Upload data to merge and del side and Module
+        
+# Check if the counts are the same
+if count1 == count2: #== count3:
+    # Proceed to the next line of code
+    print("Counts are the same. Proceeding to the next line of code.")
+    # Your next line of code here
+    
+    os.getcwd()
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+    df1 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_B")
+    df1["Remarks"] = df1['Side'].astype(str) +"--"+ df1['ModelName']
+    del df1['Side']
+    del df1['ModelName']
+
+    df2 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_B")
+    df2["Remarks"] = df2['Side'].astype(str) +"--"+ df2['ModelName']
+    del df2['Side']
+    del df2['ModelName']
+
+    df3 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_B")
+    df3["Remarks"] = df3['Side'].astype(str) +"--"+ df3['ModelName']
+    del df3['Side']
+    del df3['ModelName']
+
+    df4 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_T")
+    df4["Remarks"] = df4['Side'].astype(str) +"--"+ df4['ModelName']
+    del df4['Side']
+    del df4['ModelName']
+
+    df5 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_T")
+    df5["Remarks"] = df5['Side'].astype(str) +"--"+ df5['ModelName']
+    del df5['Side']
+    del df5['ModelName']
+
+    df6 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_T")
+    df6["Remarks"] = df6['Side'].astype(str) +"--"+ df6['ModelName']
+    del df6['Side']
+    del df6['ModelName']
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx") as writer:
+        df1.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+        df2.to_excel(writer, sheet_name="AMX2_B", index=False)
+        df3.to_excel(writer, sheet_name="AMX3_B", index=False)
+        df4.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+        df5.to_excel(writer, sheet_name="AMX2_T", index=False)
+        df6.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+else:
+    # Skip the lines below if counts are different
+    print("Counts are different. Skipping the process.")
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+#Feeder List change
+
+# Check if the counts are the same
+if count1 == count2: #== count3:
+    # Proceed to the next line of code
+    print("Counts are the same. Proceeding to the next line of code.")
+    # Your next line of code here
+
+    shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx')
+    shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx')
+
+        ##BOT FEEDER LIST
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'NXT&AMX1_B'
+
+        # Destination Excel file
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+    destination_sheet_name = 'NXT'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "NXT&AMX1_B", "NXT", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'AMX2_B'
+
+        # Destination Excel file
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+    destination_sheet_name = 'AIMEX 2'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX2_B", "AIMEX 2", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'AMX3_B'
+
+        # Destination Excel file 
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+    destination_sheet_name = 'AIMEX 3'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX3_B", "AIMEX 3", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        ##TOP FEEDER LIST
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'NXT&AMX1_T'
+
+        # Destination Excel file
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+    destination_sheet_name = 'NXT'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "NXT&AMX1_T", "NXT", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'AMX2_T'
+
+        # Destination Excel file
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+    destination_sheet_name = 'AIMEX 2'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX2_T", "AIMEX 2", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+        # Source Excel file
+    source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+    source_sheet_name = 'AMX3_T'
+
+        # Destination Excel file
+    destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+    destination_sheet_name = 'AIMEX 3'
+
+    def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+            # Load the source workbook
+            source_workbook = openpyxl.load_workbook(source_file)
+            source_sheet = source_workbook[source_sheet_name]
+
+            # Load the destination workbook
+            destination_workbook = openpyxl.load_workbook(destination_file)
+            destination_sheet = destination_workbook[destination_sheet_name]
+
+            # Iterate through the source sheet and copy data to the destination sheet with an offset
+            for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                # Offset the row index by the specified offset
+                destination_row = row_index + offset
+
+                # Copy data to the destination sheet
+                for col_index, value in enumerate(row, start=1):
+                    destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+            # Save the changes to the destination workbook
+            destination_workbook.save(destination_file)
+
+        # Example usage:
+    copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "AIMEX 3", offset=5)
+        # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+else:
+    # Skip the lines below if counts are different
+    print("Counts are different. Skipping the process.")
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+#CREATEBACKUPFOLDER
+
+# Check if the counts are the same
+if count1 == count2: #== count3:
+    # Proceed to the next line of code
+    print("Counts are the same. Proceeding to the next line of code.")
+    # Your next line of code here
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    yourfolder1 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\BOM"
+
+    if not os.path.isdir(yourfolder1):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder1)
+
+    yourfolder2 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\FeederSetup"
+
+    if not os.path.isdir(yourfolder2):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder2)
+
+    yourfolder3 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Upload"
+
+    if not os.path.isdir(yourfolder3):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder3)
+
+    yourfolder4 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Verified"
+
+    if not os.path.isdir(yourfolder4):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder4)
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    Chd = os.getcwd()
+
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        if os.path.exists("BOM_List_OP.xlsx"):
+            os.remove("BOM_List_OP.xlsx")
+    else:
+        print("The file does not exist")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+    if os.path.exists("Feeder_List_OPT.xlsx"):
+        os.remove("Feeder_List_OPT.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Feeder_List_OPB.xlsx"):
+        os.remove("Feeder_List_OPB.xlsx")
+    else:
+        print("The file does not exist")
+
+    ##########################################################################################################################################
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Line_X"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+    #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Upload-Data.xlsx')
+    #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/PartMaster.xlsx')
+    shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/MODEL.mdb')
+    shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample T.xlsx')
+    shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample B.xlsx')
+
+    ##########################################################################################################################################
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/BOM_List_OP.xlsx')
+    #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederSetup.xlsx')
+    shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederVerify.xlsx')
+    shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/AVL.CSV')
+
+    ##########################################################################################################################################
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X')
+    Chd = os.getcwd()
+
+    #src_1 = 'Upload-Data.xlsx'
+    #os.rename(src_1, dL2 +"_UD"+".xlsx")
+
+    #src_2 = 'PartMaster.xlsx'
+    #os.rename(src_2, dL2 +"_PM"+".xlsx")
+
+    src_3 = 'MODEL.mdb'
+    os.rename(src_3, dL2 +"_PM-Model"+".mdb")
+
+    #src_4 = 'BOM_List_OP.xlsx'
+    #os.rename(src_4, dL1 +"_BOM"+".xlsx")
+
+    #src_5 = 'FeederSetup.xlsx'
+    #os.rename(src_5, dL2 +"_FS"+".xlsx")
+
+    src_6 = 'FeederVerify.xlsx'
+    os.rename(src_6, dL2 +"_FV"+".xlsx")
+
+    src_7 = 'AVL.csv'
+    os.rename(src_7, dL1 +"_AVL"+".csv")
+
+    src_8 = 'Line X Sample T.xlsx'
+    os.rename(src_8, dL1 +"_T"+".xlsx")
+
+    src_9 = 'Line X Sample B.xlsx'
+    os.rename(src_9, dL1 +"_B"+".xlsx")
+    
+    time.sleep (2)
+
+    window.close()
+
+    time.sleep (5)
+
+else:
+        # Abort the process
+        print("Counts are different. Aborting the process.")
+        # Exit the script
+sys.exit()
+
+#pyinstaller -F -i "SYRMA.ico" FeederSetup.py
