@@ -58,7 +58,7 @@ import re
 from plyer import notification
 
 
-print("\033[92;4m*******Feeder and BOM data Verification Version--PY_V-1.8.0 interface_GUI/J1024-89P13*******\033[0m")
+print("\033[32;4m*******Feeder and BOM data Verification Version--PY_V-1.9.0 interface_GUI/J1124-89P13*******\033[0m")
 
 '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
 
@@ -66,12 +66,14 @@ print("\033[92;4m*******Feeder and BOM data Verification Version--PY_V-1.8.0 int
 current_datetime = datetime.now()
 
 # Format the current date and time as a string
-formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+#formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+# Format the date and time in a 12-hour clock with AM/PM
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
 
 print('\n')
 
 # Print the formatted date and time
-print(f"\033[35mCurrent Date and Time: {formatted_datetime}\033[0m")
+print(f"\033[31mCurrent Date and Time: {formatted_datetime}\033[0m")
 
 print('\n')
 
@@ -139,11 +141,14 @@ print('\n')
 
 file_path = 'FeederSetup_TL1.csv'
 directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
 print(os.path.isfile(file_path))
 print(os.path.isfile(directory_path))
+
 try:
     if os.path.isfile(file_path):
         dt_H1 = pd.read_csv(file_path)
+        
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
 
@@ -469,11 +474,14 @@ print('The file does not exist.')
 
 file_path = 'FeederSetup_BL1.csv'
 directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
 print(os.path.isfile(file_path))
 print(os.path.isfile(directory_path))
+
 try:
     if os.path.isfile(file_path):
         dt_H1 = pd.read_csv(file_path)
+
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
 
@@ -541,7 +549,6 @@ except ValueError:
 
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
-
 
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -802,11 +809,14 @@ print('The file does not exist.')
 
 file_path = 'FeederSetup_TL2.csv'
 directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
 print(os.path.isfile(file_path))
 print(os.path.isfile(directory_path))
+
 try:
     if os.path.isfile(file_path):
         dt_H1 = pd.read_csv(file_path)
+
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
 
@@ -874,7 +884,6 @@ except ValueError:
 
     dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
     #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
-
 
     print(dt_H1)
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -1002,7 +1011,6 @@ except ValueError:
         dt_H1.to_excel(writer, sheet_name="S1", index=False)
         df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
 
-   
     Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
     wb1 = load_workbook(Feeder_List_OPT)
     ws1 = wb1.active
@@ -1016,7 +1024,6 @@ except ValueError:
     print(ws1)
 
     print(ws2)
-
 
     for row in range(1, 10):
         #copy from wb1
@@ -1448,11 +1455,14 @@ print('The file does not exist.')
 
 file_path = 'FeederSetup_TL3.csv'
 directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
 print(os.path.isfile(file_path))
 print(os.path.isfile(directory_path))
+
 try:
     if os.path.isfile(file_path):
         dt_H1 = pd.read_csv(file_path)
+
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
 
@@ -2105,11 +2115,14 @@ print('The file does not exist.')
 
 file_path = 'FeederSetup_TL4C.csv'
 directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
 print(os.path.isfile(file_path))
 print(os.path.isfile(directory_path))
+
 try:
     if os.path.isfile(file_path):
         dt_H1 = pd.read_csv(file_path)
+
 except ValueError:
     dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
 
@@ -4867,17 +4880,48 @@ print(dfmc1)
 print(dfmc2)
 print(dfmc3)
 print(dfmc4)
-# Compare the count of rows in the dataframes
-count1 = len(dfmc1)
-count2 = len(dfmc2)
-count3 = len(dfmc3)
-count4 = len(dfmc4)
 
-# Check if the counts are the same
-if count1 == count2 == count3 == count4:
-    # Proceed to the next line of code
-    print("Counts are the same. Proceeding to the next line of code.")
-    # Your next line of code here
+# Function to get numeric value safely
+def get_numeric_value(df, index, column):
+    try:
+        return df.loc[index, column]
+    except KeyError:
+        return None
+
+# Get numeric inputs from specific cells in the "count" column
+num1_index0 = dfmc1.loc[0, 'count']
+num1_index1 = get_numeric_value(dfmc1, 1, 'count')
+
+num2_index0 = dfmc2.loc[0, 'count']
+num2_index1 = get_numeric_value(dfmc2, 1, 'count')
+
+num3_index0 = dfmc3.loc[0, 'BOM_Data Ref, Count']  # Note: Case-sensitive column name
+num3_index1 = get_numeric_value(dfmc3, 1, 'BOM_Data Ref, Count')
+
+num4_index0 = dfmc4.loc[0, 'Feeder_Data Ref, Count']  # Note: Case-sensitive column name
+num4_index1 = get_numeric_value(dfmc4, 1, 'Feeder_Data Ref, Count')
+
+# Compare the numeric values
+if num1_index0 == num2_index0 == num3_index0 == num4_index0 and \
+   (num1_index1 is None or num1_index1 == num2_index1 == num3_index1 == num4_index1):
+    print("Numeric values are the same. Proceeding to the next line of code.")
+
+    # Print the values
+    print("\nValues at index 0:")
+    print("num1:", num1_index0)
+    print("num2:", num2_index0)
+    print("num3:", num3_index0)
+    print("num4:", num4_index0)
+
+    if num1_index1 is not None:
+        print("\nValues at index 1:")
+        print("num1:", num1_index1)
+        print("num2:", num2_index1)
+        print("num3:", num3_index1)
+        print("num4:", num4_index1)
+
+    else:
+        print("Numeric values are not the same. Cannot proceed.")
 
 ##########################################################################################################################################
 
@@ -5362,13 +5406,13 @@ if count1 == count2 == count3 == count4:
     print('\n')
 
     # Assuming feeder verification is completed
-Feeder_List_Generation_Completed = True
+    Feeder_List_Generation_Completed = True
 
-if Feeder_List_Generation_Completed:
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    if Feeder_List_Generation_Completed:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
 
-    messagebox.showinfo("Feeder Loading List", "Feeder Loading List has been Generated!")
+        messagebox.showinfo("Feeder Loading List", "Feeder Loading List has been Generated!")
 
 else:
     # Abort the process
