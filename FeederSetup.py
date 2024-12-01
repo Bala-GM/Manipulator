@@ -56,9 +56,10 @@ import sqlite3
 from datetime import datetime #2
 import re
 from plyer import notification
+import xlrd
 
 
-print("\033[32;4m*******Feeder and BOM data Verification Version--PY_V-1.9.0 interface_GUI/J1124-89P13*******\033[0m")
+print("\033[32;4m*******Feeder and BOM data Verification Version--PY_V-1.9.1 interface_GUI/J1524-89P13*******\033[0m")
 
 '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
 
@@ -150,6 +151,21 @@ try:
         dt_H1 = pd.read_csv(file_path)
         
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+    
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 350:
+        # Continue with the rest of your code
+        print(f"dt_H1 line count: {len(dt_H1)}")
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 353.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '353'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
 
         # Check if dt_H1 is defined and the line count is 351
@@ -483,6 +499,21 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+    
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 350:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 353.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '353'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
 
             # Check if dt_H1 is defined and the line count is 351
@@ -818,9 +849,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 400:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 403.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '403'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
 
-                # Check if dt_H1 is defined and the line count is 351
+    # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -1141,9 +1187,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 400:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 403.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '403'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
 
-                     # Check if dt_H1 is defined and the line count is 351
+    # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -1464,9 +1525,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 170:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 173.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '173'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
 
-                    # Check if dt_H1 is defined and the line count is 351
+    # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -1794,9 +1870,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 170:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 173.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '173'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
 
-                        # Check if dt_H1 is defined and the line count is 351
+    # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -2124,9 +2215,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 227:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 230.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '230'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
 
-                        # Check if dt_H1 is defined and the line count is 351
+        # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -2455,9 +2561,24 @@ try:
         dt_H1 = pd.read_csv(file_path)
 
 except ValueError:
+    dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+    # Check if dt_H1 is defined and the line count is 351
+    if dt_H1 is not None and len(dt_H1) == 227:
+        # Continue with the rest of your code
+        print(dt_H1)
+    else:
+        # Show error message
+        print("dt_H1 is either None or its length is not equal to 230.")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '230'."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
     dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
 
-                        # Check if dt_H1 is defined and the line count is 351
+        # Check if dt_H1 is defined and the line count is 351
     if dt_H1 is not None and len(dt_H1) == 3:
         # Continue with the rest of your code
         print(dt_H1)
@@ -2993,6 +3114,32 @@ print(ds1)
 
 ds2 = ds1[ds1['Priority'].isin([0, 1])]
 
+# Assuming ds2 is your DataFrame and 'PartNumber' and 'RefList' are the columns you want to check
+part_number_column = ds2['PartNumber']
+ref_list_column = ds2['RefList']
+
+# Flag to check if an empty value is found
+empty_value_found = False
+
+# Iterate through both columns simultaneously using iterrows
+for index, (part_number_value, ref_list_value) in ds2[['PartNumber', 'RefList']].iterrows():
+    # Check if the 'RefList' value is empty (NaN or None)
+    if pd.isna(ref_list_value):
+        print(f"Error: Empty value found in 'RefList' for 'PartNumber' {part_number_value}")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Empty value found in 'RefList' for 'PartNumber' {part_number_value}. Program will stop."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+        #raise ValueError("Empty value found in 'RefList'")
+        #empty_value_found = True
+        #break  # Stop the iteration when the first empty value is found
+
+# If no empty values are found, print the 'PartNumber' column
+if not empty_value_found:
+    print(part_number_column)
+    # Continue with the rest of your program
+
 #file_name ="output.xlsx"
 #ds1.to_excel(file_name)
 
@@ -3189,6 +3336,17 @@ except ValueError:
     print(dsn2[['Group', 'Priority', 'B_Part_No']])
 
     dcn1 = dsn2[['B_Part_No']]
+    duplicate_rows = dcn1[dcn1.duplicated(subset=['B_Part_No'], keep=False)]
+    
+    if not duplicate_rows.empty:
+        # Show an error message if duplicates are found
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Duplicate entries found in 'B_Part_No':\nCheck the BOM! PartNo Col.\n{duplicate_rows}"
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+    
+    print(dcn1)
 
     # Assuming 'B_Part_No' contains values like 'Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3'
     dummy_values = [f'Dummy_Part{i}' for i in range(1, 4)]
@@ -3229,9 +3387,9 @@ except ValueError:
     dfsn2.dropna(subset=['Group'], inplace=True)
     #dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
 
-            # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+    # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
     # Check for duplicate entries in 'Group' and 'Priority'
-    duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+    duplicate_entries = dfsn2[dfsn2.duplicated(subset=['Group', 'Priority'], keep=False)]
 
     if not duplicate_entries.empty:
         # Show an error message if duplicates are found
@@ -3301,7 +3459,6 @@ except ValueError:
     dsn1.dropna(subset=['RefList'], inplace=True)
     dsn3.dropna(subset=['B_Ref_List'], inplace=True)
 
-
     with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx") as writer:
 
     #dt_H.to_excel(writer, sheet_name="Home", index=False)  
@@ -3313,13 +3470,117 @@ except ValueError:
         ds1.to_excel(writer, sheet_name="BOM", index=False)
         dsn2.to_excel(writer, sheet_name="AVL GROUP", index=False)
         dcn1.to_excel(writer, sheet_name="Part Master", index=False)
-        dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+        #dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+        df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=True)
         ds3.to_excel(writer, sheet_name="BOM_Data", index=False)
     #df2.to_excel(writer, sheet_name="AVL_SHEET", index=True) this line record upto 1 & 0
     #dc1.to_excel(writer, sheet_name="Part Master", index=False) this line record uoto 1 & 0 
     #ds2.to_excel(writer, sheet_name="AVL GROUP", index=False) this line record upto PTN1
     pass
     print('The file does not exist.')
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+     #@@ AVL Inspection @@#
+##########################################################################################################################################
+
+print('\n')
+print("\033[92;4m******AVL LINE INSPECTION******\033[0m")
+print('\n')
+
+##########################################################################################################################################
+
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+file_path = 'BOM_List_OP.xlsx'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+print(os.path.isfile(file_path))
+print(os.path.isfile(directory_path))
+
+try:
+    if os.path.isfile(file_path):
+        df_Iav1 = pd.read_csv(file_path)
+
+except ValueError:
+    df_Iav1 = pd.read_excel(file_path, sheet_name="AVL_SHEET", index_col=False) 
+
+    print(df_Iav1)
+
+    # Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, len(row) + 1):  # Check up to the last column
+        col_name = f'PTN_{i}'
+        if col_name in row.index:  # Check if the column exists
+            current_value = row[col_name]
+
+            if pd.isna(current_value):
+                if start_index is None:
+                    start_index = i
+                end_index = i
+            else:
+                if start_index is not None and end_index is not None:
+                    show_error(row['Group'], start_index, end_index)
+                    start_index = None
+                    end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+    messagebox.showerror("Error", error_message)
+
+# Check for missing values row-wise
+for index, row in df_Iav1.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(df_Iav1)
+
+# Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, len(row) + 1):  # Check up to the last column
+        col_name = f'PTN_{i}'
+        if col_name in row.index:  # Check if the column exists
+            current_value = row[col_name]
+
+            if pd.isna(current_value):
+                if start_index is None:
+                    start_index = i
+                end_index = i
+            else:
+                if start_index is not None and end_index is not None:
+                    show_error(row.get('Group', 'Unknown Group'), start_index, end_index)
+                    start_index = None
+                    end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'.\nDo you want to stop the program?"
+    response = messagebox.askquestion("Error", error_message)
+
+    if response == 'yes':
+        sys.exit(1)
+
+# ...
+
+# Check for missing values row-wise
+for index, row in df_Iav1.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(df_Iav1)
 
 ##########################################################################################################################################
 
@@ -3413,9 +3674,12 @@ Chd = os.getcwd()
 
 xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
 df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='AVL_SHEET')
+
 print(df1.head(10))
+
 with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
     df1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
 Chd = os.getcwd()
 df_AL1 = pd.read_excel('AVL.xlsx', sheet_name='AVL_SHEET')
@@ -4506,7 +4770,7 @@ print(df1,df2)
 
 df111.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
 df111 = df111[['F_Part_No','Long Des']]
-df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner')
+df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner') # Merge on 'F_Part_No'
 df113.rename(columns = {'F_Part_No':'Part Number'}, inplace = True)
 df113.rename(columns = {'Location':'Feeder Location'}, inplace = True)
 df113.rename(columns = {'Long Des':'Part Description'}, inplace = True)
