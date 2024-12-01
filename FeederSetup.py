@@ -54,8 +54,11 @@ import MySQLdb as sql
 from sqlite3 import dbapi2 as sqlite
 import sqlite3
 from datetime import datetime #2
+import re
+from plyer import notification
 
-print("\033[92;4m*******Feeder and BOM data Verification Version--PY_V-1.7.0 interface_GUI/J0624-89P13*******\033[0m")
+
+print("\033[92;4m*******Feeder and BOM data Verification Version--PY_V-1.8.0 interface_GUI/J1024-89P13*******\033[0m")
 
 '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
 
@@ -3152,7 +3155,34 @@ except ValueError:
     dsn3 = dsn2.explode('B_Ref_List',ignore_index=True)
 
     dsn2 = dsn2[['Group','Priority','B_Part_No']]
+
+    # Condition: Check if Priority is only 0
+    if (dsn2['Priority'] == 0).all():
+    # Check if 1 and 2 are not present
+        if not ((dsn2['Priority'] == 1) | (dsn2['Priority'] == 2)).any():
+    # Add 1, 2, 3 in Priority column
+            
+            dsn2['Priority'] = dsn2['Priority']
+            
+    # Append corresponding Dummy_Part rows
+            dummy_data = {'Group': ['B89P13', 'B89P13', 'B89P13'],
+                        'Priority': [1, 2, 3],
+                        'B_Part_No': ['Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3']}
+            
+            dummy_df = pd.DataFrame(dummy_data)
+            dsn2 = pd.concat([dsn2, dummy_df], ignore_index=True)
+
+    # Continue with the rest of your code
+    print(dsn2[['Group', 'Priority', 'B_Part_No']])
+
     dcn1 = dsn2[['B_Part_No']]
+
+    # Assuming 'B_Part_No' contains values like 'Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3'
+    dummy_values = [f'Dummy_Part{i}' for i in range(1, 4)]
+
+    # Remove rows where 'B_Part_No' contains dummy values
+    dcn1 = dcn1[~dcn1['B_Part_No'].isin(dummy_values)]
+
     dcn1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
     dcn1['PBARPTN'] = dcn1['PBARNO']
     dcn1['PBARBAR'] = dcn1['PBARNO']
@@ -3340,7 +3370,7 @@ if table_name in existing_tables:
         conn.commit()
         print('writing to access')
 else:
-    print(f"The table '{table_name}' does not exist in the Access database.")
+    print(f"The table '{table_name}' does notYT exist in the Access database.")
 
 # Close the database connection
 conn.close()
@@ -3400,6 +3430,8 @@ print(df_AL1)
 try:
 
     df_AL1['AVL Name']=df_AL1['PTN_1']
+    # Replace values in 'AVL Name' with values from 'PTN_1' where 'PTN_1' is not empty
+    #df_AL1['AVL Name'] = df_AL1['PTN_1'].fillna(df_AL1['AVL Name'])
 
 except Exception as e:
     # Handle the exception gracefully
@@ -4607,43 +4639,53 @@ print('\n')
 rc = len(df1)
 rc1 = len(dfs1)
 
+print('\n')
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print(Chd,'\\__BOM__\\',dL1)
 print(Chd,'\\__FeederSetup__\\',dL2)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds1 = print("BOM Count:",rc)
 print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds9 = print("Feeder Count:",rc1)
 print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds2 = print("BOT & TOP Count:")
 ds2 = print(df2)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds3 = print("Compare Count:")
 ds3 = print(df3)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds4 = print("Compare Count:")
 ds4 = print(df4)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("Feeder duplicate Reference")
 print(dfsg21)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("BOM duplicate Reference")
 print(dfsg22)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("Miss Match Row BOM to Feeder")
 print(dfsg31) 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print('\n')
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("Miss Match Row Feeder to BOM")
 print(dfsg32) 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -4678,7 +4720,7 @@ def save_to_excel(log_contents):
 
     return f"Log saved to {excel_file_path}, Sheet: Log_{current_datetime}"
 
-print_to_log("FeederSetup___Compelete $ PROCESS $")
+print_to_log("FeederSetup_Verification_Result_Compelete $ PROCESS $")
 
 sys.stdout.write("\n")
 
@@ -4704,52 +4746,60 @@ dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
 dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
 
 print_to_log('\n')
-
 # Print the formatted date and time
 print_to_log(f"Date and Time: {formatted_datetime}")
-
 print_to_log('\n')
-
 rc = len(df1)
 rc1 = len(dfs1)
-
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+print_to_log('BOM NAME:', dL1)
 print_to_log(Chd,'\\__BOM__\\',dL1)
+print_to_log('\n')
+print_to_log('FeederSetup NAME:', dL2)
 print_to_log(Chd,'\\__FeederSetup__\\',dL2)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds1 = print_to_log("BOM Count:",rc)
 print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds9 = print_to_log("Feeder Count:",rc1)
 print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds2 = print_to_log("BOT & TOP Count:")
 ds2 = print_to_log(df2)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds3 = print_to_log("Compare Count:")
 ds3 = print_to_log(df3)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 ds4 = print_to_log("Compare Count:")
 ds4 = print_to_log(df4)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print_to_log("Feeder duplicate Reference")
 print_to_log(dfsg21)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print_to_log("BOM duplicate Reference")
 print_to_log(dfsg22)
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print_to_log("Miss Match Row BOM to Feeder")
 print_to_log(dfsg31) 
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+print_to_log('\n')
+print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print_to_log("Miss Match Row Feeder to BOM")
 print_to_log(dfsg32) 
 print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -4773,6 +4823,16 @@ while True:
 
 time.sleep (2)
 # Close the window
+
+# Assuming feeder verification is completed
+feeder_verification_completed = True
+
+if feeder_verification_completed:
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    messagebox.showinfo("Feeder Verification", "Feeder verification has been completed!")
+
 window.close()
 
 ##########################################################################################################################################
@@ -5300,6 +5360,15 @@ if count1 == count2 == count3 == count4:
     print('\n')
     print('\033[92;3mBOM and Feeder Verfication Found OK\033[0m')
     print('\n')
+
+    # Assuming feeder verification is completed
+Feeder_List_Generation_Completed = True
+
+if Feeder_List_Generation_Completed:
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    messagebox.showinfo("Feeder Loading List", "Feeder Loading List has been Generated!")
 
 else:
     # Abort the process
