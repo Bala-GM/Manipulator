@@ -55,15 +55,33 @@ from sqlite3 import dbapi2 as sqlite
 import sqlite3
 from datetime import datetime #2
 
-print("*******Feeder and BOM data Verification Version--PY_V-1.5.0 interface_GUI/J0324-89P13*******")
+print("\033[92;4m*******Feeder and BOM data Verification Version--PY_V-1.7.0 interface_GUI/J0624-89P13*******\033[0m")
 
 '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
 
 # Get the current date and time
 current_datetime = datetime.now()
 
-dL1 = input("Enter BOM Name :")
-dL2 = input("Enter Feeder Name :")
+# Format the current date and time as a string
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+print('\n')
+
+# Print the formatted date and time
+print(f"\033[35mCurrent Date and Time: {formatted_datetime}\033[0m")
+
+print('\n')
+
+'''print(f"Current Year: {current_datetime.year}")
+print(f"Current Month: {current_datetime.month}")
+print(f"Current Day: {current_datetime.day}")
+print(f"Current Hour: {current_datetime.hour}")
+print(f"Current Minute: {current_datetime.minute}")
+print(f"Current Second: {current_datetime.second}")'''
+
+dL1 = input("\033[93mEnter BOM Name :\033[0m")
+print('\n')
+dL2 = input("\033[93mEnter Feeder Name :\033[0m")
 
 os.getcwd()
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
@@ -109,8 +127,9 @@ Chd = os.getcwd()
 ##########################################################################################################################################
 
 #bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
-print('******FeederSetup Progress******')
-
+print('\n')
+print('\033[92;4m******FeederSetup Progress******\033[0m')
+print('\n')
 ##########################################################################################################################################
 
 #LINE1T
@@ -200,7 +219,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_TL1: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -503,7 +550,36 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_BL1: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -807,7 +883,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_TL2: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -1104,7 +1208,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_BL2: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -1396,7 +1528,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_TL3: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -1698,7 +1858,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_BL3: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -1997,7 +2185,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_TL4C: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -2300,7 +2516,35 @@ except ValueError:
 
 #-----------------------------------------------------------------------------------------------------------------------#
 
-    df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    #df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+# Specify the columns you want to read
+    columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+    try:
+        df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+        # Check if all the specified columns are present in the DataFrame
+        if all(column in df1.columns for column in columns_to_read):
+            print("All columns are present in the DataFrame.")
+        else:
+            # Show error message if any columns are missing
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            missing_columns = [column for column in columns_to_read if column not in df1.columns]
+            error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+    except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred FeederSetup_BL4C: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
 
 #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
 # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
@@ -2511,8 +2755,9 @@ print('The file does not exist.')
 ##########################################################################################################################################
 
 #bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
-print("******FeederSetup Progress Merge******")
-
+print('\n')
+print("\033[92;4m******FeederSetup Progress Merge******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2598,8 +2843,9 @@ else:
 ##########################################################################################################################################
 
 #bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
-print("******Program Master List******")
-
+print('\n')
+print("\033[92;4m******Program Master List******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2653,8 +2899,9 @@ else:
 ##########################################################################################################################################
 
 #bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
-print("******BOM Manipulation******")
-
+print('\n')
+print("\033[92;4m******BOM Manipulation******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -2839,7 +3086,30 @@ except ValueError:
     dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("E","PTN_11")
     dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("F","PTN_10")
     dfs2.dropna(subset=['Group'], inplace=True)
-    df2 = dfs2.pivot(index='Group',columns='Priority',values='B_Part_No')
+    #df2 = dfs2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+        # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+    # Check for duplicate entries in 'Group' and 'Priority'
+    duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+    if not duplicate_entries.empty:
+        # Show an error message if duplicates are found
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # If no duplicates, proceed with pivoting
+    try:
+        df2 = dfs2.pivot(index='Group', columns='Priority', values='B_Part_No')
+    except ValueError as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred during pivoting: {e}"
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
 
     ds3.head()
 
@@ -2914,7 +3184,68 @@ except ValueError:
     dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("E","PTN_11")
     dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("F","PTN_10")
     dfsn2.dropna(subset=['Group'], inplace=True)
-    dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+    #dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+            # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+    # Check for duplicate entries in 'Group' and 'Priority'
+    duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+    if not duplicate_entries.empty:
+        # Show an error message if duplicates are found
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # If no duplicates, proceed with pivoting
+    try:
+        dfn2 = dfsn2.pivot(index='Group', columns='Priority', values='B_Part_No')
+    except ValueError as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred during pivoting: {e}"
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+            # Desired column order
+    desired_order = ['Group Name','PTN_1','PTN_2','PTN_3','PTN_4','PTN_5','PTN_6','PTN_7','PTN_8','PTN_9','PTN_10','PTN_11','PTN_12','PTN_13','PTN_14','PTN_15']
+    #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+    # Create a list of columns present in both DataFrame and desired_order
+    common_columns = [col for col in desired_order if col in dfn2.columns]
+
+    # Reorder the DataFrame based on the desired_order
+    df_AL1 = dfn2[common_columns]
+
+    '''    # Assuming df is your DataFrame
+        column_to_check = 'PTN_15'
+
+        # Check if the column is present
+        if column_to_check not in df_AL1.columns:
+            # Show a pop-up message if the column is not present
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Notification", f"The column '{column_to_check}' is missing.")
+
+        # Continue with the rest of your code
+        print("Continuing with the rest of the code...")
+        # Your next line of code here'''
+
+    # Assuming df is your DataFrame
+    column_to_check = 'PTN_11'
+
+    # Check if the column is present
+    if column_to_check in df_AL1.columns:
+        # Show a pop-up message if the column is present
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showinfo("Notification", f"The column '{column_to_check}' is present.")
+
+    # Continue with the rest of your code
+    print("Continuing with the rest of the code...")
+    # Your next line of code here
 
     dsn3.head()
 
@@ -2952,8 +3283,9 @@ except ValueError:
 ##########################################################################################################################################
 
 #bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
-print("******Part Master Process******")
-
+print('\n')
+print("\033[92;4m******Part Master Process******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -3019,8 +3351,9 @@ print('write complete')
 ##########################################################################################################################################
 
 #bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
-print("******AVL Progress******")
-
+print('\n')
+print("\033[92;4m******AVL Progress******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -3052,7 +3385,7 @@ desired_column_name = 'Group'
 new_column_name = ("Group Name")
 
 # Get user input for the new column value
-new_column_value = input(f"Enter the value for the new column '{new_column_name}': ")
+new_column_value = input(f"\033[93mEnter the value for the new column '{new_column_name}': \033[0m")
 #dL1 = new_column_value
 # Check if the desired column name exists
 if desired_column_name in df_AL1.columns:
@@ -4081,8 +4414,9 @@ df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
 ##########################################################################################################################################
 
 #bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
-print("******Feeder Verification******")
-
+print('\n')
+print("\033[92;4m******Feeder Verification******\033[0m")
+print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -4212,17 +4546,18 @@ with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Feeder
         df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
         #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
         # Save the count to an Excel file
-        count_df = pd.DataFrame({'Name Column Count': [df11]})
+        count_df = pd.DataFrame({'BOM_Data Ref, Count': [df11]})
         count_df.to_excel(writer, sheet_name="BOM Count", index=TRUE)
-        count_df = pd.DataFrame({'Name Column Count': [df12]})
+        count_df = pd.DataFrame({'Feeder_Data Ref, Count': [df12]})
         count_df.to_excel(writer, sheet_name="Feeder Count", index=TRUE)
 ##########################################################################################################################################
 
 ##########################################################################################################################################
 
 #bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
-print("******FeederSetup Verification Result******")
-
+print('\n')
+print("\033[92;4m******FeederSetup Verification Result******\033[0m")
+print('\n')
 for i in range(100):
     row = "="*i + ">"
     sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
@@ -4233,13 +4568,15 @@ for i in range(100):
 
 ##########################################################################################################################################
 
-print("FeederSetup_Verification__Compelete $ PROCESS $")
+print("\033[1;92;4mFeederSetup_Verification__Compelete $ PROCESS $\033[0m")
+
+print('\n')
 
 # Print the current date
-print("Current Date:", current_datetime.date())
+print("\033[35mCurrent Date:\033[0m", current_datetime.date())
 
 # Print the current time
-print("Current Time:", current_datetime.time())
+print("\033[35mCurrent Time:\033[0m", current_datetime.time())
 
 os.getcwd()
 Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
@@ -4259,6 +4596,13 @@ dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
 dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
 dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
 dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+print('\n')
+
+# Print the formatted date and time
+print(f"\033[35mDate and Time: {formatted_datetime}\033[0m")
+
+print('\n')
 
 rc = len(df1)
 rc1 = len(dfs1)
@@ -4359,6 +4703,13 @@ dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
 dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
 dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
 
+print_to_log('\n')
+
+# Print the formatted date and time
+print_to_log(f"Date and Time: {formatted_datetime}")
+
+print_to_log('\n')
+
 rc = len(df1)
 rc1 = len(dfs1)
 
@@ -4441,7 +4792,9 @@ for i in range(100):
     sys.stdout.flush()
     time.sleep(0.1)
 
-print("FeederSetup___Uploading in Progress $ PROCESS $")
+print("\033[1;92;4mFeederSetup___Uploading in Progress $ PROCESS $\033[0m")
+
+print('\n')
 
 # Load Excel sheets into pandas dataframes
 dfmc1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
@@ -4565,9 +4918,9 @@ if count1 == count2 == count3 == count4:
 ##########################################################################################################################################
 
     #bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
-    print("******Feeder Loading List Progress******")
-
-
+    print('\n')
+    print("\033[1;92;4m******Feeder Loading List Progress******\033[0m")
+    print('\n')
 ##########################################################################################################################################
 
 ##########################################################################################################################################
@@ -4942,7 +5295,11 @@ if count1 == count2 == count3 == count4:
 
     time.sleep (5)
 
-    print('Feeder Setup Generation Complete')
+    print('\n')
+    print('\033[92;3mFeeder Setup Generation Complete\033[0m')
+    print('\n')
+    print('\033[92;3mBOM and Feeder Verfication Found OK\033[0m')
+    print('\n')
 
 else:
     # Abort the process
