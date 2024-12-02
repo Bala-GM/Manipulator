@@ -1,0 +1,259 @@
+import pandas as pd
+import tkinter as tk
+from tkinter import messagebox
+
+# Sample DataFrame
+data = {
+    'Group': ['AB', 'AM', 'BS', 'BT', 'BU', 'CD'],
+    'PTN_1': ['1100010514', '1100005578', '1100018145', '1100019130', '1100007986', '1100025443'],
+    'PTN_2': ['1100010513', '1100005577', '1110024381', 'FTR110000075', '1100007985', '1100025442'],
+    'PTN_3': ['1100020182', '1100012735', None, None, '1100005599', 'FTR110000084'],
+    'PTN_4': [None, '1100022480', None, None, '1100010498', None],
+    'PTN_5': [None, None, None, None, '1100018497', '1110024382'],
+    'PTN_6': [None, None, None, None, None, None],
+    'PTN_7': [None, None, None, None, 'FTR110000078', None],
+}
+
+df = pd.DataFrame(data)
+
+# Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, 8):  # Check up to PTN_7
+        current_value = row[f'PTN_{i}']
+
+        if pd.isna(current_value):
+            if start_index is None:
+                start_index = i
+            end_index = i
+        else:
+            if start_index is not None and end_index is not None:
+                show_error(row['Group'], start_index, end_index)
+                start_index = None
+                end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+    messagebox.showerror("Error", error_message)
+
+# Check for missing values row-wise
+for index, row in df.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(df)
+
+
+
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+file_path = 'BOM_List_OP.xlsx'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+print(os.path.isfile(file_path))
+print(os.path.isfile(directory_path))
+
+try:
+    if os.path.isfile(file_path):
+        dt_H1 = pd.read_csv(file_path)
+
+except ValueError:
+    ds1 = pd.read_excel(file_path, sheet_name="AVL_SHEET", index_col=False) 
+
+    print(ds1)
+
+    # Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, len(row) + 1):  # Check up to the last column
+        col_name = f'PTN_{i}'
+        if col_name in row.index:  # Check if the column exists
+            current_value = row[col_name]
+
+            if pd.isna(current_value):
+                if start_index is None:
+                    start_index = i
+                end_index = i
+            else:
+                if start_index is not None and end_index is not None:
+                    show_error(row['Group'], start_index, end_index)
+                    start_index = None
+                    end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+    messagebox.showerror("Error", error_message)
+
+# Check for missing values row-wise
+for index, row in ds1.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(ds1)
+
+
+
+
+
+
+CURRENT WROKING
+
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+file_path = 'BOM_List_OP.xlsx'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+print(os.path.isfile(file_path))
+print(os.path.isfile(directory_path))
+
+try:
+    if os.path.isfile(file_path):
+        df_Iav1 = pd.read_csv(file_path)
+
+except ValueError:
+    df_Iav1 = pd.read_excel(file_path, sheet_name="AVL_SHEET", index_col=False) 
+
+    print(df_Iav1)
+
+    # Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, len(row) + 1):  # Check up to the last column
+        col_name = f'PTN_{i}'
+        if col_name in row.index:  # Check if the column exists
+            current_value = row[col_name]
+
+            if pd.isna(current_value):
+                if start_index is None:
+                    start_index = i
+                end_index = i
+            else:
+                if start_index is not None and end_index is not None:
+                    show_error(row['Group'], start_index, end_index)
+                    start_index = None
+                    end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+    messagebox.showerror("Error", error_message)
+
+# Check for missing values row-wise
+for index, row in df_Iav1.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(df_Iav1)
+
+# Function to check for missing values between two strings
+def check_missing_values(row):
+    start_index = None
+    end_index = None
+
+    for i in range(1, len(row) + 1):  # Check up to the last column
+        col_name = f'PTN_{i}'
+        if col_name in row.index:  # Check if the column exists
+            current_value = row[col_name]
+
+            if pd.isna(current_value):
+                if start_index is None:
+                    start_index = i
+                end_index = i
+            else:
+                if start_index is not None and end_index is not None:
+                    show_error(row.get('Group', 'Unknown Group'), start_index, end_index)
+                    start_index = None
+                    end_index = None
+
+# Function to show pop-up error message
+def show_error(group, start_index, end_index):
+    root = tk.Tk()
+    root.withdraw()
+    
+    error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'.\nDo you want to stop the program?"
+    response = messagebox.askquestion("Error", error_message)
+
+    if response == 'yes':
+        sys.exit(1)
+
+# ...
+
+# Check for missing values row-wise
+for index, row in df_Iav1.iterrows():
+    check_missing_values(row)
+
+# Display the DataFrame with styling
+print(df_Iav1)

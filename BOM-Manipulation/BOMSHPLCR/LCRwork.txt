@@ -1,0 +1,54 @@
+import os
+import pandas as pd
+import re
+
+# Function to extract LCR information
+def extract_component_info(component_line):
+    # Regular expressions for CAPACITOR
+    capacitor_type_match = re.search(r'\b(CAP)\b', component_line, re.IGNORECASE)
+    capacitor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+
+    # Regular expressions for RESISTOR
+    resistor_type_match = re.search(r'\b(Res|Resistor|RESISTOR)\b', component_line, re.IGNORECASE)
+    resistor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+
+    # Assign default values
+    LCR_Type = None
+    LCR_Value = None
+    LCR_Unit = None
+    LCR_Tolerance = None
+
+    if capacitor_type_match:
+        LCR_Type = capacitor_type_match.group(1)
+
+    if capacitor_value_match:
+        groups = capacitor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_type_match:
+        LCR_Type = resistor_type_match.group(1)
+
+    if resistor_value_match:
+        groups = resistor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+# Set your working directory
+os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+# Load the Excel file
+excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+# Define your column list
+column_name = "Long Des"
+
+df = pd.read_excel(excel_file_path, sheet_name='BOM', usecols=[column_name])
+
+# Apply the extract_component_info function to create LCR columns
+df[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']] = df[column_name].apply(extract_component_info).apply(pd.Series)
+
+# Display the result
+print(df[['Long Des', 'LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']])

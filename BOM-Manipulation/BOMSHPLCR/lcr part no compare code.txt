@@ -1,0 +1,36 @@
+OLD CODE
+
+# Load the Excel file
+excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+# Define your column list
+column_name = ["Long Des", "PartNumber"]
+
+dflcr = pd.read_excel(excel_file_path, sheet_name='BOM', usecols=column_name, index_col= False)
+
+# Apply the extract_component_info function to create LCR columns
+dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']] = dflcr[column_name].apply(extract_component_info).apply(pd.Series)
+
+# Display the result
+print(dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']])
+
+
+NEW CODE
+
+# Load the Excel file
+excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+# Define your column list
+column_names = ["Long Des", "PartNumber"]
+
+# Read the Excel file without index_col and add 'PartNumber' to the column_names list
+dflcr = pd.read_excel(excel_file_path, sheet_name='BOM', usecols=column_names)
+
+# Add 'PartNumber' as a separate column
+dflcr['PartNumber'] = pd.read_excel(excel_file_path, sheet_name='BOM', usecols=['PartNumber'])
+
+# Apply the extract_component_info function to create LCR columns
+dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']] = dflcr['Long Des'].apply(extract_component_info).apply(pd.Series)
+
+# Display the result
+print(dflcr[['PartNumber', 'LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']])

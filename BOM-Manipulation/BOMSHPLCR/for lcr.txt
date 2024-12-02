@@ -1,0 +1,145 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+import xlrd
+
+
+
+# Function to extract LCR information
+def extract_component_info(component_line):
+    # Regular expressions for CAPACITOR
+    capacitor_type_match = re.search(r'\b(CAP|Capacitor|MLCC|CAPACITOR)\b', component_line, re.IGNORECASE)
+    capacitor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)F', component_line)
+    capacitor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+    # Regular expressions for RESISTOR
+    resistor_type_match = re.search(r'\b(Res|Resistor|FLIM|RESISTOR)\b', component_line, re.IGNORECASE)
+    resistor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)\s*(\d+%)?', component_line)
+    resistor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+    # Assign default values
+    LCR_Type = None
+    LCR_Value = None
+    LCR_Unit = None
+    LCR_Tolerance = None
+
+    if capacitor_type_match:
+        LCR_Type = capacitor_type_match.group(1)
+
+    if capacitor_tolerance_match:
+        LCR_Tolerance = capacitor_tolerance_match.group(1)
+
+    if capacitor_value_match:
+        groups = capacitor_value_match.groups()
+        LCR_Value = groups[1] if groups[1] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_type_match:
+        LCR_Type = resistor_type_match.group(1)
+
+    if resistor_value_match:
+        groups = resistor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_tolerance_match:
+        LCR_Tolerance = resistor_tolerance_match.group(1)
+
+    return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+# Sample data
+sample_data = """
+CAP,MLCC,SMD,100NF,16V,±10%,0603,X7R
+CAP,MLCC,SMD,1000NF,50V,±10%,1206,X7R
+CAP,MLCC,SMD,100PF,200V,±5%,0603,C0G(NP0)
+CAP,MLCC,SMD,10000PF,250V,±10%,0805,X7R
+CAP,MLCC,SMD,330NF,50V,±10%,1206,X7R
+CAP,MLCC,SMD,10000PF,50V,±10%,0603,X7R
+CAP CER SMD 4.7UF 10% 100V 1206 X7S
+Inductor,SMT,100µH,10%,1A,MCSDSC1006,-101KU
+Diode,SMT,Zener,5%,5V6,0.05,SOT23
+RES,THICK,FILM,SMD,82KOHMS,±5%,0.1W,0603,100PPM,/,°C
+RES,THICK,FILM,SMD,510OHMS,±1%,0.1W,0603,200PPM,/,°C
+Res,SMT,2.2KOHM,±1%,0.5W,1206
+DIODE,SCHOTTKY,60V,2A,SMB
+IC-SM-LEDDRV-36V,1A,LED,Driver-SOT23-5
+IC MCU 8BIT 1.75KB FLASH2V ~ 5.5V 8-SOIC -40°C ~ 85°C (TA)
+Ferrite,Beads,600?,±25%,100MHz,2A,0805,Multi-Layer,Chip,Bea
+Res SMT 0.2R,±1%,0.25W,1206
+Reg,5V,Regulator,LM78L05,AIM
+"""
+
+# Apply the extract_component_info function to the sample data
+for line in sample_data.split('\n'):
+    if line:
+        result = extract_component_info(line)
+        print(result)
+
+# Apply the extract_component_info function to the sample data
+results = []
+for line in sample_data.split('\n'):
+    if line:
+        result = extract_component_info(line)
+        results.append(result)
+
+# Convert the list of tuples into a DataFrame
+df_results = pd.DataFrame(results, columns=['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance'])
+
+# Specify the file name for the Excel output
+file_name = "output.xlsx"
+
+# Save the DataFrame to an Excel file
+df_results.to_excel(file_name, index=False)

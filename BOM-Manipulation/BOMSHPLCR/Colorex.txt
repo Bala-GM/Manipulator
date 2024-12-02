@@ -1,0 +1,291 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+
+
+import os
+import pandas as pd
+from datetime import datetime
+import tkinter as tk
+from tkinter import messagebox
+
+import os
+import pandas as pd
+import tkinter as tk
+from tkinter import messagebox
+
+'''try:
+    # BOM MANIPULATION
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    file_path_xlsx = 'BOM.xlsx'
+    file_path_xls = 'BOM.xls'
+
+    if os.path.isfile(file_path_xlsx):
+        dsxy1 = pd.read_excel(file_path_xlsx, sheet_name="XY DAT", usecols=['R', 'X', 'Y', 'A', 'S'], index_col=False)
+    elif os.path.isfile(file_path_xls):
+        dsxy1 = pd.read_excel(file_path_xls, sheet_name="XY DAT", usecols=['R', 'X', 'Y', 'A', 'S'], index_col=False)
+    else:
+        root = tk.Tk()
+        root.withdraw()
+        error_message = "BOM file not found. Please check the file path."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    dfXY1 = dsxy1
+
+    # Define your column lists
+    column_list_1 = ['R', 'X', 'Y', 'A', 'S']
+
+    # Check which column list is present in the DataFrame
+    if all(column in dsxy1.columns for column in column_list_1):
+        columns_to_use = column_list_1
+    else:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        missing_columns = [column for column in column_list_1 if column not in dsxy1.columns]
+        error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+        error_msgbm1 = "The following columns are missing in BOM (EXCEL) File Sheet 'XY DAT':\n'Reference CRD as R'\n'X Coordinate as X'\n'Y Coordinate as Y'\n'Angle as A'\n'Side as S'"
+        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", error_msgbm1)
+        sys.exit(1)  # Exit the program with an error code
+
+except Exception as e:
+    # Handle the exception gracefully
+    error_message = f"An error occurred: {e}"
+
+    # Show error message in a pop-up box
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Error", error_message)
+    sys.exit(1)  # Exit the program with an error code'''
+
+import pandas as pd
+import tkinter as tk
+from tkinter import messagebox
+
+
+'''os.getcwd()
+#Chd= os.chdir('D:\\NX_BACKWORK')
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup')
+Chd = os.getcwd()
+
+file_path = 'FeederSetup_TL1.csv'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'''
+
+
+'''# Specify the columns you want to read
+columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+try:
+    df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+    # Check if all the specified columns are present in the DataFrame
+    if all(column in df1.columns for column in columns_to_read):
+        print("All columns are present in the DataFrame.")
+    else:
+        # Show error message if any columns are missing
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        missing_columns = [column for column in columns_to_read if column not in df1.columns]
+        error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+except Exception as e:
+    # Handle the exception gracefully
+    error_message = f"An error occurred FeederSetup_TL1: {e}"
+
+    # Show error message in a pop-up box
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Error", error_message)
+    sys.exit(1)  # Exit the program with an error code'''
+
+
+
+import pandas as pd
+
+# Create a sample DataFrame
+data = {'Column1 GabarThar': [1, 2, 3], 'Column2 PoliyShety': ['A', 'B', 'C']}
+df = pd.DataFrame(data)
+
+# Set the display width for columns
+pd.set_option('display.max_colwidth', 100)  # Set the width as needed
+
+# Display the DataFrame
+print(df)
+
+'''file = "out.xlsx"
+df.to_excel(file, index=False)'''
+
+with pd.ExcelWriter('output.xlsx', engine='openpyxl') as writer:
+    df.to_excel(writer, sheet_name='Sheet1', index=False) #, startrow=1, header=False
+    worksheet = writer.sheets['Sheet1']
+
+    for idx, col in enumerate(df.columns):
+        max_len = max(df[col].astype(str).apply(len).max(), len(col))
+        worksheet.column_dimensions[chr(65 + idx)].width = max_len
+
+
+import pandas as pd
+from datetime import datetime #2
+
+# Get the current date and time
+current_datetime = datetime.now()
+
+# Format the current date and time as a string
+'''formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+print("\033[93m******Feeder Loading List Progress******\033[0m")
+
+print("\033[1mThis text is bold\033[0m")
+
+print("\033[1;93;4m******Feeder Loading List Progress******\033[0m")
+
+print("\033[1;93;4mBold Yellow Underlined Text\033[0m")'''
+
+
+ 
+
+'''print("\033[92;4m*******BOM Manuplation--PY_V-0.1 interface_GUI/J0424-89P13*******\033[0m")
+print(f"\033[35mCurrent Date and Time: {formatted_datetime}\033[0m")'''
+
+#dL1 = input("\033[93mEnter BOM Name :\033[0m")
+
+# Print the current date
+'''print("\033[96mCurrent Date:\033[0m", current_datetime.date())
+
+def print_green(text):
+    return f"\033[32m{text}\033[0m"
+
+user_input = input(print_green("Type something in green: "))
+
+print(f"You typed: {user_input}")'''
+
+'''print('\n')'''
+#print("\033[92;4m*******XY Data Manipulation*******\033[0m")
+'''print(f"{Fore.MAGENTA}******Feeder Loading List Progress******{Style.RESET_ALL}")'''
+
+# Initialize colorama
+'''init()
+print('\n')'''
+# Get user input
+'''dLbr1 = input(f"{Fore.YELLOW}Enter BOM Name :{Fore.RESET}")
+print('\n')'''
+
+# Initialize colorama
+'''init()
+print('\n')'''
+# Get user input with bold style
+#dLbr1 = input(f"{Style.BRIGHT}{Fore.YELLOW}Enter BOM Name :{Fore.RESET}{Style.RESET_ALL}")
+'''dLbr1 = input(f"{Fore.CYAN}Enter BOM Name :{Style.RESET_ALL}")
+print('\n')'''
+# Rest of your code...
+
+'''def prRed(skk): print("\033[91m {}\033[00m" .format(skk))
+ 
+ 
+def prGreen(skk): print("\033[92m {}\033[00m" .format(skk))
+ 
+ 
+def prYellow(skk): print("\033[93m {}\033[00m" .format(skk))
+ 
+ 
+def prLightPurple(skk): print("\033[94m {}\033[00m" .format(skk))
+ 
+ 
+def prPurple(skk): print("\033[95m {}\033[00m" .format(skk))
+ 
+ 
+def prCyan(skk): print("\033[96m {}\033[00m" .format(skk))
+ 
+ 
+def prLightGray(skk): print("\033[97m {}\033[00m" .format(skk))
+ 
+ 
+def prBlack(skk): print("\033[98m {}\033[00m" .format(skk))
+ 
+ 
+prCyan("Hello World, ")
+prYellow("It's")
+prGreen("Geeks")
+prRed("For")
+prGreen("Geeks")'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

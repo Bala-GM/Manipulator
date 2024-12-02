@@ -1,0 +1,203 @@
+#########################################################################################################################################################################
+#########################################################################################################################################################################
+    print('\n') #jan18 old sph & lcr
+    print("\033[92;4m*******SHAPE-PACKAGE Assigning Progress*******\033[0m")
+    print('\n')
+#########################################################################################################################################################################
+#########################################################################################################################################################################
+
+
+    ##SHAPE & PACKAGE##
+
+    # Load the Excel file
+    excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+    # Define your column lists
+    column_list = ["PartNumber", "Group", 'Priority', 'RefList', 'Qty', 'Shape', 'Long Des']
+
+    dfshp = pd.read_excel(excel_file_path, sheet_name='BOM' ,usecols=column_list, index_col= False)
+
+    print(dfshp)
+
+    dfshp['Description'] = dfshp['Long Des']
+
+    data = dfshp['Description']
+
+    dfshp = pd.DataFrame(data)
+    # Define desired shapes
+    desired_shapes = ("0201", "0402", "0603", "0805", "1206")
+
+    # Custom function to extract and separate the shape
+    def extract_shape(description):
+        shape_match = re.search(r'\b\d{4}\b', description)
+        if shape_match:
+            shape = shape_match.group()
+            if shape in desired_shapes:
+                return shape
+        return None
+
+    # Apply the custom function to create the Shape column
+    dfshp['Shape'] = dfshp['Description'].apply(extract_shape)
+
+    # Display the result
+    print(dfshp[['Description', 'Shape']])
+
+    # Define desired component types
+    desired_COMP = ("CAP", "RES", "IND")
+
+    # Custom function to extract and separate the component type
+    def extract_COMPs(description):
+        for comp_type in desired_COMP:
+                if comp_type.lower() in description.lower():
+                    return comp_type
+        return None
+
+    # Apply the custom function to create the LCRTYPE column
+    dfshp['LCRTYPE'] = dfshp['Description'].apply(extract_COMPs)
+
+    # Define desired Special component types
+    desired_SPERESCOMP = ["MELF"]
+
+    # Custom function to check if the description contains special components
+    def contains_special_res_component(description):
+        for serescomp_type in desired_SPERESCOMP:
+            if serescomp_type.lower() in description.lower():
+                return True
+        return False
+
+    # Apply the custom function to create the SPERESCOMP column
+    dfshp['SPERESCOMP'] = dfshp['Description'].apply(contains_special_res_component)
+
+    # Transform 'SPERESCOMP' column to 'MELF' when it's True
+    dfshp['SPERESCOMP'] = np.where(dfshp['SPERESCOMP'], 'MELF', '')
+
+    # Define desired Special component types
+    desired_SPETHTCOMP = ["THT"]
+
+    # Custom function to check if the description contains special components
+    def contains_special_tht_component(description):
+        for sethtcomp_type in desired_SPETHTCOMP:
+            if sethtcomp_type.lower() in description.lower():
+                return True
+        return False
+
+    # Apply the custom function to create the SPERESCOMP column
+    dfshp['SPETHTCOMP'] = dfshp['Description'].apply(contains_special_tht_component)
+
+    # Transform 'SPERESCOMP' column to 'MELF' when it's True
+    dfshp['SPETHTCOMP'] = np.where(dfshp['SPETHTCOMP'], 'THT', '')
+
+    # Define desired Special component types
+    desired_SPESODCOMP = ("ZENER", "DIODE", "SOD")
+
+    # Custom function to extract and separate the component type
+    def extract_SPESODCOMP(description):
+        for sesodcomp_type in desired_SPESODCOMP:
+            if sesodcomp_type.lower() in description.lower():
+                return sesodcomp_type
+        return None
+
+    # Apply the custom function to create the LCRTYPE column
+    dfshp['SPESODCOMP'] = dfshp['Description'].apply(extract_SPESODCOMP)
+
+    # Define desired Special component types
+    desired_SPECAPCOMP = ("TAN", "Tantalum", "Aluminium","ALLUM", "ALUM", "Electrolytic" ,"ALU")
+
+    # Custom function to extract and separate the component type
+    def extract_SPECAPCOMP(description):
+        for setancomp_type in desired_SPECAPCOMP:
+            if setancomp_type.lower() in description.lower():
+                return setancomp_type
+        return None
+
+    # Apply the custom function to create the LCRTYPE column
+    dfshp['SPECAPCOMP'] = dfshp['Description'].apply(extract_SPECAPCOMP)
+
+
+    # Assuming df is your DataFrame
+    dfshp['PACKAGE'] = dfshp['Shape'].replace({'0201': '0802P', '0402': '0802P', '0603': '0804P', '0805': '0804E', '1206': '0804E'})
+
+    dfshp = dfshp.rename(columns={"Description": "Long Des"})
+
+    # Display the result
+    print(dfshp[['Long Des', 'Shape', 'LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP', 'PACKAGE']])
+
+#########################################################################################################################################################################
+#########################################################################################################################################################################
+    print('\n')
+    print("\033[92;4m*******LCR Generation Progress*******\033[0m")
+    print('\n')
+#########################################################################################################################################################################
+#########################################################################################################################################################################
+
+
+    # Function to extract LCR information
+    def extract_component_info(component_line):
+        # Regular expressions for CAPACITOR
+        capacitor_type_match = re.search(r'\b(CAP|Capacitor|MLCC|CAPACITOR)\b', component_line, re.IGNORECASE)
+        capacitor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+        capacitor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+        # Regular expressions for RESISTOR
+        resistor_type_match = re.search(r'\b(Res|Resistor|FLIM|RESISTOR)\b', component_line, re.IGNORECASE)
+        resistor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+        resistor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+        # Assign default values
+        LCR_Type = None
+        LCR_Value = None
+        LCR_Unit = None
+        LCR_Tolerance = None
+
+        if capacitor_type_match:
+            LCR_Type = capacitor_type_match.group(1)
+
+        if capacitor_tolerance_match:
+            LCR_Tolerance = capacitor_tolerance_match.group(1)
+
+        if capacitor_value_match:
+            groups = capacitor_value_match.groups()
+            LCR_Value = groups[0] if groups[0] is not None else None
+            LCR_Unit = groups[2] if groups[2] is not None else None
+
+        if resistor_type_match:
+            LCR_Type = resistor_type_match.group(1)
+
+        if resistor_value_match:
+            groups = resistor_value_match.groups()
+            LCR_Value = groups[0] if groups[0] is not None else None
+            LCR_Unit = groups[2] if groups[2] is not None else None
+
+        if resistor_tolerance_match:
+            LCR_Tolerance = resistor_tolerance_match.group(1)
+
+        return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+    # Set your working directory
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+    # Load the Excel file
+    excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+    # Define your column list
+    column_name = "Long Des"
+
+    dflcr = pd.read_excel(excel_file_path, sheet_name='BOM', usecols=[column_name])
+
+    # Apply the extract_component_info function to create LCR columns
+    dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']] = dflcr[column_name].apply(extract_component_info).apply(pd.Series)
+
+    # Display the result
+    print(dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']])
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Bom_List-Verified.xlsx", engine='openpyxl') as writer:
+        style_df1.to_excel(writer, sheet_name="Bom to XY", index=False)
+        style_df2.to_excel(writer, sheet_name="XY to Bom", index=False)
+        dfah3.to_excel(writer, sheet_name="BOM", index=False)
+        dfah4.to_excel(writer, sheet_name="XY DATA", index=False)
+        dfah5.to_excel(writer, sheet_name="BOM DATA", index=False)
+        dfah6.to_excel(writer, sheet_name="AVL GROUP", index=False)
+        dfah7.to_excel(writer, sheet_name="AVL SHEET", index=False)
+        dfah8.to_excel(writer, sheet_name="PART MASTER", index=False)
+        dfshp.to_excel(writer, sheet_name="SHP-PKG", index=False)
+        dflcr.to_excel(writer, sheet_name="LCR", index=False)
+
+# SHP LCR

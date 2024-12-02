@@ -1,0 +1,373 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+import xlrd
+
+
+
+# Function to extract LCR information
+def extract_component_info(component_line):
+    # Regular expressions for CAPACITOR
+    capacitor_type_match = re.search(r'\b(CAP|Capacitor|MLCC|CAPACITOR)\b', component_line, re.IGNORECASE)
+    capacitor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)F', component_line)
+    capacitor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+    # Regular expressions for RESISTOR
+    resistor_type_match = re.search(r'\b(Res|Resistor|FLIM|RESISTOR)\b', component_line, re.IGNORECASE)
+    resistor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)\s*(\d+%)?', component_line)
+    resistor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+    # Assign default values
+    LCR_Type = None
+    LCR_Value = None
+    LCR_Unit = None
+    LCR_Tolerance = None
+
+    if capacitor_type_match:
+        LCR_Type = capacitor_type_match.group(1)
+
+    if capacitor_tolerance_match:
+        LCR_Tolerance = capacitor_tolerance_match.group(1)
+
+    if capacitor_value_match:
+        groups = capacitor_value_match.groups()
+        LCR_Value = groups[1] if groups[1] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_type_match:
+        LCR_Type = resistor_type_match.group(1)
+
+    if resistor_value_match:
+        groups = resistor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_tolerance_match:
+        LCR_Tolerance = resistor_tolerance_match.group(1)
+
+    return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+# Sample data
+sample_data = """
+
+NUT FOR EVAC HEATSINK  CARBON STEEL   TIN FINISH  SMT  M3X0.5 THREAD  5.00D X 1.4L  ROHS. ROHS
+SOCKET SMTAMD SP5 LGA6096  SRM + BACK PLATE FOR PCB 1.96MM~2.75MM THICKNESS  HF  ROHS
+"BATTERY HOLDER SMT   FOR CR2032  2 PIN  PITCH 21.8MM  HORIZONTAL  RCPT  3V  1U"" AU  TL=1MM  LCP  BLK HSG  H=5.1MM  POST   IN(-55~85C
+) HF ROHS"
+Cap SMT MLCC 22UF 4V 20% X6S  T<  =0.80MM HTL=100% EX(-55~105C) HF ROHS
+Cap  SMT Ceramic 47uF 4V X6S 20% Pad  0603 105°C T/R
+Cap   SMT MLCC  22UF  4V  20%  X6S    T<  =0.80MM  HTL=150%  EX(-55~105C)  HF  ROHS
+Cap SMT Ceramic 47uF 4V X6S 20% Pad  0805 105°C T/R
+Cap SMT CER 47UF 4V X6S 0603
+Cap SMT Ceramic 1uF 25V X6S 10% Pad   105°C T/R
+Cap SMT  Ceramic 0.22uF 25V X7R 10% Pad   125°C T/R
+Cap SMT Ceramic 100pF 50V C0G 5% Pad   125°C  T/R
+Cap SMT Ceramic 10uF 25V X6S 10% Pad  0805 105°C T/R
+Cap SMT Ceramic 10uF 25V X5R 10% Pad  0603 85°C T/R
+Cap SMT Ceramic 0.1uF 25V X7R 10% Pad   125°C T/R
+CAP CER 0.01UF 16V X7R 10% SMD  125°C T/R
+Cap  SMT Ceramic 47uF 6.3V X5R 20% Pad  0603 85°C T/R
+Cap SMT ALUM POLY 470UF 20% 2.5V
+CAP CER 0.1UF 16V X7R 10%  SMD  125°C T/R
+Cap  SMT Ceramic 15pF 50V C0G 5% Pad   125°C T/R
+Cap  SMT Ceramic 4.7uF 6.3V X5R 20% Pad   85°C T/R
+Cap  SMT CER 1UF 16V X6S 
+Cap SMT Ceramic 330pF 25V C0G 5% PAD  125°C T/R
+CAP CER 1UF 6.3V X7R 10%  SMD  125°C T/R
+CAP CER 22UF 6.3V X5R 20%  SMD 0603 85°C ULTRA LOW ESR T/R
+Cap SMT MLCC 10UF 20% 6.3V X5R  T<  =0.70MM HTL=150% IN(-55~85C) ROHS
+Cap SMT Ceramic 4.7uF 6.3V X6S 20% pad  105°C T/R
+Cap SMT Ceramic 10uF 25V X5R 20% pad 0603 85°C T/R
+CAP CER 0.0022UF 50V X7R 5% SMD  125°C T/R
+CAP CER 0.001UF 50V X7R 10%  SMD  125°C T/R
+Cap SMT Ceramic 1uF 10V X5R 10% pad  85°C T/R
+Cap SMT MLCC  2.2UF  20%  6.3V  X6S   IN (-55~105)  ROHS
+CAP MLCC SMD 220nF 6.3V ±10% 0603
+CAP CER 18PF 50V C0G 5% SMD  125°C T/R
+Cap SMT Ceramic 10pF 50V C0G 5% pad  125°C T/R
+RES SMT Thick Film  10K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+Cap SMT MLCC 22UF 25V 20% X5R 0805 IN(-55~85C) HF ROHS
+SOCKET SMT AMD SOCKET SP5  SPECIAL COPPER ALLOY  LGA 6096  30U" GOLD  LCP  BLACK HSG    EX(-50~110C)  HF ROHS
+Cap SMT Tant Polymer 330uF 2.5VDC B2 CASE 20%( 3.5 X 2.8 X 1.9mm) Inward L SMT 3528-20 0.009 Ohm 105°C T/R
+Cap SMT MLCC 10UF/6.3V/X6S 0603 +/-20% ROHS
+Cap SMT Ceramic 0.22uF 16V X7R 10% pad  125°C T/R
+Cap SMT Ceramic 0.0015uF 50V X7R 10% pad  125°C T/R
+Cap SMT ALUM POLY 100UF 20% 6.3V
+Cap SMT Ceramic 10uF 16V X6S 20% pad 0603 105°C T/R
+Cap SMT Aluminum Polymer 560uF 6.3VDC 20% (6.3 X 7.7mm) SMT 0.008 Ohm 5000mA 15000h 105°C T/R
+Cap SMT Aluminum Polymer 270uF 16VDC 20% (6.3 X 7.7mm) SMT 0.01 Ohm 5080mA 15000h 105°C T/R
+Cap SMT Tant Polymer 220uF 6.3VDC B2 CASE 20% (3.5 X 2.8 X 1.9mm) SMT 3528 0.035 Ohm 105°C T/R
+CAP CER 0.0033UF 50V X7R 10% SMD  125°C T/R
+Cap SMT CER 2.2UF 25V X5R 0603
+CAP CER 0.22UF 25V X7R 10%  SMD 0603 125°C T/R
+Cap SMT Ceramic 4.7uF 10V X5R 20% pad  85°C T/R
+Cap SMT Ceramic 270pF 50V C0G 5% pad  125°C T/R
+CAP CER 47UF 6.3V X5R 20%  SMD 0805 85°C T/R
+Cap SMT Ceramic 4.7uF 25V X6S 20% pad 0603 105°C T/R
+Cap SMT Ceramic 22pF 50V C0G 5% pad  125°C T/R
+Cap SMT Ceramic 10uF 6.3V X6S 20% pad  105°C T/R
+Cap SMT Ceramic 3.3pF 50V C0G 0.25pF pad  125°C T/R
+Cap SMT Ceramic 1uF 25V X5R 10% pad  85°C T/R
+Cap SMT Ceramic 22uF 6.3V X6S 20% pad 0603 105°C T/R
+Cap SMT  MLCC  0.1UF  10%  6.3V  X5R   HTL=150%  IN (-55~85)  ROHS
+Cap SMT Ceramic 120pF 50V C0G 5% pad  125°C T/R
+Cap SMT Ceramic 3.9pF 50V C0G 0.25pF pad  125°C T/R
+Cap SMT Ceramic 12pF 50V C0G 5% pad  125°C T/R
+Rectifier Diode SMT Small Signal Switching 100V 0.125A 4ns 2-Pin SOD-523 T/R
+TVS DIODE SMT 3.3VWM 10VC DFN1006-2
+DIODE ARR SMT SCHOTT 30V 200MA SOT23
+DIODE ARR SMT SCHOT 70V 70MA SOT23-3
+Diode SMT Schottky 0.2A 3-Pin SOT-23 T/R
+DIODE SMD RECT SCHOTTKY 0.2A 30V 5NS 3-PIN SOT-23-3
+ESD SuppRESsor Diode SMT Array Uni-Dir 5.5V 2-Pin X1SON T/R
+IC SMD G690L SOT-23 MCU RESET 2.93V PH-PL ACT-L
+FERRITEBEAD SMT 300OHM/ 25% 0603 IDC=2A RDC=0.12 OHM PBF
+FUSE SMT CERAMIC IRATED=5A VMAX=32V DCR=0.013 OHM UL#E232989 0603 1.6X0.8X0.8MM ML(-55~150C) HF ROHS
+FUSE SMT CERAMIC IRATED=60A VMAX=75V R=0.00056OHM 7.3X5.8X4.2mm ML(-55~150C) HF ROHS
+FUSE  SMT AEM 20A 24V 1206 PBF
+CONN BOX HEADER SMT  WIRE TO BOARD  2X15  PITCH 1.00MM  VERT  INNER LOCK  1A/PIN  NATURAL HSG  GF  LCP   IN(-40~85C)  ROHS
+"CONN SMT OCP 4C+  STRADDLE MOUNT  W/2.36MM HOST PCB THICKNESS  168 PINS  PITCH 0.6MM  0.5A/PIN  BLK  30U"" AU  WITH SCREW  LCP  IN(-4
+0~85C)    MATING CARD 1.57MM  HF  ROHS"
+Conn SMT Shrouded Header (3 Sides) HDR 4 POS 1.25mm Solder ST Top Entry  PicoBlade T/R
+"CONN  SMT FOR 0.3MM FPC OR FFC  20 PIN  PITCH 0.5MM  HEIGHT 5.8MM  VERT  0.5A/PIN  BEIGE/BLACK  GOLD PLATED  LCP   EX(-40 ~ 105C)  H
+F ROHS"
+CNT BOX/HEADER SMT 2X10 PITCH 2MM VERT 1A/PIN BLACK GF NY6T  ROHS
+CONN SMT   85 OHM  74 PINS  PITCH 0.6MM  VERT  0.5A/PIN  WHITE HSG  30U" GOLD  LATCH PL 3MM  LCP  24 GBPS    IN(-40~85C) HF ROHS
+Conn SMT  Card Edge F 74 POS 0.6mm Solder ST  T/R
+CONN BOX HEADER SMT  2X11  PITCH=1.27MM  VERT  PLUG  1A/PIN  GF  NY6T  BLK HSG  Cap  EX(-40~105C)  ROHS
+"CONN SMT 56 GBPS PAM4  85 OHM 140 PIN  PITCH 0.6 MM  VERT  1.1A/PIN  BLK HSG  30U"" GOLD  1.85MM SHELL PL  LCP  SMT  IN(-40~85C) HF R
+OHS"
+CONN PIN HEADER SMT  2X3  PITCH 2.54MM  VERT  3A/PIN  BLK HSG  GF  NY6T  SMT  EX(-40~105C)  ROHS
+"CONN SMT MINI  3X2 POWER PIN  ONE OPEN END  PP=2.65MM  VERT  55A  BLK  30U"" GOLD  TL=2.83MM  LCP  MATING CARD 1.57MM  DIP  IN(-40~85
+C) ROHS"
+CONN PIN HEADER SMT 2X5-1  CUT PIN 8 PITCH 2.54MM VERT 3A/PIN BLK HSG  GF  NY6T   EX(-45~105C) ROHS
+"CONN SMT DDR5 288-PIN  PITCH 0.85MM  VERTICAL  1A/PIN  BLUE HSG  WHITE EJECTOR  152MM OPEN LATCH  15U"" AU  PA9T  2.6MM TAB TYPE B
+ IN(-40~85C) HF ROHS"
+INDUCTOR SMT 100NH 10% IRATED=48A ISAT=102A_AT_25C ISAT=87A_AT_100C DCR=0.00024OHM 10%  7X6.7X11MM AM(-40~125C) HF ROHS
+LED SMT Uni-Color Green 574nm 2-Pin Chip LED T/R
+INDUCTOR SMT 100NH 15% IRATED=34A ISAT=21A_AT_25C ISAT=17A_AT_100C DCR=0.00039 OHM  4X4X4MM AM(-40~125C) HF ROHS
+FERRITEBEAD SMT 100OHM AT 100MHZ 25% IDC<  =0.4A DCR<  =0.3OHM 0603 AM(-55~125C) HF ROHS3
+IND SMT  2.2UH 5% 2.92*2.5*2.2MM DCR=0.5OHM IDC=1.2A -25~85C PBF
+FERRITEBEAD SMT 120OHM/ 25%  IDC=200MA RDC=0.5 OHM PBF
+IND SMT Power Shielded Wirewound 0.24uH 20% 1MHz Metal 3.5A 0.03Ohm DCR 0603 T/R
+"COUPLE INDUCTOR  SMT 120NH  15%  2-PH  IRATED=73A  ISAT=120A_AT_25C  ISAT=102A_AT_100C  DCR=0.000136 OHM  10%  SMT  7.5X10X15MM  AM(
+-40~125C)  HF  ROHS"
+IND SMT 0.33UH/ 20% SMT/6.95*6.6*2.8 IDC=20.0A ISAT=30A RDC=0.0035OHM PBF
+FERRITE BEAD SMT 25 OHM 0805 1LN
+IND SMT 0.1UH 20% IRATED<  =28A ISAT<  =60A_AT_25C DCR<  =0.001 OHM SMT 7.3X6.8X3.0MM ML(-55~125C) HF ROHS
+IND  SMT 0.47UH 20% SMT IRMS=18A ISAT=20A DCR=0.0035 OHM PBF
+IND SMT 1.5UH 20% IRMS=9A ISAT=18A DCR<  =0.015OHM SMT 6.95X6.6X2.8MM ML(-55~125C) HF ROHS
+FERRITE BEAD  SMT 22 OHM 0603 1LN
+IND SMT 180NH 15% IRATED=70A ISAT=51A_AT_25C ISAT=41A_AT_125C DCR=0.00023 OHM 10% KAPTON SMT 9.9X4.3X9.7MM AM(-40~125C) HF ROHS
+Conn  SMT Card Edge SKT 67 POS 0.5mm Solder RA SMT T/R
+TRANS SMD MOSFET N-CH 60V 0.38A 3-PIN SOT-23 T/R
+Trans MOSFET P-CH  SMT 20V 2.4A 3-Pin SOT-23 T/R
+Trans MOSFET N-CH SMT  60V 0.295A 6-Pin SC-88 T/R
+Trans MOSFET N-CH SMT 60V 0.305A 6-Pin SOT-363 T/R
+Trans MOSFET N-CH SMT 60V 0.38A 3-Pin SOT-23 T/R
+Trans MOSFET P-CH SMT 12V 6A 3-Pin SOT-23 T/R
+MOSFET SINGLE P-CH SMT VDS=-30V VGS=25V ID=-56A RDSON=0.0079 Ohm
+Trans MOSFET P-CH  SMT 20V 7.2A 6-Pin PQFN EP T/R
+MOSFET 2N-CH SMT 60V 0.32A 6TSSOP
+MOSFET N-CH  SMT 50V 0.2A 3-Pin SOT-23 T/R
+RES SMT Thick Film  100 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film 0603 10 Ohm 5% 0.1W(1/10W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMTThick Film  0 Ohm pad T/R Automotive AEC-Q200
+RES SMD  4.7K OHM 5% 0.063W(1/16W) ±200PPM/°C   T/R
+RES SMT Thick Film  2.49K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  300 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.2 Ohm 1% 0.063W(1/16W) -200ppm/°C to 500ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  100 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  360 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  10K Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R
+RES SMT Thick Film  4.99K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  75K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMT Thick Film  52.3K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  10 OHM 5% 0.063W(1/16W) ±200PPM/°C   T/R
+RES SMT Thick Film  42.2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  12K Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  4.7K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1.2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  22 OHM 5% 0.063W(1/16W) ±200PPM/°C   T/R
+RES SMT Thick Film  100K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  33.2 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  3.01K Ohm 1% 0.05W(1/20W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  680 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R
+RES SMD  2.2K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMT Thick Film  120 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  0 Ohm pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1.5K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1.96K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  150 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  3.3K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R
+RES SMD  240 OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMD  49.9K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMT Thick Film  3.01K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.4K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  3.74K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  100K Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film 0603 10M Ohm 1% 0.1W(1/10W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  200K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  715 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  60.4 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.74K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  5.6K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  732 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R
+RES SMT Thick Film  316K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.2K Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  16.9K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMTThin Film  26.7K Ohm 0.1% 0.063W(1/16W) ±50ppm/°C pad T/R
+Temp Sensor Digital Serial (2-Wire  I2C  SMBus) 10-Pin VSSOP T/R
+Trans GP BJT NPN 40V 0.2A 300mW 3-Pin SOT-23 T/R
+RES SMT Thick Film  8.2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.94K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  60.4K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  8.87K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  130 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  2.2 Ohm 5% 0.063W(1/16W) ±350ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  47K Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  6.49K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMT Thick Film  10 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  15K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  820 Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1.82K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film 1206 0 Ohm pad T/R Automotive AEC-Q200
+RES SMT Thick Film  330 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  220 OHM 5% 0.063W(1/16W) ±200PPM/°C   T/R
+RES SMT Thick Film  9.09K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  680 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1M Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  300 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  1M Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  44.2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  4.32K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  1.3K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMD  150 OHM 5% 0.063W(1/16W) ±200PPM/°C   T/R
+RES SMT Thick Film  10M Ohm 5% 0.063W(1/16W) ±350ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  15 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  54.9K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  84.5K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMD  35.7K OHM 1% 0.063W(1/16W) ±100PPM/°C   T/R
+RES SMT Thick Film  23.2K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R
+RES SMT Thick Film  15.4K Ohm 1% 0.063W(1/16W) ±100ppm/°C pad T/R Automotive AEC-Q200
+RES SMT Thick Film  33 Ohm 5% 0.063W(1/16W) ±200ppm/°C pad T/R Automotive AEC-Q200
+IC SMT Half Bridge Driver 90A, INTELLI-PHASETM DRMOS SOLUT 41-TLGA (5x6)
+IC  SMT BUF NON-INVERT 5.5V SC70-5
+IC SMT VRM CNTLR 2-CH 8 PHASES AMD SVI3 PVID PMBUS NVM TQFN40 5X5MM AM(-40~125C)
+IC  SMT GATE NAND 4CH 2-INP 14TSSOP
+IC SMT 10/100/1000 GB ETHERNET PHY 1.5V/1.8V/2.5V/3.3V RGMII AND MDIO 0-70 C QFN40 HF ROHS/REACH
+Voltage Level Translator SMT 2-CH Bidirectional 8-Pin VSSOP T/R
+LDO Regulator  SMT Pos 0.798V to 3.6V 3A 10-Pin VSON EP T/R
+IC SMT NOR Flash Serial (SPI  Dual SPI) 2.5V/3V/3.3V 4M-bit 512K x 8 8ns 8-Pin SOIC
+IC SMT REMOTE MGMT PROCESSOR AST2600 REV:A3 2-CORE ARM CORTEX A7 1.2GHZ VGA BMC  21X21mm (-40~85C)
+IC SMT DRAM Chip DDR4 SDRAM 4Gbit 256Mx16 1.2V 96-Pin FBGA
+IC SMT DC-DC  CONVERTER 2.4V to 5.5V Synchronous Step Down Single-Out 0.6V to 4V 3A 6-Pin DSBGA T/R
+IC SMD NOR FLASH SERIAL 3V/3.3V 512M-BIT 512M/256M/128M X 1/2-BIT/4-BIT 8NS 16-PIN SOP
+IC SMT Op Amp Single Low Power Amplifier R-R I/O 5.5V 5-Pin SOT-23 T/R
+IC  SMT FLASH 256MBIT SPI 120MHZ 8SOP
+IC SMT MUX/DEMUX 7CH 32TQFN
+IC SMT VRM CNTLR 2-CH 12 PHASES AMD SVI3 PVID PMBUS NVM TQFN48 6X6MM AM(-40~125C) HF ROHS
+IC SMD REG BUCK ADJUSTABLE 20A 21QFN
+ESD SuppRESsor Diode SMT Array Uni-Dir 5.5V 10-Pin USON T/R
+IC  SMT USB HUB 2.0 4-PORT INTG LDO REG 8-BITS RISC MTT PORT CONFIG:EEPROM/SMBUS/IO STRAP QFN28 IN(-40-85C) HF ROHS
+Buffer/Line Driver SMT 8-CH Non-Inverting 3-ST CMOS 20-Pin TSSOP T/R
+IC SMT RS232 TRANSCEIVER,3 DRIVERS AND 5 RECEIVERS,VCC=3V-5.5V, SSOP28,MAX3243,PBF
+IC SMT Hi Side Single 5.5V 1.6A 8-Pin TSSOP-BJ T/R
+IC SMT SINGLE BUFFER/DRIVER WITH OPEN-DRAIN OUTPUT,VCC=1.65-5.5V,SN74LVC1G07DBVR,PBF
+IC SMT  CLK BUFFER 1:20 250MHZ 80TLGA
+IC SMT FPGA MACHXO3 Family 6900 Cells 65nm Technology 1.2V  324-Pin CABGA Tray
+MLC NAND Flash  SMT Serial e-MMC 1.8V/3.3V 64G-bit 64G x 1 153-Pin FBGA
+I2C Buffer/Repeater 1.8V/2.5V/3.3V/5V 8-Pin VSSOP T/R
+IC SMT High-Speed I3C 1-2 Multiplexer/De-Multiplexer Switch
+IC SMT  REDRIVER USB 3.0 42TQFN
+I2C  SMT Bus Switch 1-Element 8-IN 24-Pin TSSOP T/R
+IC SMT Op Amp Dual GP ±16V/32V 8-Pin SOIC T/R
+IC SMT GATE XOR 1CH 2-INP SC70-5
+IC  SMT SYNCH BUCK CONVERTER 30A VIN=4~16V VOUT=0.6~6V FSW=600KHZ PMBUS COT ON-DIE I-SENSE TQFN25 4X5MM AM(-40~125C) HF ROHS
+CRYSTAL SMT 25MHZ 12PF FREQ TOL=10PPM AT 25C
+Crystal SMT 25MHz 3.3V 15pF 4-Pin CSMD
+IC SMT Clock Fanout Buffer 4-OUT 1-IN 1:4 8-Pin TSSOP T/R
+CRYSTAL SMT  50.0000MHZ 19PF
+Crystal SMT 48MHz 10pF 4-Pin C
+CRYSTAL SMT 32.768KHZ 12.5PF FREQ TOL=10PPM
+CRYSTAL SMT  12.0000MHZ 20PF
+
+"""
+
+# Apply the extract_component_info function to the sample data
+for line in sample_data.split('\n'):
+    if line:
+        result = extract_component_info(line)
+        print(result)
+
+# Apply the extract_component_info function to the sample data
+results = []
+for line in sample_data.split('\n'):
+    if line:
+        result = extract_component_info(line)
+        results.append(result)
+
+# Convert the list of tuples into a DataFrame
+df_results = pd.DataFrame(results, columns=['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance'])
+
+# Specify the file name for the Excel output
+file_name = "output.xlsx"
+
+# Save the DataFrame to an Excel file
+df_results.to_excel(file_name, index=False)

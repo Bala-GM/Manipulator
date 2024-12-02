@@ -1,0 +1,268 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+
+
+print("\033[92;4m*******BOM Manipulation--PY_V-0.9 interface_GUI/J1024-89P13*******\033[0m")
+
+print('\n')
+
+# Get the current date and time
+current_datetime = datetime.now()
+
+# Format the current date and time as a string
+#formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+# Format the date and time in a 12-hour clock with AM/PM
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
+
+# Print the formatted date and time
+print(f"\033[31mCurrent Date and Time: {formatted_datetime}\033[0m") #\033[0;31m
+print('\n')
+
+'''print(f"Current Year: {current_datetime.year}")
+print(f"Current Month: {current_datetime.month}")
+print(f"Current Day: {current_datetime.day}")
+print(f"Current Hour: {current_datetime.hour}")
+print(f"Current Minute: {current_datetime.minute}")
+print(f"Current Second: {current_datetime.second}")'''
+
+
+dLbr1 = input("\033[93mEnter BOM Name :\033[0m")
+print('\n')
+
+file_path = 'BOM_List_OP.xlsx'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+print(os.path.isfile(file_path))
+print(os.path.isfile(directory_path))
+
+try:
+    if os.path.isfile(file_path):
+        dt_H1 = pd.read_csv(file_path)
+
+except ValueError:
+    if os.path.exists("BOM_List_OP.xlsx"):
+        os.remove("BOM_List_OP.xlsx")
+else:
+    print("The file does not exist")
+
+file_path = 'BOM_List_OP.xlsx'
+directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+print(os.path.isfile(file_path))
+print(os.path.isfile(directory_path))
+
+try:
+    if os.path.isfile(file_path):
+        dt_H1 = pd.read_csv(file_path)
+
+except ValueError:
+    if os.path.exists("BOM_List_OP.xlsx"):
+        os.remove("BOM_List_OP.xlsx")
+else:
+    print("The file does not exist")
+
+try:
+    # BOM MANIPULATION
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    file_path = 'BOM.xlsx'
+
+    if os.path.isfile(file_path):
+        ds1 = pd.read_excel(file_path, index_col=False)
+    else:
+        # Try reading as '.xls' format if '.xlsx' fails
+        file_path = 'BOM.xls'
+        ds1 = pd.read_excel(file_path, index_col=False)
+
+    dfbom1 = ds1
+
+except ValueError:
+    dfbom1 = pd.read_excel(file_path,index_col=False) 
+
+except Exception as e:
+    # Handle the exception gracefully
+    error_message = f"An error occurred: {e}"
+
+    # Show error message in a pop-up box
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Error", error_message)
+    sys.exit(1)  # Exit the program with an error code
+
+# Define your column lists
+column_list_1 = ['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity', 'Material Group']
+column_list_2 = ['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty', 'SMT/THT/Mech']
+
+# Check which column list is present in the DataFrame
+if all(column in ds1.columns for column in column_list_1):
+    columns_to_use = column_list_1
+elif all(column in ds1.columns for column in column_list_2):
+    columns_to_use = column_list_2
+else:
+    # Show error message if none of the column lists is present
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    missing_columns = [column for column_list in [column_list_1, column_list_2] for column in column_list if column not in ds1.columns]
+    error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+    messagebox.showerror("Error", error_message)
+    sys.exit(1)  # Exit the program with an error code
+
+# Continue with the rest of your code using 'columns_to_use'
+print(f"Using columns: {columns_to_use}")
+
+# Rest of your code here
+# ...
+
+ds1.rename(
+    columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
+    inplace=True,
+)
+
+ds1.rename(
+    columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
+    inplace=True,
+)
+
+print(ds1)
+
+ds2 = ds1[ds1['Priority'].isin([0, 1])]
+
+# Assuming ds2 is your DataFrame and 'PartNumber' and 'RefList' are the columns you want to check
+part_number_column = ds2['PartNumber']
+ref_list_column = ds2['RefList']
+
+# Flag to check if an empty value is found
+empty_value_found = False
+
+# Iterate through both columns simultaneously using iterrows
+for index, (part_number_value, ref_list_value) in ds2[['PartNumber', 'RefList']].iterrows():
+    # Check if the 'RefList' value is empty (NaN or None)
+    if pd.isna(ref_list_value):
+        print(f"Error: Empty value found in 'RefList' for 'PartNumber' {part_number_value}")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Empty value found in 'RefList' for 'PartNumber' {part_number_value}. Program will stop."
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+        #raise ValueError("Empty value found in 'RefList'")
+        #empty_value_found = True
+        #break  # Stop the iteration when the first empty value is found
+
+# If no empty values are found, print the 'PartNumber' column
+if not empty_value_found:
+    print(part_number_column)
+    # Continue with the rest of your program
+
+#file_name ="output.xlsx"
+#ds1.to_excel(file_name)
+
+with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
+    ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+    ds2.to_excel(writer, sheet_name="BOM", index=False)
+
+    pass
+    print('The file does not exist.')
+
+
+
+'''# Assuming ds2 is your DataFrame and 'RefList' is the column you want to check
+column_to_check = ds2['RefList']
+
+# Flag to check if an empty value is found
+empty_value_found = False
+
+# Iterate through the 'RefList' column
+for index, value in column_to_check.items():
+    # Check if the value is empty (NaN or None)
+    if pd.isna(value):
+        print(f"Error: Empty value found in 'RefList' at index {index}")
+        empty_value_found = True
+        # Raise an error or handle it as needed
+        break  # Stop the iteration when the first empty value is found
+
+# If an empty value is found, show a pop-up error message and stop the program
+if empty_value_found:
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    error_message = f"Empty value found in 'RefList'. Program will stop."
+    messagebox.showerror("Error", error_message)
+    raise ValueError("Empty value found in 'RefList'")
+else:
+    # If no empty values are found, print the entire column
+    print(column_to_check)
+    # Continue with the rest of your program'''
+
+'''
+# Assuming ds2 is your DataFrame and 'RefList' is the column you want to check
+column_to_check = ds2['RefList']
+
+# Iterate through the 'RefList' column
+for index, value in column_to_check.items():
+    # Check if the value is empty (NaN or None)
+    if pd.isna(value):
+        print(f"Error: Empty value found in 'RefList' at index {index}")
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = f"Empty value found in 'RefList' at index {index}. Program will stop."
+        messagebox.showerror("Error", error_message)
+        raise ValueError("Empty value found in 'RefList'")
+        break  # Stop the iteration when the first empty value is found
+
+# If no empty values are found, print the entire column
+print(column_to_check)
+# Continue with the rest of your program'''

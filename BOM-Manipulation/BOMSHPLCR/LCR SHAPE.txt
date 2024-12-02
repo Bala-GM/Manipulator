@@ -1,0 +1,347 @@
+import re
+
+'''text = "Cap Super THT 3.6-3.69V Impedance:≤ 500 MΩ 21.5x9mm"
+
+# Define regular expressions to extract information
+voltage_pattern = re.compile(r'\b(\d+\.\d+-\d+\.\d+V)\b')
+impedance_pattern = re.compile(r'Impedance:≤ (\d+) MΩ')
+dimensions_pattern = re.compile(r'(\d+\.\d+x\d+mm)')
+
+# Search for patterns in the text
+voltage_match = voltage_pattern.search(text)
+impedance_match = impedance_pattern.search(text)
+dimensions_match = dimensions_pattern.search(text)
+
+# Extract information if found
+voltage = voltage_match.group(1) if voltage_match else None
+impedance = impedance_match.group(1) if impedance_match else None
+dimensions = dimensions_match.group(1) if dimensions_match else None
+
+# Print the segregated information
+print(f"Voltage: {voltage}")
+print(f"Impedance: {impedance} MΩ")
+print(f"Dimensions: {dimensions}")'''
+
+
+'''import re
+
+def extract_component_info(text):
+    # Define regular expressions to extract information
+    voltage_pattern = re.compile(r'(\d+(\.\d+)?[Vv])')
+    impedance_pattern = re.compile(r'Impedance:≤ (\d+) M[Ωω]')
+    dimensions_pattern = re.compile(r'(\d+(\.\d+)?[Xx]\d+(\.\d+)?)mm')
+
+    # Search for patterns in the text
+    voltage_match = voltage_pattern.search(text)
+    impedance_match = impedance_pattern.search(text)
+    dimensions_match = dimensions_pattern.search(text)
+
+    # Extract information if found
+    voltage = voltage_match.group(1) if voltage_match else None
+    impedance = impedance_match.group(1) if impedance_match else None
+    dimensions = dimensions_match.group(1) if dimensions_match else None
+
+    return voltage, impedance, dimensions
+
+# Example usage for each line of the input
+lines = [
+    "DISPLAY THT FSTN Reflective/Positive mode,2.7V 42±0.2 X 26±0.2mm",
+    "Antenna assembly (Q600 N B-IoT)",
+    "BATTERY Lithium-Thionyl Chloride 3.6V 4Ah 130mA Storage:+30°C 28g A",
+    "Cap Super THT 3.6-3.69V Impedance:≤ 500 Mω 21.5x9mm",
+    "CAP CER SMD 150pF ±1% 50V NP0 0402",
+    # Add more lines as needed
+]
+
+for line in lines:
+    voltage, impedance, dimensions = extract_component_info(line)
+    print(f"Voltage: {voltage}, Impedance: {impedance} MΩ, Dimensions: {dimensions}")'''
+
+import re
+
+def categorize_component(text):
+    # Define regular expressions to extract information
+    voltage_pattern = re.compile(r'(\d+(\.\d+)?[Vv])')
+    impedance_pattern = re.compile(r'Impedance:≤ (\d+) M[Ωω]')
+    dimensions_pattern = re.compile(r'(\d+(\.\d+)?[Xx]\d+(\.\d+)?)mm')
+
+    # Search for patterns in the text
+    voltage_match = voltage_pattern.search(text)
+    impedance_match = impedance_pattern.search(text)
+    dimensions_match = dimensions_pattern.search(text)
+
+    # Extract information if found
+    voltage = voltage_match.group(1) if voltage_match else None
+    impedance = impedance_match.group(1) if impedance_match else None
+    dimensions = dimensions_match.group(1) if dimensions_match else None
+
+    return voltage, impedance, dimensions
+
+def categorize_line(line):
+    if 'Cap' in line:
+        component_type = 'Capacitor'
+    elif 'RES' in line:
+        component_type = 'Resistor'
+    else:
+        component_type = 'Other'
+    
+    return component_type
+
+# Example usage for each line of the input
+lines = [
+"DISPLAY THT FSTN Reflective/Positive mode,2.7V 42±0.2 X 26±0.2mm",
+"Antenna assembly (Q600 N B-IoT)",
+"BATTERY Lithium-Thionyl Chloride 3.6V 4Ah 130mA Storage:+30°C 28g A",
+"Cap Super  THT 3.6-3.69V Impedance:≤ 500 Mω 21.5x9mm",
+"CAP CER SMD 150pF ±1% 50V NP0 0402",
+"CAP,SMT,100nF,±10%,100V,-55°C,to,+125°C,1206,X7R,Ceramic",
+"CAP CER SMD MULTILAYER CER 47UF 20% 10V X5R 1206",
+"Capacitor,Ceramic,COG,100pF,±5%,50V,0402",
+"CAP,MLCC,SMD,220PF,50V,±5%,0402,C0G,(NP0)",
+"CAP,CER,SMD,33PF,50V,±5%,0402,C0G, NP0",
+"CAP,CER,SMD,47PF,50V,±5%,0402,C0G,NP0",
+"CAP,CER,SMD,1000PF,50V,±10%,0402,X7R",
+"CAP,MLCC,SMD,10000PF,16V,±10%,0402,X7R",
+"CAP CER SMD 0.1UF 10% 50V X7R 0402",
+"CAP CER SMD 1UF 10% 25V X7R 0603",
+"CAP CER SMD 10uF ±10% 10V X7R 0805",
+"CAP CER SMD 0.68uF ±10% 25V X7R 0805",
+"CAP,MLCC,SMD,100NF,50V,±10%,0603,X7R",
+"CAP CER SMD 100uF ±20% 6.3V X5R 1206",
+"CAP CER SMD 8.2pF ±0.25pF 50V C0G/NP0 0402",
+"CAP,MLCC,SMD,22PF,50V,±5%,0402,C0G,(NP0)",
+"RES SMD 160 OHM 1% 1/16W 0402",
+"RES SMD 3.3M OHM 1% 1/10W 0603",
+"RES SMD 1K OHM 1% 1/10W 0402",
+"RES,SMT,Thick,Film,0402,0,Ohm,Pad,SMD,Automotive,T/R",
+"RES,THICK,FILM,SMD,100,OHM,1%,0.0623W,0402,100ppm/℃",
+"RES,THICK,FILM,SMD,10K,OHM,1%,0.0625W,0402,100ppm/℃",
+"RES,THICK,FILM,SMD,100k,OHM,1%,0.0625W,0402,100ppm/℃",
+"RES SMD SMD 560K OHM 1% 1/10W 0402",
+"RES,THICKFLIM,SMD,4.7OHM,±1%,0.1W,0603,±200ppm/°C",
+"RES,THICK,FILM,SMD,0,OHM,1%,0.1W,0603,100ppm",
+"RES,THICK,FILM,SMD,10k,OHM,1%,0.1W,0603,",
+"RES,THICK,FILM,SMD,10M,OHM,1%,0.1W,0603,100ppm",
+"RES,THICK,FILM,SMD,47K,OHM,1%,0.0625W,0402,100ppm",
+"RES,THICK,FILM,SMD,4.7K,OHM,5%,0.1W,0402,200PPM",
+"RES SMD 22 OHM 1% 1/10W 0402",
+"RES SMD 3.3K ±1% 0.063W 0402 100ppm/°C",
+"TVS DIODE SMD 3.3VWM 13VC 2X2DFN",
+"FERRITE BEAD SMD 1K OHM 0603 1LN",
+"EMI,filter,bead,SMT,0402,1k,ohms,Tape,GHz,Band,Gen,Use",
+"FIXED IND SMD 22NH 780MA 202MOHM",
+"Ferrite,Chip,SMT,0805,Filter,330R",
+"FERRITE BEAD SMD 1.8K OHM 0402 1LN",
+"IND CMC 2A 2LN 500 OHM SMD",
+"MOSFET P-CH 20V 4.3A SOT23",
+"TRANS SMD NPN PN-BC846A SOT-23",
+"MOSFET P-CH 20V 3.1A SOT23-3",
+"GUSIM module M2M-3 Industrial Type B 8-pin MFF2 64KB -40°C~+105°C 1MHz-5MHz Soldering temp:260° 2 million erase/write cycles per file at +85°C",
+"IC SMD REG LINEAR DUAL OUTPUT 200mA 320mV SOT-26",
+"IC SMD ULTRASONIC FLOW SENSOR 32QFN 1.9µA -40°C~85°C",
+"RES CER SMD 8.0000MHZ 10PF SMD",
+"IC SMD RFID TRANSP 13.56MHZ 8TSSOP",
+"RF TXRX MOD CELLULAR SMD",
+"IC MCU 32BIT 256KB FLASH 100LQFP",
+"IC PWR SWITCH P-CHAN 1:1 SC70-6",
+"IC,Flash,4MBIT-,104Mhz-,Serial,NOR,Flash",
+"CRYSTAL SMD 32.7680kHz CM7V-T1A/X",
+"CONN HEADER SMD 2POS 2MM PN-B2B-PH-SM4-TB(LF)(SN)",
+
+    # Add more lines as needed
+]
+
+for line in lines:
+    component_type = categorize_line(line)
+    voltage, impedance, dimensions = categorize_component(line)
+    print(f"Type: {component_type}, Voltage: {voltage}, Impedance: {impedance} MΩ, Dimensions: {dimensions}")
+
+
+file_name ="output.xlsx"
+#df.to_excel(file_name)
+
+
+
+latest 12.30 10jan2024
+
+os.getcwd()
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+
+# Load the Excel file
+excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+# Define your column lists
+column_list = ["PartNumber", "Group", 'Priority', 'RefList', 'Qty', 'Shape', 'Long Des']
+
+df = pd.read_excel(excel_file_path, sheet_name='BOM' ,usecols=column_list, index_col= False)
+
+print(df)
+
+df['Description'] = df['Long Des']
+
+data = df['Description']
+
+df = pd.DataFrame(data)
+# Define desired shapes
+desired_shapes = ("0201", "0402", "0603", "0805", "1206")
+
+# Custom function to extract and separate the shape
+def extract_shape(description):
+    shape_match = re.search(r'\b\d{4}\b', description)
+    if shape_match:
+        shape = shape_match.group()
+        if shape in desired_shapes:
+            return shape
+    return None
+
+# Apply the custom function to create the Shape column
+df['Shape'] = df['Description'].apply(extract_shape)
+
+# Display the result
+print(df[['Description', 'Shape']])
+
+# Define desired component types
+desired_COMP = ("CAP", "RES", "IND")
+
+# Custom function to extract and separate the component type
+def extract_COMPs(description):
+    for comp_type in desired_COMP:
+            if comp_type.lower() in description.lower():
+                return comp_type
+    return None
+
+# Apply the custom function to create the LCRTYPE column
+df['LCRTYPE'] = df['Description'].apply(extract_COMPs)
+
+# Define desired Special component types
+desired_SPERESCOMP = ["MELF"]
+
+# Custom function to check if the description contains special components
+def contains_special_res_component(description):
+    for serescomp_type in desired_SPERESCOMP:
+        if serescomp_type.lower() in description.lower():
+            return True
+    return False
+
+# Apply the custom function to create the SPERESCOMP column
+df['SPERESCOMP'] = df['Description'].apply(contains_special_res_component)
+
+# Transform 'SPERESCOMP' column to 'MELF' when it's True
+df['SPERESCOMP'] = np.where(df['SPERESCOMP'], 'MELF', '')
+
+# Define desired Special component types
+desired_SPETHTCOMP = ["THT"]
+
+# Custom function to check if the description contains special components
+def contains_special_tht_component(description):
+    for sethtcomp_type in desired_SPETHTCOMP:
+        if sethtcomp_type.lower() in description.lower():
+            return True
+    return False
+
+# Apply the custom function to create the SPERESCOMP column
+df['SPETHTCOMP'] = df['Description'].apply(contains_special_tht_component)
+
+# Transform 'SPERESCOMP' column to 'MELF' when it's True
+df['SPETHTCOMP'] = np.where(df['SPETHTCOMP'], 'THT', '')
+
+# Define desired Special component types
+desired_SPESODCOMP = ("ZENER", "DIODE", "SOD")
+
+# Custom function to extract and separate the component type
+def extract_SPESODCOMP(description):
+    for sesodcomp_type in desired_SPESODCOMP:
+        if sesodcomp_type.lower() in description.lower():
+            return sesodcomp_type
+    return None
+
+# Apply the custom function to create the LCRTYPE column
+df['SPESODCOMP'] = df['Description'].apply(extract_SPESODCOMP)
+
+# Define desired Special component types
+desired_SPECAPCOMP = ("TAN", "Tantalum", "Aluminium","ALLUM", "ALUM", "Electrolytic" ,"ALU")
+
+# Custom function to extract and separate the component type
+def extract_SPECAPCOMP(description):
+    for setancomp_type in desired_SPECAPCOMP:
+        if setancomp_type.lower() in description.lower():
+            return setancomp_type
+    return None
+
+# Apply the custom function to create the LCRTYPE column
+df['SPECAPCOMP'] = df['Description'].apply(extract_SPECAPCOMP)
+
+
+# Assuming df is your DataFrame
+df['PACKAGE'] = df['Shape'].replace({'0201': '0802P', '0402': '0802P', '0603': '0804P', '0805': '0804E', '1206': '0804E'})
+
+
+# Display the result
+print(df[['Description', 'Shape', 'LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP', 'PACKAGE']])
+
+
+#LCR Wrork#
+
+def extract_component_info(component_line):
+    # Regular expressions for CAPACITOR
+    capacitor_type_match = re.search(r'\b(CAP)\b', component_line, re.IGNORECASE)
+    capacitor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+
+    # Regular expressions for RESISTOR
+    resistor_type_match = re.search(r'\b(Res|Resistor|RESISTOR)\b', component_line, re.IGNORECASE)
+    resistor_value_match = re.search(r'(\d+(\.\d+)?)([pnuμmkKMΩ]?)\s*(\d+%)?', component_line)
+
+    # Assign default values
+    LCR_Type = None
+    LCR_Value = None
+    LCR_Unit = None
+    LCR_Tolerance = None
+
+    if capacitor_type_match:
+        LCR_Type = capacitor_type_match.group(1)
+
+    if capacitor_value_match:
+        groups = capacitor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    if resistor_type_match:
+        LCR_Type = resistor_type_match.group(1)
+
+    if resistor_value_match:
+        groups = resistor_value_match.groups()
+        LCR_Value = groups[0] if groups[0] is not None else None
+        LCR_Unit = groups[2] if groups[2] is not None else None
+
+    return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+os.getcwd()
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+Chd = os.getcwd()
+
+# Load the Excel file
+excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+# Define your column lists
+column_list = ["PartNumber", "Group", 'Priority', 'RefList', 'Qty', 'Shape', 'Long Des']
+
+df = pd.read_excel(excel_file_path, sheet_name='BOM' ,usecols=column_list, index_col= False)
+
+column_list = df['Long Des']
+
+print(column_list)
+
+data = {'LCR Type': [], 'LCR Value': [], 'LCR Unit': [], 'LCR Tolerance': []}
+
+for component_line in column_list:
+    LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance = extract_component_info(component_line)
+    data['LCR Type'].append(LCR_Type)
+    data['LCR Value'].append(LCR_Value)
+    data['LCR Unit'].append(LCR_Unit)
+    data['LCR Tolerance'].append(LCR_Tolerance)
+
+df = pd.DataFrame(data)
+print(df)
+
+print(df.columns)

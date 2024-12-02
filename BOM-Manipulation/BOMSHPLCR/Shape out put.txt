@@ -1,0 +1,179 @@
+import pandas as pd   #pre final output  >>>>>>> move to new output
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+
+data = {
+"Description": [
+        "SMT,H/IND 1.2uH 8.6A 4.3X4.3X2.0 20% BOURNS",
+        "FERRITE BEAD SMD 1.8K OHM R 0402 1LN",
+        "Capacitor,SMT,1206,10uF,16V,10%,Tantalum",
+        "Cap SMD Aluminum Lytic 4700uF 16V 20% (18 X 21.5mm) 1750mA 2000h 85°C Automotive T/R",
+        "Cap Super THT 3.6-3.69V Impedance:≤ 500 Mω 21.5x9mm",
+        "CAP,MLCC,SMD,220PF,50V,±5%,0402,C0G,(NP0)",
+        "RES SMD 3.3M OHM 1% 1/10W 0603",
+        "RES,THICK,FILM,SMD,47K,OHM,1%,0.0625W,0402,100ppm",
+        "EMI,filter,bead,SMT,0402,1k,ohms,Tape,GHz,Band,Gen,Use",
+        "FERRITE BEAD SMD 1K OHM 0603 1LN",
+        "Ferrite,Chip,SMT,0805,Filter,330R",
+        "IND CMC 2A 2LN 500 OHM SMD",
+        "ALLUM CAP SMD 100uF 6.3volts 20 % AEC-Q200",
+        "ALUM CAP SMD 100UF 6.3V 20% (6.60mm x 6.60mm)",
+        "Aluminum Electrolytic Capacitors - SMD 1500uF 35V",
+        "CAP ALUM 1500UF 20% 35V SMD",
+        "CAP TAN SMD 4.7UF 10V ±20% 0805",
+        "CAP ALU SMD 330uF ± 20% 35V",
+        "A/CAP 2.2uF 0402 6.3V K(+-10%) X5R",
+        "A/CAP 4.7uF 0402 ≧6.3V ≦M X5R",
+        "SMT,A/CAP 10uF 0603 ≧25V ≦M X5R",
+        "SMT,A/CAP 22uF 0805 ≧25V ≦M X5R",
+        "H/CAP 47uF 0603 ≧6.3V ≦M X5R",
+        "H/RES 15Ω 0402 ≦J 1/16W",
+        "H/RES 47Ω 0402 ≦J 1/16W",
+        "H/RES 240Ω 0201 F(+-1%) 1/20W",
+        "H/RES 240Ω 0402 ≦F 1/16W",
+        "SMT,H/RES 249Ω 0603 melf F(+-1%) 1/10W",
+        "smt,ZEN,MELF,DIODE"
+    ]
+}
+df = pd.DataFrame(data)
+# Define desired shapes
+desired_shapes = ("0201", "0402", "0603", "0805", "1206")
+# Custom function to extract and separate the shape
+def extract_shape(description):
+    shape_match = re.search(r'\b\d{4}\b', description)
+    if shape_match:
+        shape = shape_match.group()
+    if shape in desired_shapes:
+        return shape
+    return None
+
+# Apply the custom function to create the Shape column    
+df['Shape'] = df['Description'].apply(extract_shape)
+
+# Define desired component types
+desired_COMP = ("CAP", "RES", "IND")
+
+# Custom function to extract and separate the component type
+def extract_COMPs(description):
+    for comp_type in desired_COMP:
+        if comp_type.lower() in description.lower():
+            return comp_type
+        return None
+
+# Apply the custom function to create the LCRTYPE column
+df['LCRTYPE'] = df['Description'].apply(extract_COMPs)
+
+# Define desired Special component types
+desired_SPERESCOMP = ["MELF"]
+
+# Custom function to check if the description contains special components
+def contains_special_res_component(description):
+    for serescomp_type in desired_SPERESCOMP:
+        if serescomp_type.lower() in description.lower():
+            return True
+    return False
+
+# Apply the custom function to create the SPERESCOMP column
+df['SPERESCOMP'] = df['Description'].apply(contains_special_res_component)
+
+# Transform 'SPERESCOMP' column to 'MELF' when it's True
+df['SPERESCOMP'] = np.where(df['SPERESCOMP'], 'MELF', '')
+
+# Define desired Special component types
+desired_SPETHTCOMP = ["THT"]
+
+# Custom function to check if the description contains special components
+def contains_special_tht_component(description):
+    for sethtcomp_type in desired_SPETHTCOMP:
+        if sethtcomp_type.lower() in description.lower():
+            return True
+    return False
+
+# Apply the custom function to create the SPERESCOMP column
+df['SPETHTCOMP'] = df['Description'].apply(contains_special_tht_component)
+
+# Transform 'SPERESCOMP' column to 'MELF' when it's True
+df['SPETHTCOMP'] = np.where(df['SPETHTCOMP'], 'THT', '')
+
+# Define desired Special component types
+desired_SPESODCOMP = ("ZENER", "DIODE", "SOD")
+
+# Custom function to extract and separate the component type
+def extract_SPESODCOMP(description):
+    for sesodcomp_type in desired_SPESODCOMP:
+        if sesodcomp_type.lower() in description.lower():
+            return sesodcomp_type
+    return None
+
+# Apply the custom function to create the LCRTYPE column
+df['SPESODCOMP'] = df['Description'].apply(extract_SPESODCOMP)
+
+# Define desired Special component types
+desired_SPECAPCOMP = ("TAN", "Tantalum", "Aluminium","ALLUM", "ALUM", "Electrolytic" ,"ALU")
+
+# Custom function to extract and separate the component type
+def extract_SPECAPCOMP(description):
+    for setancomp_type in desired_SPECAPCOMP:
+        if setancomp_type.lower() in description.lower():
+            return setancomp_type
+    return None
+
+# Apply the custom function to create the LCRTYPE column
+df['SPECAPCOMP'] = df['Description'].apply(extract_SPECAPCOMP)
+
+# Display the result
+print(df[['Description', 'Shape', 'LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP']])
