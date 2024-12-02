@@ -1,0 +1,51 @@
+def breakdown_folder_name(folder_name):
+    parts = folder_name.split(';')
+    breakdown = {
+        'Identifier': parts[0],
+        'Version': parts[1],
+        'Position': parts[2],
+        'Secondary Identifier': parts[3],
+        'Production Stage': parts[4],
+        'Setup Details': parts[5]
+    }
+    return breakdown
+
+def fetch_folder_names(root_directory):
+    folder_names = []
+    for item in os.listdir(root_directory):
+        if os.path.isdir(os.path.join(root_directory, item)):
+            folder_names.append(item)
+    return folder_names
+
+# Example root directory
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Fetch folder names from the root directory
+folders = fetch_folder_names(root_directory)
+
+# Apply breakdown function to each folder name
+for folder in folders:
+    folder_breakdown = breakdown_folder_name(folder)
+    print("Folder Name:", folder)
+    for key, value in folder_breakdown.items():
+        print(f"{key}: {value}")
+    print()  # Add an empty line for clarity
+
+
+Output
+
+Folder Name: ECH3ACE00019 T&B;B1;Bottom;ECH3ACE00019 T;[Bottom] Line1;Original setup
+Identifier: ECH3ACE00019 T&B
+Version: B1
+Position: Bottom
+Secondary Identifier: ECH3ACE00019 T
+Production Stage: [Bottom] Line1
+Setup Details: Original setup
+
+Folder Name: ECH3ACE00019 T&B;B1;Top;ECH3ACE00019 T;[Top] Line1;Original setup
+Identifier: ECH3ACE00019 T&B
+Version: B1
+Position: Top
+Secondary Identifier: ECH3ACE00019 T
+Production Stage: [Top] Line1
+Setup Details: Original setup

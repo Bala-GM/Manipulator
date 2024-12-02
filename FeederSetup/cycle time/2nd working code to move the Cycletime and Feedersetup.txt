@@ -1,0 +1,99 @@
+# CycleTime
+
+def find_cycle_time_files(root_directory):
+    cycle_time_files = []
+    for root, dirs, files in os.walk(root_directory):
+        for file in files:
+            if file == "CycleTime.xml":
+                cycle_time_files.append(os.path.join(root, file))
+    return cycle_time_files
+
+def find_setup_description(file_path):
+    parts = file_path.split(";")
+    setup_description = parts[-2].strip()
+    return setup_description
+
+def rename_cycle_time_with_description(file_path):
+    setup_description = find_setup_description(file_path)
+    if "[Top] Line1" in setup_description:
+        new_file_name = "CycleTime_TL1.xml"
+    elif "[Bottom] Line1" in setup_description:
+        new_file_name = "CycleTime_BL1.xml"
+    elif "[Top] Line2" in setup_description:
+        new_file_name = "CycleTime_TL2.xml"
+    elif "[Bottom] Line2" in setup_description:
+        new_file_name = "CycleTime_BL2.xml"
+    elif "[Top] Line3" in setup_description:
+        new_file_name = "CycleTime_TL3.xml"
+    elif "[Bottom] Line3" in setup_description:
+        new_file_name = "CycleTime_BL3.xml"
+    else:
+        return
+    
+    new_path = os.path.join(os.path.dirname(file_path), new_file_name)
+    os.rename(file_path, new_path)
+    print(f"CycleTime.xml renamed to: {new_path}")
+    return new_path
+
+# Define the root directory
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Find CycleTime.xml files
+cycle_time_files = find_cycle_time_files(root_directory)
+
+# Rename CycleTime.xml files with setup descriptions and move them
+for file_path in cycle_time_files:
+    new_path = rename_cycle_time_with_description(file_path)
+    if new_path:
+        # Create the CycleTime directory if it doesn't exist
+        cycle_time_dir = os.path.join(os.path.dirname(root_directory), "CycleTime")
+        if not os.path.exists(cycle_time_dir):
+            os.makedirs(cycle_time_dir)
+        # Move the renamed file to the CycleTime directory
+        shutil.move(new_path, os.path.join(cycle_time_dir, os.path.basename(new_path)))
+
+# FeederSetup
+
+def find_feeder_setup_files(root_directory):
+    feeder_setup_files = []
+    for root, dirs, files in os.walk(root_directory):
+        for file in files:
+            if file == "FeederSetup.csv":
+                feeder_setup_files.append(os.path.join(root, file))
+    return feeder_setup_files
+
+def rename_feeder_setup_with_description(file_path):
+    setup_description = find_setup_description(file_path)
+    if "[Top] Line1" in setup_description:
+        new_file_name = "FeederSetup_TL1.csv"
+    elif "[Bottom] Line1" in setup_description:
+        new_file_name = "FeederSetup_BL1.csv"
+    elif "[Top] Line2" in setup_description:
+        new_file_name = "FeederSetup_TL2.csv"
+    elif "[Bottom] Line2" in setup_description:
+        new_file_name = "FeederSetup_BL2.csv"
+    elif "[Top] Line3" in setup_description:
+        new_file_name = "FeederSetup_TL3.csv"
+    elif "[Bottom] Line3" in setup_description:
+        new_file_name = "FeederSetup_BL3.csv"
+    else:
+        return
+    
+    new_path = os.path.join(os.path.dirname(file_path), new_file_name)
+    os.rename(file_path, new_path)
+    print(f"FeederSetup.csv renamed to: {new_path}")
+    return new_path
+
+# Find FeederSetup.csv files
+feeder_setup_files = find_feeder_setup_files(root_directory)
+
+# Rename FeederSetup.csv files with setup descriptions and move them
+for file_path in feeder_setup_files:
+    new_path = rename_feeder_setup_with_description(file_path)
+    if new_path:
+        # Create the FeederSetup directory if it doesn't exist
+        feeder_setup_dir = os.path.join(os.path.dirname(root_directory), "FeederSetup")
+        if not os.path.exists(feeder_setup_dir):
+            os.makedirs(feeder_setup_dir)
+        # Move the renamed file to the FeederSetup directory
+        shutil.move(new_path, os.path.join(feeder_setup_dir, os.path.basename(new_path)))

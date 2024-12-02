@@ -1,0 +1,112 @@
+#Cycle Time
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+import xlrd
+import xml.etree.ElementTree as ET
+
+# Define the root directory where you want to search for the XML file
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Function to search for the XML file recursively within a directory
+def find_xml_file(directory):
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file == "CycleTime.xml":
+                return os.path.join(root, file)
+    return None
+
+# Function to convert XML to CSV
+def xml_to_csv(xml_file, csv_file):
+    # Parse the XML file
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+
+    # Open CSV file in write mode with newline='' to prevent extra newlines
+    with open(csv_file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write header row
+        header = []
+        for child in root[0]:
+            header.append(child.tag)
+        writer.writerow(header)
+
+        # Write data rows
+        for elem in root:
+            row = []
+            for child in elem:
+                row.append(child.text)
+            writer.writerow(row)
+
+# Find the XML file within the root directory
+xml_file_path = find_xml_file(root_directory)
+
+# Check if the XML file was found
+if xml_file_path:
+    print("XML file found at:", xml_file_path)
+    # Define the CSV file path
+    csv_file_path = os.path.splitext(xml_file_path)[0] + ".csv"
+    print("CSV file will be saved at:", csv_file_path)
+    
+    # Convert XML to CSV
+    xml_to_csv(xml_file_path, csv_file_path)
+    
+    print("Conversion successful!")
+else:
+    print("XML file not found within the specified directory.")

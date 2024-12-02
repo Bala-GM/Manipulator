@@ -1,0 +1,1813 @@
+######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    print("\033[32;4m*******CYCLE TIME*******\033[0m")
+    ######################################################################################################
+
+    #CycleTime
+
+    # Function to find CycleTime.xml files
+    def find_cycle_time_files(root_directory):
+        cycle_time_files = []
+        for root, dirs, files in os.walk(root_directory):
+            for file in files:
+                if file == "CycleTime.xml":
+                    cycle_time_files.append(os.path.join(root, file))
+        return cycle_time_files
+
+    # Function to find the setup description from file path
+    def find_setup_description(file_path):
+        parts = file_path.split(";")
+        setup_description = parts[-2].strip()
+        return setup_description
+
+    # Function to rename CycleTime.xml files with setup descriptions
+    def rename_cycle_time_with_description(file_path):
+        setup_description = find_setup_description(file_path)
+        if "[Top] Line1" in setup_description:
+            new_file_name = "CycleTime_TL1.xml"
+        elif "[Bottom] Line1" in setup_description:
+            new_file_name = "CycleTime_BL1.xml"
+        elif "[Top] Line2" in setup_description:
+            new_file_name = "CycleTime_TL2.xml"
+        elif "[Bottom] Line2" in setup_description:
+            new_file_name = "CycleTime_BL2.xml"
+        elif "[Top] Line3" in setup_description:
+            new_file_name = "CycleTime_TL3.xml"
+        elif "[Bottom] Line3" in setup_description:
+            new_file_name = "CycleTime_BL3.xml"
+        elif "[Top] Line4" in setup_description:
+            new_file_name = "CycleTime_TL4.xml"
+        elif "[Bottom] Line4" in setup_description:
+            new_file_name = "CycleTime_BL4.xml"
+        elif "[Top] Line-1" in setup_description:
+            new_file_name = "CycleTime_TL4C.xml"
+        elif "[Bottom] Line-1" in setup_description:
+            new_file_name = "CycleTime_BL4C.xml"
+        else:
+            return
+        
+        new_path = os.path.join(os.path.dirname(file_path), new_file_name)
+        os.rename(file_path, new_path)
+        print('\n')
+        print(f"CycleTime.xml renamed to: {new_path}")
+        print('\n')
+        return new_path
+
+    # Function to convert XML to CSV
+    def xml_to_csv(xml_file, csv_file):
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+
+        # Open CSV file in write mode with newline='' to prevent extra newlines
+        with open(csv_file, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+
+            # Write header row
+            header = []
+            for child in root[0]:
+                header.append(child.tag)
+            writer.writerow(header)
+
+            # Write data rows
+            for elem in root:
+                row = []
+                for child in elem:
+                    row.append(child.text)
+                writer.writerow(row)
+
+        print(f"Converted {xml_file} to CSV: {csv_file}")
+        print('\n')
+        return csv_file
+
+    # Define the root directory
+    root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+    # Find CycleTime.xml files
+    cycle_time_files = find_cycle_time_files(root_directory)
+
+    # Rename CycleTime.xml files with setup descriptions, convert to CSV, and move them
+    for file_path in cycle_time_files:
+        new_path = rename_cycle_time_with_description(file_path)
+        if new_path:
+            csv_file_path = xml_to_csv(new_path, os.path.splitext(new_path)[0] + ".csv")
+            # Create the CycleTime directory if it doesn't exist
+            cycle_time_dir = os.path.join(os.path.dirname(root_directory), "CycleTime")
+            if not os.path.exists(cycle_time_dir):
+                os.makedirs(cycle_time_dir)
+            # Move the CSV file to the CycleTime directory
+            shutil.copy(csv_file_path, os.path.join(cycle_time_dir, os.path.basename(csv_file_path)))
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    print("\033[32;4m*******Feeder Setup*******\033[0m")
+    ######################################################################################################
+
+    # FeederSetup
+
+    def find_feeder_setup_files(root_directory):
+        feeder_setup_files = []
+        for root, dirs, files in os.walk(root_directory):
+            for file in files:
+                if file == "FeederSetup.csv":
+                    feeder_setup_files.append(os.path.join(root, file))
+        return feeder_setup_files
+
+    def rename_feeder_setup_with_description(file_path):
+        setup_description = find_setup_description(file_path)
+        if "[Top] Line1" in setup_description:
+            new_file_name = "FeederSetup_TL1.csv"
+        elif "[Bottom] Line1" in setup_description:
+            new_file_name = "FeederSetup_BL1.csv"
+        elif "[Top] Line2" in setup_description:
+            new_file_name = "FeederSetup_TL2.csv"
+        elif "[Bottom] Line2" in setup_description:
+            new_file_name = "FeederSetup_BL2.csv"
+        elif "[Top] Line3" in setup_description:
+            new_file_name = "FeederSetup_TL3.csv"
+        elif "[Bottom] Line3" in setup_description:
+            new_file_name = "FeederSetup_BL3.csv"
+        elif "[Top] Line4" in setup_description:
+            new_file_name = "FeederSetup_TL4.csv"
+        elif "[Bottom] Line4" in setup_description:
+            new_file_name = "FeederSetup_BL4.csv"
+        elif "[Top] Line-1" in setup_description:
+            new_file_name = "FeederSetup_TL4C.csv"
+        elif "[Bottom] Line-1" in setup_description:
+            new_file_name = "FeederSetup_BL4C.csv"
+        else:
+            return
+        
+        new_path = os.path.join(os.path.dirname(file_path), new_file_name)
+        os.rename(file_path, new_path)
+        print('\n')
+        print(f"FeederSetup.csv renamed to: {new_path}")
+        print('\n')
+        return new_path
+
+    # Find FeederSetup.csv files
+    feeder_setup_files = find_feeder_setup_files(root_directory)
+
+    # Rename FeederSetup.csv files with setup descriptions and move them
+    for file_path in feeder_setup_files:
+        new_path = rename_feeder_setup_with_description(file_path)
+        if new_path:
+            # Create the FeederSetup directory if it doesn't exist
+            feeder_setup_dir = os.path.join(os.path.dirname(root_directory), "FeederSetup")
+            if not os.path.exists(feeder_setup_dir):
+                os.makedirs(feeder_setup_dir)
+            # Move the renamed file to the FeederSetup directory
+            shutil.copy(new_path, os.path.join(feeder_setup_dir, os.path.basename(new_path)))
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    print("\033[32;4m*******BOTTOM AND TOP PRPGRAM FOLDER NAME FETCH*******\033[0m")
+    ######################################################################################################
+        #BOTTOM ADN TOP FOLDER NAME FETCH
+    ######################################################################################################
+
+    def breakdown_folder_name(folder_name):
+        parts = folder_name.split(';')
+        breakdown = {
+            'Identifier': parts[0],
+            'Version': parts[1],
+            'Position': parts[2],
+            'Secondary Identifier': parts[3],
+            'Production Stage': parts[4],
+            'Setup Details': parts[5]
+        }
+        return breakdown
+
+    def fetch_folder_data_and_save(root_directory, output_file):
+        # Get a list of all items in the root directory
+        all_items = os.listdir(root_directory)
+        
+        # Filter out only directories
+        folder_names = [item for item in all_items if os.path.isdir(os.path.join(root_directory, item))]
+        
+        # Initialize an empty list to store folder data
+        folder_data = []
+        
+        # Iterate over each folder name
+        for folder_name in folder_names:
+            # Break down the folder name
+            breakdown = breakdown_folder_name(folder_name)
+            # Append folder data to the list
+            folder_data.append(breakdown)
+        
+        # Create a DataFrame from the folder data
+        df = pd.DataFrame(folder_data)
+        
+        # Save the final DataFrame to a CSV file
+        df.to_csv(output_file, index=False)
+
+        # Print a message indicating the file has been saved
+        print('\n')
+        print(f"Folder data saved to {output_file}")
+        print('\n')
+
+        # Filter the DataFrame based on Production Stage for Bottom Line
+        bottom_line_df = df[df['Production Stage'].str.startswith('[Bottom]')]
+        
+        # Filter the DataFrame based on Production Stage for Top Line
+        top_line_df = df[df['Production Stage'].str.startswith('[Top]')]
+
+        # Change directory to save Bottom line data
+        os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime")
+        bottom_line_df.to_csv('Bottom_Line_Data.csv', index=False)
+        print("Bottom line data saved to Bottom_Line_Data.csv")
+        print('\n')
+            
+        # Change directory to save Top line data
+        os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime")
+        top_line_df.to_csv('Top_Line_Data.csv', index=False)
+        print("Top line data saved to Top_Line_Data.csv")
+
+    # Example root directory and output file
+    root_directory = "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup"
+    output_file = 'Breakfile.csv'
+
+    #Fetch folder data and save to CSV file
+    fetch_folder_data_and_save(root_directory, output_file)
+
+    #Delet the BreakFile    
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup')
+    if os.path.exists("Breakfile.csv"):
+            os.remove("Breakfile.csv")
+    else:
+        print("The file does not exist")
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    print("\033[32;4m*******LINE ROW CHECK FOR BOT AND TOP CYCLETIME*******\033[0m")
+    ######################################################################################################
+        #CycleTime_BL1 ROW ADJUSTMENT
+    ######################################################################################################
+    #conversion
+            
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[4:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_BL1.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_BL1.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_TL1 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[4:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_TL1.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_TL1.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_BL2 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[4:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_BL2.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_BL2.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_TL2 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[4:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_TL2.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_TL2.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_BL3 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[2:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_BL3.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_BL3.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_TL3 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[2:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_TL3.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_TL3.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_BL4 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[2:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_BL4.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_BL4.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_TL4 ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[2:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_TL4.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_TL4.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_BL4C ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[3:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_BL4C.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_BL4C.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+        #CycleTime_TL4C ROW ADJUSTMENT
+    ######################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    def add_header_to_csv(input_file, output_file, new_header):
+        # Check if the input file exists
+        if not os.path.exists(input_file):
+            print('\n')
+            print("Input file not found:", input_file)
+            return
+
+        # Read the existing contents of the CSV file, skipping the first 4 rows
+        with open(input_file, 'r', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)[3:]  # Skip the first 4 rows
+
+        # Insert the new header at the beginning of the data
+        data.insert(0, new_header)
+
+        # Write the data with the new header to the output file
+        with open(output_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+    # Get the current working directory
+    cwd = os.getcwd()
+    print('\n')
+    print("Current working directory:", cwd)
+
+    # Define the input and output file paths
+    input_file = "CycleTime_TL4C.csv"  # Make sure the file exists in the current directory
+    output_file = "CycleTime_TL4C.csv"
+
+    # New header to be added
+    new_header = ["LineName", "ModuleName", "ModuleNo", "Lane", "GntaryNo", "CycleTime", "Placing Time", "Loading Time", "Qty", "Average"]
+
+    # Call the function to add the new header
+    add_header_to_csv(input_file, output_file, new_header)
+    print('\n')
+    print("New header added to the CSV file:", output_file)
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    print("\033[32;4m*******RESHAPING CYCLETIME DATA*******\033[0m")
+    ######################################################################################################
+    ######################################################################################################
+        #Separate the Perticular Data start here
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 1 CycleTime Top
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_TL1.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX2-1':'AIMEX2'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX3-1':'AIMEX3'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'AIMEX2', 'AIMEX3', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_TL1.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_TL1.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 1 CycleTime Bottom
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_BL1.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX2-1':'AIMEX2'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX3-1':'AIMEX3'}, inplace = True)
+        
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'AIMEX2', 'AIMEX3', 'Lane', 'Qty']]
+
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Bottom", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_BL1.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_BL1.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 2 CycleTime Top
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_TL2.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'AIMEX-IIIC_1-1':'AIMEX-IIIC_1'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX-IIIC_2-1':'AIMEX-IIIC_2'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX-IIIC_3-1':'AIMEX-IIIC_3'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'AIMEX-IIIC_1', 'AIMEX-IIIC_2', 'AIMEX-IIIC_3', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_TL2.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_TL2.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 2 CycleTime Bottom
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_BL2.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'AIMEX-IIIC_1-1':'AIMEX-IIIC_1'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX-IIIC_2-1':'AIMEX-IIIC_2'}, inplace = True)
+        pivot_df.rename(columns = {'AIMEX-IIIC_3-1':'AIMEX-IIIC_3'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'AIMEX-IIIC_1', 'AIMEX-IIIC_2', 'AIMEX-IIIC_3', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_BL2.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_BL2.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 3 CycleTime Top
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_TL3.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXTI_MC1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-5':'NXT5'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-6':'NXT6'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'NXT5', 'NXT6', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_TL3.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_TL3.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 3 CycleTime Bottom
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_BL3.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXTI_MC1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-5':'NXT5'}, inplace = True)
+        pivot_df.rename(columns = {'NXTI_MC1-6':'NXT6'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'NXT5', 'NXT6', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_BL3.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_BL3.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 4 CycleTime Top
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_TL4.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT2-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-4':'NXT4'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_TL4.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_TL4.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line 4 CycleTime Bottom
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_BL4.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT2-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-4':'NXT4'}, inplace = True)
+
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_BL4.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_BL4.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line-1 4C  CycleTime Top
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_TL4C.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-5':'NXT5'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-6':'NXT6'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-1':'NXT7'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'NXT5', 'NXT6', 'NXT7', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_TL4C.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_TL4C.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+
+    # Change directory Line-1 4C CycleTime Bottom
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Get current directory
+    current_directory = os.getcwd()
+
+    # Define the file path
+    file_path = 'CycleTime_BL4C.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        dct_H1 = pd.read_csv(file_path)
+        
+        # Convert ModuleName to string and concatenate with ModuleNo
+        dct_H1["ModuleName"] = dct_H1['ModuleName'].astype(str) + "-" + dct_H1['ModuleNo'].astype(str)
+        
+        # Drop unnecessary columns
+        dct_H1 = dct_H1.drop(['ModuleNo', 'GntaryNo', 'Placing Time', 'Average'], axis=1)
+        
+        # Pivot the DataFrame
+        pivot_df = pd.pivot_table(dct_H1, values='CycleTime', index='LineName', columns='ModuleName', aggfunc='sum')
+        
+        # Add additional columns to the pivot table
+        pivot_df['Lane'] = dct_H1['Lane'].iloc[0]  # Assuming all 'Lane' values are the same for the same 'LineName'
+        pivot_df['Qty'] = dct_H1.groupby('LineName')['Qty'].sum()
+        
+        # Reset index
+        pivot_df = pivot_df.reset_index()
+
+        pivot_df.rename(columns = {'NXT1-1':'NXT1'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-2':'NXT2'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-3':'NXT3'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-4':'NXT4'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-5':'NXT5'}, inplace = True)
+        pivot_df.rename(columns = {'NXT1-6':'NXT6'}, inplace = True)
+        pivot_df.rename(columns = {'NXT2-1':'NXT7'}, inplace = True)
+
+        # Rearrange columns in specified order
+        pivot_df = pivot_df[['LineName', 'NXT1', 'NXT2', 'NXT3', 'NXT4', 'NXT5', 'NXT6', 'NXT7', 'Lane', 'Qty']]
+        
+        # Display the pivot DataFrame
+        print('\n')
+        print("Pivot Top", pivot_df)
+        
+        # Save the final DataFrame to a CSV file
+        pivot_df.to_csv('CycleTime_BL4C.csv', index=False)
+        
+        # Print a message indicating the file has been saved
+        print('\n')
+        print("Final cycle time data saved to CycleTime_BL4C.csv")
+    else:
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+
+    print("\033[32;4m*******CYCLETIME DATA INSERTING*******\033[0m")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+    Chd = os.getcwd()
+
+    ######################################################################################################
+    #CT LINE1 TOP
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_TL1.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_tl1_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_tl1_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_tl1_data.insert(1, "Panel/Board", "0")
+        cycle_time_tl1_data.insert(2, "Screen Printer", "30")
+        cycle_time_tl1_data.insert(3, "SPI", "25")
+        cycle_time_tl1_data.insert(4, "Reflow", "400")
+        cycle_time_tl1_data.insert(5, "AOI", "25")
+        cycle_time_tl1_data.insert(6, "Bottleneck", "")
+        cycle_time_tl1_data.insert(7, "Cycle time", "")
+        cycle_time_tl1_data.insert(8, "UPH", "")
+        cycle_time_tl1_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Top_Line_Data.csv
+        Top_line_data = pd.read_csv('Top_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_TL1 data
+        merged_data = pd.concat([cycle_time_tl1_data, Top_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','AIMEX2','AIMEX3','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_TL1.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Top_Line_Data.csv moved into CycleTime_TL1.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE1 BOTTOM
+    ######################################################################################################
+        
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_BL1.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_bl1_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_bl1_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_bl1_data.insert(1, "Panel/Board", "0")
+        cycle_time_bl1_data.insert(2, "Screen Printer", "30")
+        cycle_time_bl1_data.insert(3, "SPI", "25")
+        cycle_time_bl1_data.insert(4, "Reflow", "400")
+        cycle_time_bl1_data.insert(5, "AOI", "25")
+        cycle_time_bl1_data.insert(6, "Bottleneck", "")
+        cycle_time_bl1_data.insert(7, "Cycle time", "")
+        cycle_time_bl1_data.insert(8, "UPH", "")
+        cycle_time_bl1_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Bottom_Line_Data.csv
+        Bottom_line_data = pd.read_csv('Bottom_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_BL1 data
+        merged_data = pd.concat([cycle_time_bl1_data, Bottom_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','AIMEX2','AIMEX3','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_BL1.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Bottom_Line_Data.csv moved into CycleTime_BL1.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE2 TOP
+    ######################################################################################################
+        
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_TL2.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_tl2_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_tl2_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_tl2_data.insert(1, "Panel/Board", "0")
+        cycle_time_tl2_data.insert(2, "Screen Printer", "30")
+        cycle_time_tl2_data.insert(3, "SPI", "25")
+        cycle_time_tl2_data.insert(4, "Reflow", "400")
+        cycle_time_tl2_data.insert(5, "AOI", "25")
+        cycle_time_tl2_data.insert(6, "Bottleneck", "")
+        cycle_time_tl2_data.insert(7, "Cycle time", "")
+        cycle_time_tl2_data.insert(8, "UPH", "")
+        cycle_time_tl2_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Top_Line_Data.csv
+        Top_line_data = pd.read_csv('Top_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_TL2 data
+        merged_data = pd.concat([cycle_time_tl2_data, Top_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','AIMEX-IIIC_1','AIMEX-IIIC_2','AIMEX-IIIC_3','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_TL2.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Top_Line_Data.csv moved into CycleTime_TL2.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE2 BOTTOM
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_BL2.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_bl2_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_bl2_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_bl2_data.insert(1, "Panel/Board", "0")
+        cycle_time_bl2_data.insert(2, "Screen Printer", "30")
+        cycle_time_bl2_data.insert(3, "SPI", "25")
+        cycle_time_bl2_data.insert(4, "Reflow", "400")
+        cycle_time_bl2_data.insert(5, "AOI", "25")
+        cycle_time_bl2_data.insert(6, "Bottleneck", "")
+        cycle_time_bl2_data.insert(7, "Cycle time", "")
+        cycle_time_bl2_data.insert(8, "UPH", "")
+        cycle_time_bl2_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Bottom_Line_Data.csv
+        Bottom_line_data = pd.read_csv('Bottom_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_BL2 data
+        merged_data = pd.concat([cycle_time_bl2_data, Bottom_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','AIMEX-IIIC_1','AIMEX-IIIC_2','AIMEX-IIIC_3','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_BL2.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Bottom_Line_Data.csv moved into CycleTime_BL2.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE3 TOP
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_TL3.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_tl3_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_tl3_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_tl3_data.insert(1, "Panel/Board", "0")
+        cycle_time_tl3_data.insert(2, "Screen Printer", "30")
+        cycle_time_tl3_data.insert(3, "SPI", "25")
+        cycle_time_tl3_data.insert(4, "Reflow", "400")
+        cycle_time_tl3_data.insert(5, "AOI", "25")
+        cycle_time_tl3_data.insert(6, "Bottleneck", "")
+        cycle_time_tl3_data.insert(7, "Cycle time", "")
+        cycle_time_tl3_data.insert(8, "UPH", "")
+        cycle_time_tl3_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Top_Line_Data.csv
+        Top_line_data = pd.read_csv('Top_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_TL3 data
+        merged_data = pd.concat([cycle_time_tl3_data, Top_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_TL3.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Top_Line_Data.csv moved into CycleTime_TL3.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE3 BOTTOM
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_BL3.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_bl3_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_bl3_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_bl3_data.insert(1, "Panel/Board", "0")
+        cycle_time_bl3_data.insert(2, "Screen Printer", "30")
+        cycle_time_bl3_data.insert(3, "SPI", "25")
+        cycle_time_bl3_data.insert(4, "Reflow", "400")
+        cycle_time_bl3_data.insert(5, "AOI", "25")
+        cycle_time_bl3_data.insert(6, "Bottleneck", "")
+        cycle_time_bl3_data.insert(7, "Cycle time", "")
+        cycle_time_bl3_data.insert(8, "UPH", "")
+        cycle_time_bl3_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Bottom_Line_Data.csv
+        Bottom_line_data = pd.read_csv('Bottom_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_BL3 data
+        merged_data = pd.concat([cycle_time_bl3_data, Bottom_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_BL3.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Bottom_Line_Data.csv moved into CycleTime_BL3.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE4 TOP
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_TL4.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_tl4_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_tl4_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_tl4_data.insert(1, "Panel/Board", "0")
+        cycle_time_tl4_data.insert(2, "Screen Printer", "30")
+        cycle_time_tl4_data.insert(3, "SPI", "25")
+        cycle_time_tl4_data.insert(4, "Reflow", "400")
+        cycle_time_tl4_data.insert(5, "AOI", "25")
+        cycle_time_tl4_data.insert(6, "Bottleneck", "")
+        cycle_time_tl4_data.insert(7, "Cycle time", "")
+        cycle_time_tl4_data.insert(8, "UPH", "")
+        cycle_time_tl4_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Top_Line_Data.csv
+        Top_line_data = pd.read_csv('Top_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_TL4 data
+        merged_data = pd.concat([cycle_time_tl4_data, Top_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_TL4.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Top_Line_Data.csv moved into CycleTime_TL4.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE4 BOTTOM
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_BL4.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_bl4_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_bl4_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_bl4_data.insert(1, "Panel/Board", "0")
+        cycle_time_bl4_data.insert(2, "Screen Printer", "30")
+        cycle_time_bl4_data.insert(3, "SPI", "25")
+        cycle_time_bl4_data.insert(4, "Reflow", "400")
+        cycle_time_bl4_data.insert(5, "AOI", "25")
+        cycle_time_bl4_data.insert(6, "Bottleneck", "")
+        cycle_time_bl4_data.insert(7, "Cycle time", "")
+        cycle_time_bl4_data.insert(8, "UPH", "")
+        cycle_time_bl4_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Bottom_Line_Data.csv
+        Bottom_line_data = pd.read_csv('Bottom_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_BL4 data
+        merged_data = pd.concat([cycle_time_bl4_data, Bottom_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_BL4.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Bottom_Line_Data.csv moved into CycleTime_BL4.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE-1 C4 TOP
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_TL4C.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_tl4C_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_tl4C_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_tl4C_data.insert(1, "Panel/Board", "0")
+        cycle_time_tl4C_data.insert(2, "Screen Printer", "30")
+        cycle_time_tl4C_data.insert(3, "SPI", "25")
+        cycle_time_tl4C_data.insert(4, "Reflow", "400")
+        cycle_time_tl4C_data.insert(5, "AOI", "25")
+        cycle_time_tl4C_data.insert(6, "Bottleneck", "")
+        cycle_time_tl4C_data.insert(7, "Cycle time", "")
+        cycle_time_tl4C_data.insert(8, "UPH", "")
+        cycle_time_tl4C_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Top_Line_Data.csv
+        Top_line_data = pd.read_csv('Top_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_TL4C data
+        merged_data = pd.concat([cycle_time_tl4C_data, Top_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_TL4C.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Top_Line_Data.csv moved into CycleTime_TL4C.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    #CT LINE-1 C4 BOTTOM
+    ######################################################################################################
+
+    # Change directory to the location of the CSV files
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    # Define the file path
+    file_path = 'CycleTime_BL4C.csv'
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Read the CSV file
+        cycle_time_bl4C_data = pd.read_csv(file_path)
+        
+        # Get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        # Add current date and time to the header
+        cycle_time_bl4C_data.insert(0, "Current_DateTime", current_datetime)
+        cycle_time_bl4C_data.insert(1, "Panel/Board", "0")
+        cycle_time_bl4C_data.insert(2, "Screen Printer", "30")
+        cycle_time_bl4C_data.insert(3, "SPI", "25")
+        cycle_time_bl4C_data.insert(4, "Reflow", "400")
+        cycle_time_bl4C_data.insert(5, "AOI", "25")
+        cycle_time_bl4C_data.insert(6, "Bottleneck", "")
+        cycle_time_bl4C_data.insert(7, "Cycle time", "")
+        cycle_time_bl4C_data.insert(8, "UPH", "")
+        cycle_time_bl4C_data.insert(9, "Cycle Remarks", "")
+        
+        # Read the data from Bottom_Line_Data.csv
+        Bottom_line_data = pd.read_csv('Bottom_Line_Data.csv')
+        
+        # Append the top line data to the CycleTime_BL4C data
+        merged_data = pd.concat([cycle_time_bl4C_data, Bottom_line_data], axis=1)
+
+        merged_data.rename(columns = {'Qty':'Total Component'}, inplace = True)
+        merged_data = merged_data[['LineName','Identifier','Version','Position','Current_DateTime','Production Stage','Lane','Panel/Board','Total Component','Screen Printer','SPI','NXT1','NXT2','NXT3','NXT4','NXT5','NXT6','Reflow','AOI','Setup Details','Bottleneck','Cycle time','UPH','Cycle Remarks']]
+        
+        # Save the merged data to CycleTime_BL4C.csv
+        merged_data.to_csv(file_path, index=False)
+        
+        print('\n')
+        print("Data from Bottom_Line_Data.csv moved into CycleTime_BL4C.csv")
+    else:
+        # If the file does not exist, print a message
+        print('The file does not exist.')
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+        
+    print("\033[32;4m*******CYCLETIME DATA TRANSFERING*******\033[0m")
+    ######################################################################################################
+
+
+    # Change directory to the CycleTime folder
+    os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime')
+
+    print('CycleTime---')
+
+    # Function to append data to existing Excel sheet or create a new one
+    def append_to_excel(csv_file, excel_file):
+        # Read the CSV file
+        df = pd.read_csv(csv_file)
+        
+        # Get the sheet name from the first row of the CSV file
+        line_name = df.iloc[0]['LineName']
+        
+        # Check if the Excel file exists
+        if os.path.exists(excel_file):
+            # Load existing Excel file
+            existing_sheets = pd.read_excel(excel_file, sheet_name=None)
+            
+            # Check if the sheet exists in the Excel file
+            if line_name in existing_sheets:
+                # Append data to existing sheet
+                existing_df = existing_sheets[line_name]
+                combined_data = pd.concat([existing_df, df], ignore_index=True)
+                existing_sheets[line_name] = combined_data
+            else:
+                # Create a new sheet and write data
+                existing_sheets[line_name] = df
+        
+        else:
+            # If the Excel file doesn't exist, create a new one and write data
+            existing_sheets = {line_name: df}
+        
+        # Write all sheets back to Excel file
+        with pd.ExcelWriter(excel_file, engine='openpyxl') as writer:
+            for sheet_name, sheet_data in existing_sheets.items():
+                sheet_data.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    # Define the Excel file
+    excel_file = 'CycleTime.xlsx'
+
+    # List of CSV files
+    csv_files = ['CycleTime_BL1.csv', 'CycleTime_TL1.csv', 'CycleTime_BL2.csv', 'CycleTime_TL2.csv', 'CycleTime_BL3.csv', 'CycleTime_TL3.csv', 'CycleTime_BL4.csv', 'CycleTime_TL4.csv', 'CycleTime_BL4C.csv', 'CycleTime_TL4C.csv']
+
+    # Filter out the CSV files that exist in the CycleTime folder
+    existing_csv_files = [os.path.join('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime', file) for file in csv_files if os.path.isfile(os.path.join('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime', file))]
+
+    # Upload data to Excel file for each existing CSV file
+    os.chdir('D:/NX_BACKWORK/Database_File/SMT_CT')
+    for csv_file in existing_csv_files:
+        append_to_excel(csv_file, excel_file)
+
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################
+    ######################################################################################################

@@ -1,0 +1,58 @@
+
+# Define the root directory where you want to search for the XML file
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Function to search for the XML file recursively within a directory
+def find_xml_file(directory):
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file == "CycleTime_TL1.xml":
+                return os.path.join(root, file)
+    return None
+
+# Function to convert XML to CSV
+def xml_to_csv(xml_file, csv_file):
+    # Parse the XML file
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+
+    # Open CSV file in write mode with newline='' to prevent extra newlines
+    with open(csv_file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write header row
+        header = ["Header1", "Header2", "Header3", "Header4", "Header5", "Header6", "Header7", "Header8", "Header9", "Header10", "NewHeader"]
+        writer.writerow(header)
+
+        # Write data rows
+        for elem in root:
+            row = []
+            for child in elem:
+                row.append(child.text)
+            # Add the value for the new header
+            row.append("NewHeaderValue")
+            writer.writerow(row)
+
+# Find the XML file within the root directory
+xml_file_path = find_xml_file(root_directory)
+
+# Check if the XML file was found
+if xml_file_path:
+    print("XML file found at:", xml_file_path)
+    # Define the CSV file path
+    csv_file_path = os.path.splitext(xml_file_path)[0] + ".csv"
+    print("CSV file will be saved at:", csv_file_path)
+    
+    # Convert XML to CSV
+    xml_to_csv(xml_file_path, csv_file_path)
+    
+    # Define the destination directory to move the CSV file
+    dest_directory = os.path.join(os.path.dirname(root_directory), "CycleTime")
+    os.makedirs(dest_directory, exist_ok=True)  # Create destination directory if it doesn't exist
+    
+    # Move the CSV file to the destination directory
+    shutil.move(csv_file_path, dest_directory)
+    
+    print("Conversion successful! CSV file moved to CycleTime folder.")
+else:
+    print("XML file not found within the specified directory.")

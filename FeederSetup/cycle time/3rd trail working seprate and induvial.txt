@@ -1,0 +1,65 @@
+import os
+
+def find_files(root_directory, filenames):
+    found_files = []
+    for root, dirs, files in os.walk(root_directory):
+        for file in files:
+            if file in filenames:
+                file_path = os.path.join(root, file)
+                found_files.append(file_path)
+    return found_files
+
+# Define the root directory where you want to search for the files
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Define the filenames to search for
+filenames = ["CycleTime.xml", "FeederSetup.csv"]
+
+# Find the files within the root directory
+found_files = find_files(root_directory, filenames)
+
+# Print the paths of the found files
+for file_path in found_files:
+    print(file_path)
+
+def find_folders_with_setup(root_directory, setup_name):
+    setup_folders = []
+    for root, dirs, files in os.walk(root_directory):
+        if setup_name in root:
+            setup_folders.append(root)
+    return setup_folders
+
+# Define the root directory where you want to search for the folders
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Define the setup name to search for
+setup_name = "Original setup"
+
+print("Working....")
+
+# Find the folders containing the setup name within the root directory
+setup_folders = find_folders_with_setup(root_directory, setup_name)
+
+# Print the names of the folders containing the setup name
+for folder in setup_folders:
+    print(folder)
+
+
+import os
+
+# Define the root directory
+root_directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Function to find the folder containing "Original setup"
+def find_original_setup_folder(root_directory):
+    # Iterate through all directories in the root directory
+    for root, dirs, files in os.walk(root_directory):
+        for dir in dirs:
+            # Check if the directory contains "Original setup"
+            if "Original setup" in dir:
+                # Print the directory name and exit the function
+                print(dir)
+                return
+
+# Find and print the folder containing "Original setup" within the root directory
+find_original_setup_folder(root_directory)

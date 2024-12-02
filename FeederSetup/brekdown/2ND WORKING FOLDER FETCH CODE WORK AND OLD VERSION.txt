@@ -1,0 +1,71 @@
+######################################################################################################
+    #BOTTOM ADN TOP FOLDER NAME FETCH
+######################################################################################################
+
+def breakdown_folder_name(folder_name):
+    parts = folder_name.split(';')
+    breakdown = {
+        'Identifier': parts[0],
+        'Version': parts[1],
+        'Position': parts[2],
+        'Secondary Identifier': parts[3],
+        'Production Stage': parts[4],
+        'Setup Details': parts[5]
+    }
+    return breakdown
+
+def fetch_folder_data_and_save(root_directory, output_file):
+    # Get a list of all items in the root directory
+    all_items = os.listdir(root_directory)
+    
+    # Filter out only directories
+    folder_names = [item for item in all_items if os.path.isdir(os.path.join(root_directory, item))]
+    
+    # Initialize an empty list to store folder data
+    folder_data = []
+    
+    # Iterate over each folder name
+    for folder_name in folder_names:
+        # Break down the folder name
+        breakdown = breakdown_folder_name(folder_name)
+        # Append folder data to the list
+        folder_data.append(breakdown)
+    
+    # Create a DataFrame from the folder data
+    df = pd.DataFrame(folder_data)
+    
+    # Save the final DataFrame to a CSV file
+    df.to_csv(output_file, index=False)
+
+    # Print a message indicating the file has been saved
+    print(f"Folder data saved to {output_file}")
+
+    # Filter the DataFrame based on Production Stage
+    bottom_line_df = df[df['Production Stage'] == '[Bottom] Line1']
+    top_line_df = df[df['Production Stage'] == '[Top] Line1']
+
+    Chd = os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/CycleTime")
+
+    # Save each filtered DataFrame to a CSV file
+    bottom_line_df.to_csv('Bottom_Line_Data.csv', index=False)
+    top_line_df.to_csv('Top_Line_Data.csv', index=False)
+
+    # Print a message indicating the files have been saved
+    print("Bottom line data saved to Bottom_Line_Data.csv")
+    print("Top line data saved to Top_Line_Data.csv")
+
+    Chd = os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup")
+
+# Example root directory and output file
+root_directory = "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup"
+output_file = 'Breakfile.csv'
+
+#Fetch folder data and save to CSV file
+fetch_folder_data_and_save(root_directory, output_file)
+
+#Delet the BreakFile    
+Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup')
+if os.path.exists("Breakfile.csv"):
+        os.remove("Breakfile.csv")
+else:
+    print("The file does not exist")

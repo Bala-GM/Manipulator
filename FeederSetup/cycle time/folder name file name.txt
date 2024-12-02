@@ -1,0 +1,34 @@
+import os
+
+# Define the directory where the XML file is located
+directory = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\FeederSetup"
+
+# Function to replace keywords in the file name based on folder name
+def replace_keywords(folder_name, file_name):
+    # Replace "Bottom" with "B"
+    file_name = file_name.replace("Bottom", "B")
+    # Replace "Top" with "T"
+    file_name = file_name.replace("Top", "T")
+    # Replace "Line1" with "L1", "Line2" with "L2", "Line3" with "L3"
+    file_name = file_name.replace("Line1", "L1")
+    file_name = file_name.replace("Line2", "L2")
+    file_name = file_name.replace("Line3", "L3")
+    return file_name
+
+# Find the XML file within the specified directory
+for root, dirs, files in os.walk(directory):
+    for file in files:
+        if file == "CycleTime.xml":
+            # Construct the new file name
+            folder_name = os.path.basename(root)
+            new_file_name = replace_keywords(folder_name, "CycleTime_BL1.xml")
+            # Construct the old and new file paths
+            old_file_path = os.path.join(root, file)
+            new_file_path = os.path.join(root, new_file_name)
+            # Rename the file
+            os.rename(old_file_path, new_file_path)
+            print("File renamed successfully.")
+            break
+    else:
+        continue
+    break  # This break statement exits the outer loop once the file is found and renamed
