@@ -1,0 +1,14528 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+import xlrd
+
+
+# Program 1: FeederSetup
+def program_1():
+
+    print("\033[32;4m*******Feeder and BOM data Verification Version--PY_V-2.1 interface_GUI/J1624-89P13*******\033[0m")
+
+    '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
+
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Format the current date and time as a string
+    #formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    # Format the date and time in a 12-hour clock with AM/PM
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
+
+    print('\n')
+
+    # Print the formatted date and time
+    print(f"\033[31mCurrent Date and Time: {formatted_datetime}\033[0m")
+
+    print('\n')
+
+    '''print(f"Current Year: {current_datetime.year}")
+    print(f"Current Month: {current_datetime.month}")
+    print(f"Current Day: {current_datetime.day}")
+    print(f"Current Hour: {current_datetime.hour}")
+    print(f"Current Minute: {current_datetime.minute}")
+    print(f"Current Second: {current_datetime.second}")'''
+
+    dL1 = input("\033[93mEnter BOM Name :\033[0m")
+    print('\n')
+    dL2 = input("\033[93mEnter Feeder Name :\033[0m")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+    Chd = os.getcwd()
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Upload"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    os.getcwd()
+    #Chd= os.chdir('D:\\NX_BACKWORK')
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+    if os.path.exists("Feeder_List_OPT.xlsx"):
+        os.remove("Feeder_List_OPT.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Feeder_List_OPB.xlsx"):
+        os.remove("Feeder_List_OPB.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Upload-Data.xlsx"):
+        os.remove("Upload-Data.xlsx")
+    else:
+        print("The file does not exist")
+
+    os.getcwd()
+    #Chd= os.chdir('D:\\NX_BACKWORK')
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup')
+    Chd = os.getcwd()
+
+    ##########################################################################################################################################
+
+    #bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
+    print('\n')
+    print('\033[92;4m******FeederSetup Progress******\033[0m')
+    print('\n')
+    ##########################################################################################################################################
+
+    #LINE1T
+
+    file_path = 'FeederSetup_TL1.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+            
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+        
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 350:
+            # Continue with the rest of your code
+            print(f"dt_H1 line count: {len(dt_H1)}")
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 353.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '353'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '351'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+        
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL1: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1-2-','3-2-')
+
+        df1['Location'] = df1['Location'].str.replace('3-1-1-','3-1-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-2-','2-2-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','2-1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1B
+
+    file_path = 'FeederSetup_BL1.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+        
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 350:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 353.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '353'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
+
+                # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '351'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL1: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1-2-','3-2-')
+
+        df1['Location'] = df1['Location'].str.replace('3-1-1-','3-1-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-2-','2-2-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','2-1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE2T
+
+    file_path = 'FeederSetup_TL2.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 400:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 403.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '403'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '401'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL2: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        #df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1','3')
+
+        df1['Location'] = df1['Location'].str.replace('2-1','2')
+
+        df1['Location'] = df1['Location'].str.replace('1-1','1')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE2B
+
+    file_path = 'FeederSetup_BL2.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 400:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 403.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '403'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '401'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL2: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        #df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1','3')
+
+        df1['Location'] = df1['Location'].str.replace('2-1','2')
+
+        df1['Location'] = df1['Location'].str.replace('1-1','1')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+            #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+            #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+            #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+            #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)   
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE3T
+
+    file_path = 'FeederSetup_TL3.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 170:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 173.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '173'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '171'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL3: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE3B
+
+    file_path = 'FeederSetup_BL3.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 170:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 173.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '173'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '171'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL3: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+##########################################################################################################################################
+
+    #LINE4T
+
+    file_path = 'FeederSetup_TL4.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL4.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 82:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 85.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in TOP Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL4.csv', encoding="utf-8",index_col=False, skiprows=range(2, 83), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in TOP Feeder '83'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL4.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL4: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE4B
+
+    file_path = 'FeederSetup_BL4.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL4.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 82:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 85.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in BOT Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL4.csv', encoding="utf-8",index_col=False, skiprows=range(2, 83), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in BOT Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL4.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL4: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1T-C4
+
+    file_path = 'FeederSetup_TL4C.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 227:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 230.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '230'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '228'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL4C: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','7-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1B-C4
+
+    file_path = 'FeederSetup_BL4C.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 227:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 230.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '230'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '228'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL4C: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','7-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
+    print('\n')
+    print("\033[92;4m******FeederSetup Progress Merge******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LEN MERGE TOP AND BOT
+
+    data_file_folder = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    df=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Home'))
+    df1=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df1.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FL_Upload'))
+    df2=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df2.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FL_Verify'))
+    df3=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df3.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Size'))
+    df4=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df4.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Side'))
+    df5=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df5.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FeederName'))
+
+    df6=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df6.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Type'))
+
+    len(df)
+    df_master1 = pd.concat(df, axis=0)
+    len(df1)
+    df_master2 = pd.concat(df1, axis=0)
+    len(df2)
+    df_master3 = pd.concat(df2, axis=0)
+    len(df3)
+    df_master4 = pd.concat(df3, axis=0)
+    len(df4)
+    df_master5 = pd.concat(df4, axis=0)
+    len(df5)
+    df_master6 = pd.concat(df5, axis=0)
+    len(df6)
+    df_master7 = pd.concat(df6, axis=0)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx") as writer:
+        #df_master.to_excel('masterfile.xlsx',index=False)
+            df_master1.to_excel(writer, sheet_name="Home", index=False)
+            df_master2.to_excel(writer, sheet_name="FeederSetup", index=False)
+            df_master3.to_excel(writer, sheet_name="FeederCol", index=False)
+            df_master4.to_excel(writer, sheet_name="FeederSize", index=False)
+            df_master5.to_excel(writer, sheet_name="Total side Count", index=False)
+            df_master6.to_excel(writer, sheet_name="FeederName", index=False)
+            df_master7.to_excel(writer, sheet_name="Type", index=False)
+
+    if os.path.exists("Feeder_List_OPT.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx" , "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Feeder_List_OPT.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Feeder_List_OPB.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx" , "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Feeder_List_OPB.xlsx")
+    else:
+        print("The file does not exist")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
+    print('\n')
+    print("\033[92;4m******Program Master List******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Master list program update and LOG
+
+    os.getcwd()
+    Chd= os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified")
+    Chd = os.getcwd()
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    dfpm1 = pd.read_excel('FeederSetup.xlsx', sheet_name='Home')
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Pro_ML.xlsx") as writer:
+        #df_master.to_excel('masterfile.xlsx',index=False)
+            dfpm1.to_excel(writer, sheet_name="Home", index=False)
+
+    if os.path.exists("Pro_ML.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Pro_ML.xlsx" , "D:/NX_BACKWORK/Database_File/SMT_Master_List/Pro_ML.xlsx")
+    else:
+        print("The file does not exist")
+
+    data_file_folder = 'D:/NX_BACKWORK/Database_File/SMT_Master_List'
+
+    dspm1=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            dspm1.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Home'))
+
+    len(dspm1)
+    dsf_master1 = pd.concat(dspm1, axis=0)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Database_File/SMT_Master_List/Program_Master_List.xlsx") as writer:
+        dsf_master1.to_excel(writer, sheet_name="Home", index=False)
+
+    print("Tranfer Complete...")
+
+    os.getcwd()
+    Chd= os.chdir("D:/NX_BACKWORK/Database_File/SMT_Master_List")
+    Chd = os.getcwd()
+
+    print("Del Start....")
+
+    if os.path.exists("Pro_ML.xlsx"):
+        os.remove("Pro_ML.xlsx")
+    else:
+        print("The file does not exist")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
+    print('\n')
+    print("\033[92;4m******BOM Manipulation******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #BOM MANIPULATE
+
+    try:
+        # BOM MANIPULATION
+        os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+        file_path = 'BOM.xlsx'
+
+        if os.path.isfile(file_path):
+            ds1 = pd.read_excel(file_path, index_col=False)
+        else:
+            # Try reading as '.xls' format if '.xlsx' fails
+            file_path = 'BOM.xls'
+            ds1 = pd.read_excel(file_path, index_col=False)
+
+        dfbom1 = ds1
+
+    except ValueError:
+        dfbom1 = pd.read_excel(file_path,index_col=False) 
+
+    except Exception as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred: {e}"
+
+        # Show error message in a pop-up box
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Define your column lists
+    column_list_1 = ['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity', 'Material Group']
+    column_list_2 = ['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty', 'SMT/THT/Mech']
+
+    # Check which column list is present in the DataFrame
+    if all(column in ds1.columns for column in column_list_1):
+        columns_to_use = column_list_1
+    elif all(column in ds1.columns for column in column_list_2):
+        columns_to_use = column_list_2
+    else:
+        # Show error message if none of the column lists is present
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        missing_columns = [column for column_list in [column_list_1, column_list_2] for column in column_list if column not in ds1.columns]
+        error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+        error_msgbm1 = f"The following columns are missing: in SAP BOM\n'Material'\n'AltItemGroup'\n'Priority'\n'Long. Description'\n'Ref.Designator/Circuit Reference'\n'Quantity'\n'Material Group'"
+        error_msgbm2 = f"The following columns are missing: in Internal BOM\n'Internal P/N'\n'Group'\n'Priority'\n'Description'\n'Ref.Designator'\n'Qty'\n'SMT/THT/Mech'"
+        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", error_msgbm1)
+        messagebox.showerror("Error", error_msgbm2)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Continue with the rest of your code using 'columns_to_use'
+    print(f"Using columns: {columns_to_use}")
+
+    # Rest of your code here
+    # ...
+
+    ds1.rename(
+        columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
+        inplace=True,
+    )
+
+    ds1.rename(
+        columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
+        inplace=True,
+    )
+
+    print(ds1)
+
+    ds2 = ds1[ds1['Priority'].isin([0, 1])]
+
+    # Assuming ds2 is your DataFrame and 'PartNumber' and 'RefList' are the columns you want to check
+    part_number_column = ds2['PartNumber']
+    ref_list_column = ds2['RefList']
+
+    # Flag to check if an empty value is found
+    empty_value_found = False
+
+    # Iterate through both columns simultaneously using iterrows
+    for index, (part_number_value, ref_list_value) in ds2[['PartNumber', 'RefList']].iterrows():
+        # Check if the 'RefList' value is empty (NaN or None)
+        if pd.isna(ref_list_value):
+            print(f"Error: Empty value found in 'RefList' for 'PartNumber' {part_number_value}")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Empty value found in 'RefList' for 'PartNumber' {part_number_value}. Program will stop."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+            #raise ValueError("Empty value found in 'RefList'")
+            #empty_value_found = True
+            #break  # Stop the iteration when the first empty value is found
+
+    # If no empty values are found, print the 'PartNumber' column
+    if not empty_value_found:
+        print(part_number_column)
+        # Continue with the rest of your program
+
+    #file_name ="output.xlsx"
+    #ds1.to_excel(file_name)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
+        ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+        ds2.to_excel(writer, sheet_name="BOM", index=False)
+
+        pass
+        print('The file does not exist.')
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    Chd = os.getcwd()
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        ds1 = pd.read_excel(file_path, sheet_name="BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
+        dsn1 = pd.read_excel(file_path, sheet_name="Orginal_BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False)
+        
+        ds1 = ds1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        ds1['RefList'] = ds1['RefList'].str.replace("_x000D_","")
+        ds1['RefList'] = ds1['RefList'].str.replace(" ","")
+        ds1['RefList'] = ds1['RefList'].str.replace("\n","")
+        print(ds1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        ds2 = ds1.explode('RefList')
+
+        ds2['RefList'] = ds2['RefList'].str.replace(" "," ")
+
+    #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(ds2)
+
+        ds2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        ds2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        ds2['B_Ref_List'] = ds2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        print(ds2)
+
+        ds2.to_dict()
+
+        ds2.explode ('B_Ref_List',ignore_index=True)
+
+        ds3 = ds2.explode('B_Ref_List',ignore_index=True) # split the Ref below example code
+
+        '''import pandas as pd
+
+        # Sample DataFrame
+        data = {'ID': [1, 2], 'B_Ref_List': [['R1', 'R2'], ['R3', 'R4', 'R5']]}
+
+        ds2 = pd.DataFrame(data)
+
+        # Explode 'B_Ref_List'
+        ds3 = ds2.explode('B_Ref_List', ignore_index=True)
+
+        # Display the result
+        print(ds3)
+        Output:
+            ID B_Ref_List
+        0   1         R1
+        1   1         R2
+        2   2         R3
+        3   2         R4
+        4   2         R5'''
+
+        ds2 = ds2[['Group','Priority','B_Part_No']]
+        dc1 = ds2[['B_Part_No']]
+        dc1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dc1['PBARPTN'] = dc1['PBARNO']
+        dc1['PBARBAR'] = dc1['PBARNO']
+        dc1.insert(3,'PBARQTY', 10000)
+        dc1.insert(4,'PBARFTYP', 3)
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfs2 = ds2[['Group','Priority','B_Part_No']]
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("15","A")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("14","B")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("13","C")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("12","D")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("11","E")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("10","F")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfs2.dropna(subset=['Group'], inplace=True)
+        #df2 = dfs2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+            # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            df2 = dfs2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        ds3.head()
+
+        T10_col = ds3.pop('B_Ref_List') # col-1
+
+        ds3.insert(0, 'B_Ref_List', T10_col)
+
+        ds3 = ds3[['B_Ref_List','B_Part_No','Long Des']]
+
+        ds1.dropna(subset=['RefList'], inplace=True)
+        ds3.dropna(subset=['B_Ref_List'], inplace=True)
+
+    #ONLY AVL PARTMASTER AND GOUPING
+        dsn1 = dsn1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        dsn1['RefList'] = dsn1['RefList'].str.replace("_x000D_","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace(" ","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace("\n","")
+        print(dsn1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        dsn2 = dsn1.explode('RefList')
+
+        dsn2['RefList'] = dsn2['RefList'].str.replace(" "," ")
+
+    #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(dsn2)
+
+        dsn2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        dsn2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        dsn2['B_Ref_List'] = dsn2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        dsn2.to_dict()
+
+        dsn2.explode ('B_Ref_List',ignore_index=True)
+
+        dsn3 = dsn2.explode('B_Ref_List',ignore_index=True)
+
+        dsn2 = dsn2[['Group','Priority','B_Part_No']]
+
+        # Condition: Check if Priority is only 0
+        if (dsn2['Priority'] == 0).all():
+        # Check if 1 and 2 are not present
+            if not ((dsn2['Priority'] == 1) | (dsn2['Priority'] == 2)).any():
+        # Add 1, 2, 3 in Priority column
+                
+                dsn2['Priority'] = dsn2['Priority']
+                
+        # Append corresponding Dummy_Part rows
+                dummy_data = {'Group': ['B89P13', 'B89P13', 'B89P13'],
+                            'Priority': [1, 2, 3],
+                            'B_Part_No': ['Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3']}
+                
+                dummy_df = pd.DataFrame(dummy_data)
+                dsn2 = pd.concat([dsn2, dummy_df], ignore_index=True)
+
+        # Continue with the rest of your code
+        print(dsn2[['Group', 'Priority', 'B_Part_No']])
+
+        dcn1 = dsn2[['B_Part_No']]
+        duplicate_rows = dcn1[dcn1.duplicated(subset=['B_Part_No'], keep=False)]
+        
+        if not duplicate_rows.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'B_Part_No':\nCheck the BOM! PartNo Col.\n{duplicate_rows}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        print(dcn1)
+
+        # Assuming 'B_Part_No' contains values like 'Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3'
+        dummy_values = [f'Dummy_Part{i}' for i in range(1, 4)]
+
+        # Remove rows where 'B_Part_No' contains dummy values
+        dcn1 = dcn1[~dcn1['B_Part_No'].isin(dummy_values)]
+
+        dcn1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dcn1['PBARPTN'] = dcn1['PBARNO']
+        dcn1['PBARBAR'] = dcn1['PBARNO']
+        dcn1.insert(3,'PBARQTY', 10000)
+        dcn1.insert(4,'PBARFTYP', 3)
+
+        #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfsn2 = dsn2[['Group','Priority','B_Part_No']]
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("15","A")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("14","B")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("13","C")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("12","D")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("11","E")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("10","F")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfsn2.dropna(subset=['Group'], inplace=True)
+        #dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+        # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfsn2[dfsn2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            dfn2 = dfsn2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+                # Desired column order
+        desired_order = ['Group Name','PTN_1','PTN_2','PTN_3','PTN_4','PTN_5','PTN_6','PTN_7','PTN_8','PTN_9','PTN_10','PTN_11','PTN_12','PTN_13','PTN_14','PTN_15']
+        #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfn2.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        df_AL1 = dfn2[common_columns]
+
+        '''    # Assuming df is your DataFrame
+            column_to_check = 'PTN_15'
+
+            # Check if the column is present
+            if column_to_check not in df_AL1.columns:
+                # Show a pop-up message if the column is not present
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showinfo("Notification", f"The column '{column_to_check}' is missing.")
+
+            # Continue with the rest of your code
+            print("Continuing with the rest of the code...")
+            # Your next line of code here'''
+
+        # Assuming df is your DataFrame
+        column_to_check = 'PTN_11'
+
+        # Check if the column is present
+        if column_to_check in df_AL1.columns:
+            # Show a pop-up message if the column is present
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Notification", f"The column '{column_to_check}' is present.")
+
+        # Continue with the rest of your code
+        print("Continuing with the rest of the code...")
+        # Your next line of code here
+
+        dsn3.head()
+
+        T10_col = dsn3.pop('B_Ref_List') # col-1
+
+        dsn3.insert(0, 'B_Ref_List', T10_col)
+
+        dsn3 = dsn3[['B_Ref_List','B_Part_No','Long Des']]
+
+        dsn1.dropna(subset=['RefList'], inplace=True)
+        dsn3.dropna(subset=['B_Ref_List'], inplace=True)
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx") as writer:
+
+        #dt_H.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+        #df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+        #df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            ds1.to_excel(writer, sheet_name="BOM", index=False)
+            dsn2.to_excel(writer, sheet_name="AVL GROUP", index=False)
+            dcn1.to_excel(writer, sheet_name="Part Master", index=False)
+            #dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+            df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+            ds3.to_excel(writer, sheet_name="BOM_Data", index=False)
+        #df2.to_excel(writer, sheet_name="AVL_SHEET", index=True) this line record upto 1 & 0
+        #dc1.to_excel(writer, sheet_name="Part Master", index=False) this line record uoto 1 & 0 
+        #ds2.to_excel(writer, sheet_name="AVL GROUP", index=False) this line record upto PTN1
+        pass
+        print('The file does not exist.')
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        #@@ CRD Inspection @@#
+        print('\n')
+        print("\033[92;4m******CRD CHECK******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+        # Assuming 'BOM DATA' sheet contains a column named 'Bom Ref'
+        df_bom_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM_Data")
+        duplicates_bom_data = df_bom_data[df_bom_data.duplicated(subset='B_Ref_List', keep=False)]
+        # Assuming 'XY DATA' sheet contains a column named 'R'
+        #df_xy_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY DATA")
+
+        # Function to check for duplicates and display an error message
+        def check_and_show_duplicates(df, column_name, sheet_name):
+            duplicates = df[df.duplicated(subset=column_name, keep=False)]
+            if not duplicates.empty:
+                print("Duplicate values in 'B_Ref_List' column of 'BOM_Data':")
+                print(duplicates_bom_data['B_Ref_List'].tolist())
+                root = tk.Tk()
+                root.withdraw()
+                message = f"Duplicate values found in '{column_name}' column of '{sheet_name}' sheet:\n{duplicates[column_name].tolist()}"
+                messagebox.showerror("Error", message)
+                sys.exit()
+
+        # Check for duplicates in 'Bom Ref' column of 'BOM DATA'
+        check_and_show_duplicates(df_bom_data, 'B_Ref_List', 'BOM_Data')
+
+        # Check for duplicates in 'R' column of 'XY DATA'
+        #check_and_show_duplicates(df_xy_data, 'R', 'XY DATA')
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+    ##########################################################################################################################################
+    ##########################################################################################################################################
+        #@@ AVL Inspection @@#
+    ##########################################################################################################################################
+
+    print('\n')
+    print("\033[92;4m******AVL LINE INSPECTION******\033[0m")
+    print('\n')
+
+    ##########################################################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            df_Iav1 = pd.read_csv(file_path)
+
+    except ValueError:
+        df_Iav1 = pd.read_excel(file_path, sheet_name="AVL_SHEET", index_col=False) 
+
+        print(df_Iav1)
+
+        # Function to check for missing values between two strings
+    def check_missing_values(row):
+        start_index = None
+        end_index = None
+
+        for i in range(1, len(row) + 1):  # Check up to the last column
+            col_name = f'PTN_{i}'
+            if col_name in row.index:  # Check if the column exists
+                current_value = row[col_name]
+
+                if pd.isna(current_value):
+                    if start_index is None:
+                        start_index = i
+                    end_index = i
+                else:
+                    if start_index is not None and end_index is not None:
+                        show_error(row['Group'], start_index, end_index)
+                        start_index = None
+                        end_index = None
+
+    # Function to show pop-up error message
+    def show_error(group, start_index, end_index):
+        root = tk.Tk()
+        root.withdraw()
+        error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+        messagebox.showerror("Error", error_message)
+
+    # Check for missing values row-wise
+    for index, row in df_Iav1.iterrows():
+        check_missing_values(row)
+
+    # Display the DataFrame with styling
+    print(df_Iav1)
+
+    # Function to check for missing values between two strings
+    def check_missing_values(row):
+        start_index = None
+        end_index = None
+
+        for i in range(1, len(row) + 1):  # Check up to the last column
+            col_name = f'PTN_{i}'
+            if col_name in row.index:  # Check if the column exists
+                current_value = row[col_name]
+
+                if pd.isna(current_value):
+                    if start_index is None:
+                        start_index = i
+                    end_index = i
+                else:
+                    if start_index is not None and end_index is not None:
+                        show_error(row.get('Group', 'Unknown Group'), start_index, end_index)
+                        start_index = None
+                        end_index = None
+
+    # Function to show pop-up error message
+    def show_error(group, start_index, end_index):
+        root = tk.Tk()
+        root.withdraw()
+        
+        error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'.\nDo you want to stop the program?"
+        response = messagebox.askquestion("Error", error_message)
+
+        if response == 'yes':
+            sys.exit(1)
+
+    # ...
+
+    # Check for missing values row-wise
+    for index, row in df_Iav1.iterrows():
+        check_missing_values(row)
+
+    # Display the DataFrame with styling
+    print(df_Iav1)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
+    print('\n')
+    print("\033[92;4m******Part Master Process******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+        
+    #PART MASTER
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    # Excel file path
+    df_PM1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Part Master")
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx") as writer:
+        df_PM1.to_excel(writer, sheet_name="T_PBAR", index=False)
+    excel_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx'
+
+    # Access database connection parameters
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_Part Master/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb')
+    access_db_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb'
+    driver = 'Microsoft Access Driver (*.mdb, *.accdb)'
+    user = ''
+    password = ''
+
+    # Set up the connection string
+    conn_str = f"DRIVER={{{driver}}};DBQ={access_db_path};UID={user};PWD={password};"
+
+    # Connect to the Access database
+    print(pyodbc.drivers())
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+
+    # Read Excel data into a pandas DataFrame
+    print('Open Excel....')
+    df = pd.read_excel(excel_file_path)
+    print(df.head(10))
+
+    # Define the table name in the Access database
+    print('open MS Access....')
+    table_name = 'T_PBAR'
+
+    # Check if the table exists
+    existing_tables = [table[2] for table in cursor.tables(tableType='TABLE')]
+    if table_name in existing_tables:
+        # Append data to the existing table
+        for _, row in df.iterrows():
+            insert_query = f'''
+            INSERT INTO {table_name} ({', '.join(df.columns)})
+            VALUES ({', '.join(map(lambda x: f"'{row[x]}'", df.columns))})
+            '''
+            cursor.execute(insert_query)
+            conn.commit()
+            print('writing to access')
+    else:
+        print(f"The table '{table_name}' does notYT exist in the Access database.")
+
+    # Close the database connection
+    conn.close()
+    print('write complete')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
+    print('\n')
+    print("\033[92;4m******AVL Progress******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #AVL#@@#
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+    print(pyodbc.drivers())
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='AVL_SHEET')
+
+    print(df1.head(10))
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    df_AL1 = pd.read_excel('AVL.xlsx', sheet_name='AVL_SHEET')
+
+    #new_column_name  = df_AL1.insert(1,'Group Name', '') #new_column_name = ('Group Name') # Get user input for the new column name
+    # Desired column name
+    desired_column_name = 'Group'
+
+    # Get user input for the new column name
+    new_column_name = ("Group Name")
+
+    # Get user input for the new column value
+    new_column_value = input(f"\033[93mEnter the value for the new column '{new_column_name}': \033[0m")
+    #dL1 = new_column_value
+    # Check if the desired column name exists
+    if desired_column_name in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value) #dL1 = new_column_value
+
+    print(df_AL1)
+
+    try:
+
+        df_AL1['AVL Name']=df_AL1['PTN_1']
+        # Replace values in 'AVL Name' with values from 'PTN_1' where 'PTN_1' is not empty
+        #df_AL1['AVL Name'] = df_AL1['PTN_1'].fillna(df_AL1['AVL Name'])
+
+    except Exception as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred:\nSomething went wrong while assigning AVL values {e}"
+        error_msg1 = f"Check SF-02 is deleted\nCheck AVL Priority assign Properly {e}"
+        # Show error message in a pop-up box
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        messagebox.showerror("AVL Error", error_msg1)
+        #sys.exit(1)  # Exit the program with an error code
+
+    first_column = df_AL1.pop('AVL Name')
+
+    df_AL1.insert(2, 'AVL Name', first_column)
+
+    df_AL1.insert(3, 'Comment', '')
+
+    df_AL1['Comment'] = df_AL1['Group']
+
+    #PTN_1>>
+
+    # Desired column name
+    desired_column_name1 = 'PTN_1'
+
+    # New column to insert
+    new_column_name = 'P_1'
+    new_column_value = '1'
+
+    # Check if the desired column name exists
+    if desired_column_name1 in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name1)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value)
+
+    #PTN_2>>
+
+    desired_column_name2 = 'PTN_2'
+
+    # New column to insert
+    new_column_name = 'P_2'
+    new_column_value = '0'
+
+    # Check if the desired column name exists
+    if desired_column_name2 in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name2)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value)
+
+    #PTN_3>>
+
+    desired_column_name3 = 'PTN_3'
+    column_to_replace3 = 'PTN_3'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace3 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace3] = df_AL1[column_to_replace3].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name3 = 'P_3'
+        new_column_value3 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name3 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name3)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name3,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name3].any():
+                print(f"Values are present in '{desired_column_name3}' column:")
+                print(df_AL1[desired_column_name3])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name3] != "$", new_column_name3] = 0
+            else:
+                print(f"No values are present in '{desired_column_name3}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name3}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace3}' does not exist in the DataFrame.")
+
+    column_to_replace3 = 'PTN_3'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace3 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace3] = df_AL1[column_to_replace3].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace3}' does not exist in the DataFrame.")
+
+    #PTN_4>>
+
+    desired_column_name4 = 'PTN_4'
+    column_to_replace4 = 'PTN_4'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace4 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace4] = df_AL1[column_to_replace4].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name4 = 'P_4'
+        new_column_value4 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name4 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name4)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name4,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name4].any():
+                print(f"Values are present in '{desired_column_name4}' column:")
+                print(df_AL1[desired_column_name4])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name4] != "$", new_column_name4] = 0
+            else:
+                print(f"No values are present in '{desired_column_name4}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name4}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace4}' does not exist in the DataFrame.")
+
+    column_to_replace4 = 'PTN_4'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace4 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace4] = df_AL1[column_to_replace4].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace4}' does not exist in the DataFrame.")
+
+    #PTN_5>>
+
+    desired_column_name5 = 'PTN_5'
+    column_to_replace5 = 'PTN_5'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace5 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace5] = df_AL1[column_to_replace5].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name5 = 'P_5'
+        new_column_value5 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name5 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name5)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name5,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name5].any():
+                print(f"Values are present in '{desired_column_name5}' column:")
+                print(df_AL1[desired_column_name5])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name5] != "$", new_column_name5] = 0
+            else:
+                print(f"No values are present in '{desired_column_name5}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name5}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace5}' does not exist in the DataFrame.")
+
+    column_to_replace5 = 'PTN_5'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace5 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace5] = df_AL1[column_to_replace5].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace5}' does not exist in the DataFrame.")
+
+    #PTN_6>>
+
+    desired_column_name6 = 'PTN_6'
+    column_to_replace6 = 'PTN_6'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace6 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace6] = df_AL1[column_to_replace6].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name6 = 'P_6'
+        new_column_value6 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name6 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name6)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name6,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name6].any():
+                print(f"Values are present in '{desired_column_name6}' column:")
+                print(df_AL1[desired_column_name6])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name6] != "$", new_column_name6] = 0
+            else:
+                print(f"No values are present in '{desired_column_name6}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name6}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace6}' does not exist in the DataFrame.")
+
+    column_to_replace6 = 'PTN_6'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace6 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace6] = df_AL1[column_to_replace6].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace6}' does not exist in the DataFrame.")
+
+    #PTN_7>>
+
+    desired_column_name7 = 'PTN_7'
+    column_to_replace7 = 'PTN_7'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace7 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace7] = df_AL1[column_to_replace7].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name7 = 'P_7'
+        new_column_value7 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name7 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name7)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name7,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name7].any():
+                print(f"Values are present in '{desired_column_name7}' column:")
+                print(df_AL1[desired_column_name7])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name7] != "$", new_column_name7] = 0
+            else:
+                print(f"No values are present in '{desired_column_name7}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name7}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace7}' does not exist in the DataFrame.")
+
+    column_to_replace7 = 'PTN_7'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace7 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace7] = df_AL1[column_to_replace7].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace7}' does not exist in the DataFrame.")
+
+    #PTN_8>>
+
+    desired_column_name8 = 'PTN_8'
+    column_to_replace8 = 'PTN_8'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace8 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace8] = df_AL1[column_to_replace8].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name8 = 'P_8'
+        new_column_value8 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name8 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name8)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name8,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name8].any():
+                print(f"Values are present in '{desired_column_name8}' column:")
+                print(df_AL1[desired_column_name8])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name8] != "$", new_column_name8] = 0
+            else:
+                print(f"No values are present in '{desired_column_name8}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name8}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace8}' does not exist in the DataFrame.")
+
+    column_to_replace8 = 'PTN_8'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace8 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace8] = df_AL1[column_to_replace8].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace8}' does not exist in the DataFrame.")
+
+    #PTN_9>>
+
+    desired_column_name9 = 'PTN_9'
+    column_to_replace9 = 'PTN_9'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace9 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace9] = df_AL1[column_to_replace9].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name9 = 'P_9'
+        new_column_value9 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name9 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name9)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name9,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name9].any():
+                print(f"Values are present in '{desired_column_name9}' column:")
+                print(df_AL1[desired_column_name9])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name9] != "$", new_column_name9] = 0
+            else:
+                print(f"No values are present in '{desired_column_name9}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name9}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace9}' does not exist in the DataFrame.")
+
+    column_to_replace9 = 'PTN_9'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace9 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace9] = df_AL1[column_to_replace9].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace9}' does not exist in the DataFrame.")
+
+    #PTN_10>>
+
+    desired_column_name10 = 'PTN_10'
+    column_to_replace10 = 'PTN_10'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace10 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace10] = df_AL1[column_to_replace10].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name10 = 'P_10'
+        new_column_value10 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name10 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name10)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name10,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name10].any():
+                print(f"Values are present in '{desired_column_name10}' column:")
+                print(df_AL1[desired_column_name10])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name10] != "$", new_column_name10] = 0
+            else:
+                print(f"No values are present in '{desired_column_name10}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name10}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace10}' does not exist in the DataFrame.")
+
+    column_to_replace10 = 'PTN_10'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace10 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace10] = df_AL1[column_to_replace10].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace10}' does not exist in the DataFrame.")
+
+    #PTN_11>>
+
+    desired_column_name11 = 'PTN_11'
+    column_to_replace11 = 'PTN_11'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace11 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace11] = df_AL1[column_to_replace11].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name11 = 'P_11'
+        new_column_value11 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name11 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name11)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name11,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name11].any():
+                print(f"Values are present in '{desired_column_name11}' column:")
+                print(df_AL1[desired_column_name11])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name11] != "$", new_column_name11] = 0
+            else:
+                print(f"No values are present in '{desired_column_name11}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name11}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace11}' does not exist in the DataFrame.")
+
+    column_to_replace11 = 'PTN_11'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace11 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace11] = df_AL1[column_to_replace11].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace11}' does not exist in the DataFrame.")
+
+    #PTN_12>>
+
+    desired_column_name12 = 'PTN_12'
+    column_to_replace12 = 'PTN_12'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace12 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace12] = df_AL1[column_to_replace12].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name12 = 'P_12'
+        new_column_value12 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name12 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name12)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name12,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name12].any():
+                print(f"Values are present in '{desired_column_name12}' column:")
+                print(df_AL1[desired_column_name12])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name12] != "$", new_column_name12] = 0
+            else:
+                print(f"No values are present in '{desired_column_name12}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name12}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace12}' does not exist in the DataFrame.")
+
+    column_to_replace12 = 'PTN_12'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace12 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace12] = df_AL1[column_to_replace12].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace12}' does not exist in the DataFrame.")
+
+    #PTN_13>>
+
+    desired_column_name13 = 'PTN_13'
+    column_to_replace13 = 'PTN_13'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace13 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace13] = df_AL1[column_to_replace13].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name13 = 'P_13'
+        new_column_value13 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name13 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name13)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name13,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name13].any():
+                print(f"Values are present in '{desired_column_name13}' column:")
+                print(df_AL1[desired_column_name13])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name13] != "$", new_column_name13] = 0
+            else:
+                print(f"No values are present in '{desired_column_name13}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name13}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace13}' does not exist in the DataFrame.")
+
+    column_to_replace13 = 'PTN_13'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace13 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace13] = df_AL1[column_to_replace13].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace13}' does not exist in the DataFrame.")
+
+    #PTN_14>>
+
+    desired_column_name14 = 'PTN_14'
+    column_to_replace14 = 'PTN_14'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace14 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace14] = df_AL1[column_to_replace14].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name14 = 'P_14'
+        new_column_value14 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name14 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name14)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name14,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name14].any():
+                print(f"Values are present in '{desired_column_name14}' column:")
+                print(df_AL1[desired_column_name14])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name14] != "$", new_column_name14] = 0
+            else:
+                print(f"No values are present in '{desired_column_name14}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name14}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace14}' does not exist in the DataFrame.")
+
+    column_to_replace14 = 'PTN_14'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace14 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace14] = df_AL1[column_to_replace14].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace14}' does not exist in the DataFrame.")
+
+    #PTN_15>>
+
+    desired_column_name15 = 'PTN_15'
+    column_to_replace15 = 'PTN_15'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace15 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace15] = df_AL1[column_to_replace15].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name15 = 'P_15'
+        new_column_value15 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name15 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name15)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name15,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name15].any():
+                print(f"Values are present in '{desired_column_name15}' column:")
+                print(df_AL1[desired_column_name15])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name15] != "$", new_column_name15] = 0
+            else:
+                print(f"No values are present in '{desired_column_name15}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name15}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace15}' does not exist in the DataFrame.")
+
+    column_to_replace15 = 'PTN_15'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace15 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace15] = df_AL1[column_to_replace15].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace15}' does not exist in the DataFrame.")
+
+    print(df_AL1.head(5))
+
+    del df_AL1['Group']
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    # Example DataFrame
+    data = pd.read_excel('AVL.xlsx', sheet_name='AVL_SHEET')
+    df_AL1 = pd.DataFrame(data)
+
+    # Desired column order
+    desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10']
+    #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+    # Create a list of columns present in both DataFrame and desired_order
+    common_columns = [col for col in desired_order if col in df_AL1.columns]
+
+    # Reorder the DataFrame based on the desired_order
+    df_AL1 = df_AL1[common_columns]
+
+    # Display the reordered DataFrame
+    print(df_AL1)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+        df_AL1.T.reset_index().T.to_excel(writer, sheet_name="AVL_SHEET", header=False ,index=False)
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+    #read_file = pd.read_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.xlsx',skiprows=0)
+
+    read_file = pd.read_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.xlsx')
+
+    read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.txt', index = None, header= None)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+
+    # Replace '0.0' with '0' in the content
+    modified_content = content.replace('0.0', '0')
+
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(modified_content)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC20 = content.replace(',,,,,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC20)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC19 = content.replace(',,,,,,,,,,,,,,,,,,,', '')
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC19)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC18 = content.replace(',,,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC18)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC17 = content.replace(',,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC17)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC16 = content.replace(',,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC16)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC15 = content.replace(',,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC15)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC14 = content.replace(',,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC14)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC13 = content.replace(',,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC13)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC12 = content.replace(',,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC12)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC11 = content.replace(',,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC11)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC10 = content.replace(',,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC10)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC9 = content.replace(',,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC9)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC8 = content.replace(',,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC8)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC7 = content.replace(',,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC7)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC6 = content.replace(',,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC6)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC5 = content.replace(',,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC5)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC4 = content.replace(',,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC4)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC3 = content.replace(',,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC3)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC2 = content.replace(',,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC2)
+        #output_file.write('MC2','MC3','MC4','MC5','MC6','MC7','MC8','MC9','MC10','MC11','MC12','MC13','MC14','MC15','MC16','MC17','MC18','MC19','MC20')
+
+    '''# Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC1 = content.replace('+', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC1)'''
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC0 = content.replace('.0', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC0)
+
+    print(f"AVL CREATED: D:/NX_BACKWORK/r'AVL.txt")
+
+    # Specify the path to your text file
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    df = pd.read_table(txt_file_path, delimiter='\t', quoting=3)  # 3 corresponds to QUOTE_NONE
+    csv_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv'
+    df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
+
+    #read_file = pd.read_table (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.txt', sep='"')
+    #read_file.to_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVList.xlsx', index=None)
+    #read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.csv', index = None, header= None)
+
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
+    print('\n')
+    print("\033[92;4m******Feeder Verification******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #FEEDER VERIFICATION CODE BOM AND FEEDER AS VISE VERSA
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM_Data')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    df2 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederCol')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df111 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    df112 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederSetup')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+        df1.to_excel(writer, sheet_name="BOM_Data", index=False)
+        df2.to_excel(writer, sheet_name="FeederCol", index=False)
+        df111.to_excel(writer, sheet_name="BOM", index=False)
+        df112.to_excel(writer, sheet_name="FeederSetup", index=False)
+
+    xls = pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM_Data')
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederCol')
+    df111 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM')
+    df112 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederSetup')
+        
+    df2['Feeder Reference'] = df2['F_Ref_List']
+    df1.rename(columns = {'B_Ref_List':'F_Ref_List'}, inplace = True)
+        #df1['B_Ref.List'] = df1['F_Ref_List']
+    df3 = pd.merge(df1 , df2, on='F_Ref_List', how='left')
+    df3.rename(columns = {'F_Ref_List':'BOM Reference'}, inplace = True)
+    df1.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+    print(df1,df2)
+
+    df111.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+    df111 = df111[['F_Part_No','Long Des']]
+    df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner') # Merge on 'F_Part_No'
+    df113.rename(columns = {'F_Part_No':'Part Number'}, inplace = True)
+    df113.rename(columns = {'Location':'Feeder Location'}, inplace = True)
+    df113.rename(columns = {'Long Des':'Part Description'}, inplace = True)
+    df113.rename(columns = {'F_Ref_List':'Reference'}, inplace = True)
+    df113 = df113[['Feeder Location','FeederName','Type','Size','FeedPitch','Part Height','Part Number','Part Description','Reference','QTY','Side','ModelName']]
+
+    df3["BOM and Feeder Compare"] = (df3["B_Part_No"] == df3["F_Part_No"])
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('TRUE','MATCH')
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('FALSE','MISS_MATCH')
+
+    df3 = df3.copy()
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].map({True: 'Match', False: 'Miss_Match'})
+    df3.sort_values(by='BOM and Feeder Compare', inplace=True, ascending=False)
+
+    df4 = df3['BOM and Feeder Compare'].value_counts()
+    #df4 = df3['Size'].value_counts()
+    df5 = df3['Side'].value_counts()
+    #df6 = df3['F_Ref_List'].value_counts()
+    df7 = df3['B_Part_No'].value_counts()
+    #df8 = df3['B_Ref.List'].value_counts()
+    df9 = df3['F_Part_No'].value_counts()
+    #df10 = df3['FeederName'].value_counts()
+    df11 = len(df1['B_Ref_List'])
+    print(f'Total count of rows in the "B_Ref_List" column: {df11}')
+    df12 = len(df2['F_Ref_List'])
+    print(f'Total count of rows in the "F_Ref_List" column: {df12}')
+    print('***')
+    dbf1 = print(df1)
+    print('***')
+    dbf2 = print(df2)
+    print('***')
+    dbf2 = df2.copy()
+    dbf1 = df1.copy()
+    dbf2_col = dbf2.pop('Feeder Reference')
+    dbf2.insert(1, 'Feeder Reference', dbf2_col)
+    dbf2.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+    dbf3 = pd.merge(dbf2 , dbf1, on='B_Ref_List', how='left')
+
+    dbf3["Feeder and BOM Compare"] = (dbf3["F_Part_No"] == dbf3["B_Part_No"])
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('TRUE','MATCH')
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('FALSE','MISS_MATCH')
+
+    dbf3 = dbf3.copy()
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].map({True: 'Match', False: 'Miss_Match'})
+    dbf3.sort_values(by='Feeder and BOM Compare', inplace=True, ascending=False)
+
+    dbf4 = dbf3['Feeder and BOM Compare'].value_counts() 
+
+    # Define a function for row styling
+    def highlight_row(row):
+        return ['background-color: lightgreen' if 'Match' in row.values else
+                'background-color: yellow' if 'Miss_Match' in row.values else
+                '' for _ in row]
+
+    # Apply the styling function to the DataFrame
+    styled_df3 = df3.style.apply(highlight_row, axis=1)
+
+    # Define a function for row styling
+    def highlight_row(row):
+        return ['background-color: lightgreen' if 'Match' in row.values else
+                'background-color: yellow' if 'Miss_Match' in row.values else
+                '' for _ in row]
+
+    # Apply the styling function to the DataFrame
+    styled_dbf3 = dbf3.style.apply(highlight_row, axis=1)
+
+    # Save the styled DataFrame to Excel
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+
+            styled_df3.to_excel(writer, sheet_name="Verify_data_BAF", index=False, engine='openpyxl')
+            df4.to_excel(writer, sheet_name="BOM and Feeder Compare",index=TRUE)
+            #dbf2.to_excel(writer, sheet_name="Verify_data_FAB", index=False)
+            styled_dbf3.to_excel(writer, sheet_name="Verify_data_FAB", index=False, engine='openpyxl')
+            dbf4.to_excel(writer, sheet_name="Feeder and BOM Compare",index=TRUE)
+            df113.to_excel(writer, sheet_name="Upload_data", index=False)
+            df1.to_excel(writer, sheet_name="BOM_data", index=False)
+            df2.to_excel(writer, sheet_name="Feeder_data", index=False)
+            df5.to_excel(writer, sheet_name="Side",index=TRUE)
+            #df6.to_excel(writer, sheet_name="F_Ref_List",index=TRUE)
+            df7.to_excel(writer, sheet_name="B_Part_No",index=TRUE)
+            #df8.to_excel(writer, sheet_name="B_Ref.List",index=TRUE)
+            df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
+            #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
+            # Save the count to an Excel file
+            count_df = pd.DataFrame({'BOM_Data Ref, Count': [df11]})
+            count_df.to_excel(writer, sheet_name="BOM Count", index=TRUE)
+            count_df = pd.DataFrame({'Feeder_Data Ref, Count': [df12]})
+            count_df.to_excel(writer, sheet_name="Feeder Count", index=TRUE)
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
+    print('\n')
+    print("\033[92;4m******FeederSetup Verification Result******\033[0m")
+    print('\n')
+    for i in range(100):
+        row = "="*i + ">"
+        sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
+        sys.stdout.flush()
+        time.sleep(0.1)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    print("\033[1;92;4mFeederSetup_Verification__Compelete $ PROCESS $\033[0m")
+
+    print('\n')
+
+    # Print the current date
+    print("\033[35mCurrent Date:\033[0m", current_datetime.date())
+
+    # Print the current time
+    print("\033[35mCurrent Time:\033[0m", current_datetime.time())
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
+    dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
+    df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
+    dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
+    dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
+    dbf3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_FAB")
+    dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
+    dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
+    dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
+    dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+    print('\n')
+
+    # Print the formatted date and time
+    print(f"\033[35mDate and Time: {formatted_datetime}\033[0m")
+
+    print('\n')
+
+    rc = len(df1)
+    rc1 = len(dfs1)
+
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(Chd,'\\__BOM__\\',dL1)
+    print(Chd,'\\__FeederSetup__\\',dL2)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds1 = print("BOM Count:",rc)
+    print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds9 = print("Feeder Count:",rc1)
+    print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds2 = print("BOT & TOP Count:")
+    ds2 = print(df2)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds3 = print("Compare Count:")
+    ds3 = print(df3)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds4 = print("Compare Count:")
+    ds4 = print(df4)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Feeder duplicate Reference")
+    print(dfsg21)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("BOM duplicate Reference")
+    print(dfsg22)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Miss Match Row BOM to Feeder")
+    print(dfsg31) 
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Miss Match Row Feeder to BOM")
+    print(dfsg32) 
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    # Define the PySimpleGUI layout
+    layout = [
+        [sg.Multiline(size=(160, 40), font=('Courier', 9), key='-LOGWINDOW-')],
+        [sg.Button('Save to Excel'), sg.Button('Quit')]
+    ]
+
+    # Create the window
+    window = sg.Window("FeederSetup", layout, finalize=True)
+
+    def print_to_log(*args, **kwargs):
+        window['-LOGWINDOW-'].print(*args, **kwargs)
+        window.Refresh()
+
+    def save_to_excel(log_contents):
+        # Get the current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+        # Split log contents into lines
+        lines = log_contents.strip().split('\n')
+
+        # Create a DataFrame with each line in a new row
+        df = pd.DataFrame({'LogContents': lines})
+
+        # Save the DataFrame to the same Excel file with a new sheet
+        excel_file_path = 'FeederVerify.xlsx'
+        with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+            df.to_excel(writer, sheet_name=f'Log_{current_datetime}', index=False)
+
+        return f"Log saved to {excel_file_path}, Sheet: Log_{current_datetime}"
+
+    print_to_log("FeederSetup_Verification_Result_Compelete $ PROCESS $")
+
+    sys.stdout.write("\n")
+
+    #################################################################
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
+    dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
+    df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
+    dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
+    dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
+    dbf3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_FAB")
+    dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
+    dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
+    dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
+    dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+    print_to_log('\n')
+    # Print the formatted date and time
+    print_to_log(f"Date and Time: {formatted_datetime}")
+    print_to_log('\n')
+    rc = len(df1)
+    rc1 = len(dfs1)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('BOM NAME:', dL1)
+    print_to_log(Chd,'\\__BOM__\\',dL1)
+    print_to_log('\n')
+    print_to_log('FeederSetup NAME:', dL2)
+    print_to_log(Chd,'\\__FeederSetup__\\',dL2)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds1 = print_to_log("BOM Count:",rc)
+    print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds9 = print_to_log("Feeder Count:",rc1)
+    print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds2 = print_to_log("BOT & TOP Count:")
+    ds2 = print_to_log(df2)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds3 = print_to_log("Compare Count:")
+    ds3 = print_to_log(df3)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds4 = print_to_log("Compare Count:")
+    ds4 = print_to_log(df4)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Feeder duplicate Reference")
+    print_to_log(dfsg21)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("BOM duplicate Reference")
+    print_to_log(dfsg22)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Miss Match Row BOM to Feeder")
+    print_to_log(dfsg31) 
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Miss Match Row Feeder to BOM")
+    print_to_log(dfsg32) 
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    ##########################################################################################################################################
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+        elif event == 'Save to Excel':
+            # Get the contents of the log window
+            log_contents = values['-LOGWINDOW-']
+
+            # Save to Excel and get the log information
+            log_info = save_to_excel(log_contents)
+
+            print_to_log(log_info)
+
+    time.sleep (2)
+    # Close the window
+
+    # Assuming feeder verification is completed
+    feeder_verification_completed = True
+
+    if feeder_verification_completed:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+
+        messagebox.showinfo("Feeder Verification", "Feeder verification has been completed!")
+
+    window.close()
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    # Process to Next Upload if Match count ok
+
+    os.getcwd()
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    for i in range(100):
+        row = "="*i + ">"
+        sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
+        sys.stdout.flush()
+        time.sleep(0.1)
+
+    print("\033[1;92;4mFeederSetup___Uploading in Progress $ PROCESS $\033[0m")
+
+    print('\n')
+
+    # Load Excel sheets into pandas dataframes
+    dfmc1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    dfmc2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfmc3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM Count")
+    dfmc4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder Count")
+    #df3 = pd.read_excel('excel_sheet3.xlsx')
+
+    print(dfmc1)
+    print(dfmc2)
+    print(dfmc3)
+    print(dfmc4)
+
+    # Function to get numeric value safely
+    def get_numeric_value(df, index, column):
+        try:
+            return df.loc[index, column]
+        except KeyError:
+            return None
+
+    # Get numeric inputs from specific cells in the "count" column
+    num1_index0 = dfmc1.loc[0, 'count']
+    num1_index1 = get_numeric_value(dfmc1, 1, 'count')
+
+    num2_index0 = dfmc2.loc[0, 'count']
+    num2_index1 = get_numeric_value(dfmc2, 1, 'count')
+
+    num3_index0 = dfmc3.loc[0, 'BOM_Data Ref, Count']  # Note: Case-sensitive column name
+    num3_index1 = get_numeric_value(dfmc3, 1, 'BOM_Data Ref, Count')
+
+    num4_index0 = dfmc4.loc[0, 'Feeder_Data Ref, Count']  # Note: Case-sensitive column name
+    num4_index1 = get_numeric_value(dfmc4, 1, 'Feeder_Data Ref, Count')
+
+    # Compare the numeric values
+    if num1_index0 == num2_index0 == num3_index0 == num4_index0 and \
+    (num1_index1 is None or num1_index1 == num2_index1 == num3_index1 == num4_index1):
+        print("Numeric values are the same. Proceeding to the next line of code.")
+
+        # Print the values
+        print("\nValues at index 0:")
+        print("num1:", num1_index0)
+        print("num2:", num2_index0)
+        print("num3:", num3_index0)
+        print("num4:", num4_index0)
+
+        if num1_index1 is not None:
+            print("\nValues at index 1:")
+            print("num1:", num1_index1)
+            print("num2:", num2_index1)
+            print("num3:", num3_index1)
+            print("num4:", num4_index1)
+
+        else:
+            print("Numeric values are not the same. Cannot proceed.")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #CREATE & SEPRATE FEEDER LOADING LIST DATA
+
+        os.getcwd()
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Upload_data")
+
+        df1.sort_values(by='Side', inplace=True, ascending=True)
+        df2_1 = df1
+    #del.TOP
+        df1 = df1[df1["Side"].str.contains("TOP")==False]
+        df2 = df1[df1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+        df2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df3 = df1[df1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+        df3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df4 = df1[df1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+        df4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    #del.BOT
+        df2_1 = df2_1[df2_1["Side"].str.contains("BOT")==False]
+        df2_2 = df2_1[df2_1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+        df2_2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df2_3 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+        df2_3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df2_4 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+        df2_4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx") as writer:
+            df2.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+            df3.to_excel(writer, sheet_name="AMX2_B", index=False)
+            df4.to_excel(writer, sheet_name="AMX3_B", index=False)
+        
+            df2_2.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+            df2_3.to_excel(writer, sheet_name="AMX2_T", index=False)
+            df2_4.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Upload data to merge and del side and Module
+        
+        os.getcwd()
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        df1 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_B")
+        df1["Remarks"] = df1['Side'].astype(str) +"--"+ df1['ModelName']
+        del df1['Side']
+        del df1['ModelName']
+
+        df2 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_B")
+        df2["Remarks"] = df2['Side'].astype(str) +"--"+ df2['ModelName']
+        del df2['Side']
+        del df2['ModelName']
+
+        df3 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_B")
+        df3["Remarks"] = df3['Side'].astype(str) +"--"+ df3['ModelName']
+        del df3['Side']
+        del df3['ModelName']
+
+        df4 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_T")
+        df4["Remarks"] = df4['Side'].astype(str) +"--"+ df4['ModelName']
+        del df4['Side']
+        del df4['ModelName']
+
+        df5 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_T")
+        df5["Remarks"] = df5['Side'].astype(str) +"--"+ df5['ModelName']
+        del df5['Side']
+        del df5['ModelName']
+
+        df6 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_T")
+        df6["Remarks"] = df6['Side'].astype(str) +"--"+ df6['ModelName']
+        del df6['Side']
+        del df6['ModelName']
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx") as writer:
+            df1.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+            df2.to_excel(writer, sheet_name="AMX2_B", index=False)
+            df3.to_excel(writer, sheet_name="AMX3_B", index=False)
+            df4.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+            df5.to_excel(writer, sheet_name="AMX2_T", index=False)
+            df6.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+        #bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
+        print('\n')
+        print("\033[1;92;4m******Feeder Loading List Progress******\033[0m")
+        print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Feeder List change
+
+        shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx')
+
+            ##BOT FEEDER LIST
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'NXT&AMX1_B'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'NXT'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "NXT&AMX1_B", "NXT", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX2_B'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'AIMEX 2'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX2_B", "AIMEX 2", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX3_B'
+
+            # Destination Excel file 
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'AIMEX 3'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX3_B", "AIMEX 3", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+            ##TOP FEEDER LIST
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'NXT&AMX1_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'NXT'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "NXT&AMX1_T", "NXT", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX2_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'AIMEX 2'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX2_T", "AIMEX 2", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX3_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'AIMEX 3'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "AIMEX 3", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #CREATEBACKUPFOLDER
+
+        yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output"
+
+        if not os.path.isdir(yourfolder):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder)
+
+        yourfolder1 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\BOM"
+
+        if not os.path.isdir(yourfolder1):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder1)
+
+        yourfolder2 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\FeederSetup"
+
+        if not os.path.isdir(yourfolder2):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder2)
+
+        yourfolder3 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Upload"
+
+        if not os.path.isdir(yourfolder3):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder3)
+
+        yourfolder4 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Verified"
+
+        if not os.path.isdir(yourfolder4):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder4)
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+        Chd = os.getcwd()
+
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+        print(os.path.isfile(file_path))
+        print(os.path.isfile(directory_path))
+
+        try:
+            if os.path.isfile(file_path):
+                dt_H1 = pd.read_csv(file_path)
+
+        except ValueError:
+            if os.path.exists("BOM_List_OP.xlsx"):
+                os.remove("BOM_List_OP.xlsx")
+        else:
+            print("The file does not exist")
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        if os.path.exists("Feeder_List_OPT.xlsx"):
+            os.remove("Feeder_List_OPT.xlsx")
+        else:
+            print("The file does not exist")
+
+        if os.path.exists("Feeder_List_OPB.xlsx"):
+            os.remove("Feeder_List_OPB.xlsx")
+        else:
+            print("The file does not exist")
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+
+        yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Line_X"
+
+        if not os.path.isdir(yourfolder):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder)
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Upload-Data.xlsx')
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/PartMaster.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/MODEL.mdb')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample T.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample B.xlsx')
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/BOM_List_OP.xlsx')
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederSetup.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederVerify.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/AVL.CSV')
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X')
+        Chd = os.getcwd()
+
+        #src_1 = 'Upload-Data.xlsx'
+        #os.rename(src_1, dL2 +"_UD"+".xlsx")
+
+        #src_2 = 'PartMaster.xlsx'
+        #os.rename(src_2, dL2 +"_PM"+".xlsx")
+
+        src_3 = 'MODEL.mdb'
+        os.rename(src_3, dL2 +"_PM-Model"+".mdb")
+
+        #src_4 = 'BOM_List_OP.xlsx'
+        #os.rename(src_4, dL1 +"_BOM"+".xlsx")
+
+        #src_5 = 'FeederSetup.xlsx'
+        #os.rename(src_5, dL2 +"_FS"+".xlsx")
+
+        src_6 = 'FeederVerify.xlsx'
+        os.rename(src_6, dL2 +"_FV"+".xlsx")
+
+        src_7 = 'AVL.csv'
+        os.rename(src_7, dL1 +"_AVL"+".csv")
+
+        src_8 = 'Line X Sample T.xlsx'
+        os.rename(src_8, dL1 +"_T"+".xlsx")
+
+        src_9 = 'Line X Sample B.xlsx'
+        os.rename(src_9, dL1 +"_B"+".xlsx")
+        
+        time.sleep (2)
+
+        window.close()
+
+        time.sleep (5)
+
+        print('\n')
+        print('\033[92;3mFeeder Setup Generation Complete\033[0m')
+        print('\n')
+        print('\033[92;3mBOM and Feeder Verfication Found OK\033[0m')
+        print('\n')
+
+        # Assuming feeder verification is completed
+        Feeder_List_Generation_Completed = True
+
+        if Feeder_List_Generation_Completed:
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+
+            messagebox.showinfo("Feeder Loading List", "Feeder Loading List has been Generated!")
+
+    else:
+        # Abort the process
+        print("Counts are different. Aborting the process.")
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Counts are different. Aborting the Feeder Loading Process\nCheck the Feeder Verfied for Miss_Match."
+        messagebox.showerror("Error", error_message)
+        # Exit the script
+
+    sys.exit() #FeederSetup
+
+# Program 2: BOM Manipulation
+def program_2():
+
+
+    print("\033[92;4m*******BOM Manipulation--PY_V-1.2 interface_GUI/J1924-89P13*******\033[0m")
+
+    print('\n')
+
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Format the current date and time as a string
+    #formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    # Format the date and time in a 12-hour clock with AM/PM
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
+
+    # Print the formatted date and time
+    print(f"\033[31mCurrent Date and Time: {formatted_datetime}\033[0m") #\033[0;31m
+    print('\n')
+
+    '''print(f"Current Year: {current_datetime.year}")
+    print(f"Current Month: {current_datetime.month}")
+    print(f"Current Day: {current_datetime.day}")
+    print(f"Current Hour: {current_datetime.hour}")
+    print(f"Current Minute: {current_datetime.minute}")
+    print(f"Current Second: {current_datetime.second}")'''
+
+
+    dLbr1 = input("\033[93mEnter BOM Name :\033[0m")
+    print('\n')
+
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        if os.path.exists("BOM_List_OP.xlsx"):
+            os.remove("BOM_List_OP.xlsx")
+    else:
+        print("The file does not exist")
+
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        if os.path.exists("BOM_List_OP.xlsx"):
+            os.remove("BOM_List_OP.xlsx")
+    else:
+        print("The file does not exist")
+
+    try:
+        # BOM MANIPULATION
+        os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+        file_path = 'BOM.xlsx'
+
+        if os.path.isfile(file_path):
+            ds1 = pd.read_excel(file_path, index_col=False)
+        else:
+            # Try reading as '.xls' format if '.xlsx' fails
+            file_path = 'BOM.xls'
+            ds1 = pd.read_excel(file_path, index_col=False)
+
+        dfbom1 = ds1
+
+    except ValueError:
+        dfbom1 = pd.read_excel(file_path,index_col=False) 
+
+    except Exception as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred: {e}"
+
+        # Show error message in a pop-up box
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Define your column lists
+    column_list_1 = ['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity', 'Material Group']
+    column_list_2 = ['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty', 'SMT/THT/Mech']
+
+    # Check which column list is present in the DataFrame
+    if all(column in ds1.columns for column in column_list_1):
+        columns_to_use = column_list_1
+    elif all(column in ds1.columns for column in column_list_2):
+        columns_to_use = column_list_2
+    else:
+        # Show error message if none of the column lists is present
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        missing_columns = [column for column_list in [column_list_1, column_list_2] for column in column_list if column not in ds1.columns]
+        error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Continue with the rest of your code using 'columns_to_use'
+    print(f"Using columns: {columns_to_use}")
+
+    # Rest of your code here
+    # ...
+
+    ds1.rename(
+        columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
+        inplace=True,
+    )
+
+    ds1.rename(
+        columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
+        inplace=True,
+    )
+
+    print(ds1)
+
+    ds2 = ds1[ds1['Priority'].isin([0, 1])]
+
+    # Assuming ds2 is your DataFrame and 'PartNumber' and 'RefList' are the columns you want to check
+    part_number_column = ds2['PartNumber']
+    ref_list_column = ds2['RefList']
+
+    # Flag to check if an empty value is found
+    empty_value_found = False
+
+    # Iterate through both columns simultaneously using iterrows
+    for index, (part_number_value, ref_list_value) in ds2[['PartNumber', 'RefList']].iterrows():
+        # Check if the 'RefList' value is empty (NaN or None)
+        if pd.isna(ref_list_value):
+            print(f"Error: Empty value found in 'RefList' for 'PartNumber' {part_number_value}")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Empty value found in 'RefList' for 'PartNumber' {part_number_value}. Program will stop."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+            #raise ValueError("Empty value found in 'RefList'")
+            #empty_value_found = True
+            #break  # Stop the iteration when the first empty value is found
+
+    # If no empty values are found, print the 'PartNumber' column
+    if not empty_value_found:
+        print(part_number_column)
+        # Continue with the rest of your program
+
+    #file_name ="output.xlsx"
+    #ds1.to_excel(file_name, index=False)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
+        ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+        ds2.to_excel(writer, sheet_name="BOM", index=False)
+        ds1.to_excel(writer, sheet_name="Orginal_BOM_SL", index=False)
+        ds2.to_excel(writer, sheet_name="BOM_SL", index=False)
+
+        pass
+        print('The file does not exist.')
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    Chd = os.getcwd()
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        ds1 = pd.read_excel(file_path, sheet_name="BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
+        dsn1 = pd.read_excel(file_path, sheet_name="Orginal_BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False)
+        dsplcr1 = pd.read_excel(file_path, sheet_name="BOM_SL", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
+        dnsplcr1 = pd.read_excel(file_path, sheet_name="Orginal_BOM_SL", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False)
+
+        ds1 = ds1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        ds1['RefList'] = ds1['RefList'].str.replace("_x000D_","")
+        ds1['RefList'] = ds1['RefList'].str.replace(" ","")
+        ds1['RefList'] = ds1['RefList'].str.replace("\n","")
+        
+        # Create a new column 'AVL_Name' based on the condition in 'Priority' column
+        ds1['AVL_Name'] = ds1.apply(lambda row: row['PartNumber'] if row['Priority'] == 1 else '', axis=1)
+        
+        print(ds1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        ds2 = ds1.explode('RefList')
+
+        ds2['RefList'] = ds2['RefList'].str.replace(" "," ")
+
+    #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(ds2)
+
+        ds2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        ds2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        ds2['B_Ref_List'] = ds2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        print(ds2)
+
+        ds2.to_dict()
+
+        ds2.explode ('B_Ref_List',ignore_index=True)
+
+        ds3 = ds2.explode('B_Ref_List',ignore_index=True) # split the Ref below example code
+
+        ds2 = ds2[['Group','Priority','B_Part_No']]
+        dc1 = ds2[['B_Part_No']]
+        dc1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dc1['PBARPTN'] = dc1['PBARNO']
+        dc1['PBARBAR'] = dc1['PBARNO']
+        dc1.insert(3,'PBARQTY', 10000)
+        dc1.insert(4,'PBARFTYP', 3)
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfs2 = ds2[['Group','Priority','B_Part_No']]
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("15","A")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("14","B")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("13","C")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("12","D")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("11","E")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("10","F")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfs2.dropna(subset=['Group'], inplace=True)
+        #df2 = dfs2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+        # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            df2 = dfs2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        ds3.head()
+
+        T10_col = ds3.pop('B_Ref_List') # col-1
+
+        ds3.insert(0, 'B_Ref_List', T10_col)
+
+        ds3 = ds3[['B_Ref_List','B_Part_No','Long Des']]
+
+        ds1.dropna(subset=['RefList'], inplace=True)
+        ds3.dropna(subset=['B_Ref_List'], inplace=True)
+
+        #dsco1 = ds1['PartNumber'].value_counts().reset_index()
+            #OUTPUT
+        '''``````````````````````````````````````````````
+        Total count of XY side in the "S" column: S
+        TOP    930
+        BOT    791
+        Name: count, dtype: int64
+        ``````````````````````````````````````````````'''
+        #dsco1 = ds1['PartNumber'].value_counts()
+        '''``````````````````````````````````````````````
+        Total count of XY DATA side in the "S" column:      S  count
+        0  TOP    930
+        1  BOT    791
+        ``````````````````````````````````````````````'''  
+        dsco2 = ds1['Qty'].sum()
+        dsco3 = len(ds3['B_Ref_List'])
+        print(f'Total count of Qty in the "B_Ref_List" column SUM: {dsco2}')
+        print(f'Total count of rows in the "B_Ref_List" column: {dsco3}')
+        
+        ds3['Bom Ref'] = ds3['B_Ref_List']
+
+    #ONLY AVL PARTMASTER AND GOUPING
+        dsn1 = dsn1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        dsn1['RefList'] = dsn1['RefList'].str.replace("_x000D_","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace(" ","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace("\n","")
+        print(dsn1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        dsn2 = dsn1.explode('RefList')
+
+        dsn2['RefList'] = dsn2['RefList'].str.replace(" "," ")
+
+        #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(dsn2)
+
+        dsn2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        dsn2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        dsn2['B_Ref_List'] = dsn2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        dsn2.to_dict()
+
+        dsn2.explode ('B_Ref_List',ignore_index=True)
+
+        dsn3 = dsn2.explode('B_Ref_List',ignore_index=True)
+
+        dsn2 = dsn2[['Group','Priority','B_Part_No']]
+        
+        # Continue with your code if no duplicates are found
+        dcn1 = dsn2[['B_Part_No']]
+        duplicate_rows = dcn1[dcn1.duplicated(subset=['B_Part_No'], keep=False)]
+        
+        if not duplicate_rows.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'B_Part_No':\nCheck the BOM! PartNo Col.\n{duplicate_rows}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        print(dcn1)
+        dcn1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dcn1['PBARPTN'] = dcn1['PBARNO']
+        dcn1['PBARBAR'] = dcn1['PBARNO']
+        dcn1.insert(3,'PBARQTY', 10000)
+        dcn1.insert(4,'PBARFTYP', 3)
+
+        #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfsn2 = dsn2[['Group','Priority','B_Part_No']]
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("15","A")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("14","B")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("13","C")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("12","D")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("11","E")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("10","F")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfsn2.dropna(subset=['Group'], inplace=True)
+        #dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+            # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfsn2[dfsn2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            dfn2 = dfsn2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # Desired column order
+        desired_order = ['Group Name','PTN_1','PTN_2','PTN_3','PTN_4','PTN_5','PTN_6','PTN_7','PTN_8','PTN_9','PTN_10','PTN_11','PTN_12','PTN_13','PTN_14','PTN_15']
+        #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfn2.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        df_AL1 = dfn2[common_columns]
+
+        '''    # Assuming df is your DataFrame
+            column_to_check = 'PTN_15'
+
+            # Check if the column is present
+            if column_to_check not in df_AL1.columns:
+                # Show a pop-up message if the column is not present
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showinfo("Notification", f"The column '{column_to_check}' is missing.")
+
+            # Continue with the rest of your code
+            print("Continuing with the rest of the code...")
+            # Your next line of code here'''
+
+        # Assuming df is your DataFrame
+        column_to_check = 'PTN_11'
+
+        # Check if the column is present
+        if column_to_check in df_AL1.columns:
+            # Show a pop-up message if the column is present
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Notification", f"The column '{column_to_check}' is present.")
+
+        # Continue with the rest of your code
+        print("Continuing with the rest of the code...")
+        # Your next line of code here
+
+        dsn3.head()
+
+        T10_col = dsn3.pop('B_Ref_List') # col-1
+
+        dsn3.insert(0, 'B_Ref_List', T10_col)
+
+        dsn3 = dsn3[['B_Ref_List','B_Part_No','Long Des']]
+
+        dsn1.dropna(subset=['RefList'], inplace=True)
+        dsn3.dropna(subset=['B_Ref_List'], inplace=True)
+
+        yourfolder4 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified"
+
+        if not os.path.isdir(yourfolder4):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder4)
+
+    #########################################################################################################################################################################
+        print('\n')
+        print("\033[92;4m*******XY Data Manipulation*******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+
+        try:
+            # XY Data MANIPULATION
+            os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+            file_path_xlsx = 'BOM.xlsx'
+            file_path_xls = 'BOM.xls'
+
+            if os.path.isfile(file_path_xlsx):
+                dsxy1 = pd.read_excel(file_path_xlsx, sheet_name="XY DATA", usecols=['R', 'X', 'Y', 'A', 'S'], index_col=False)
+            elif os.path.isfile(file_path_xls):
+                dsxy1 = pd.read_excel(file_path_xls, sheet_name="XY DATA", usecols=['R', 'X', 'Y', 'A', 'S'], index_col=False)
+            else:
+                root = tk.Tk()
+                root.withdraw()
+                error_message = "BOM file not found. Please check the file path."
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+            dfXY1 = dsxy1
+
+            # Define your column lists
+            column_list_1 = ['R', 'X', 'Y', 'A', 'S']
+
+            # Check which column list is present in the DataFrame
+            if all(column in dsxy1.columns for column in column_list_1):
+                columns_to_use = column_list_1
+            else:
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in column_list_1 if column not in dsxy1.columns]
+                error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+                error_msgbm1 = "The following columns are missing in BOM (EXCEL) File Sheet 'XY DATA':\n'Reference CRD as R'\n'X Coordinate as X'\n'Y Coordinate as Y'\n'Angle as A'\n'Side as S'"
+                messagebox.showerror("Error", error_message)
+                messagebox.showerror("Error", error_msgbm1)
+                sys.exit(1)  # Exit the program with an error code
+
+            dfXY1['R'] = dfXY1['R'].str.replace(" ","")
+            dfXY1.rename(columns={'R': 'B_Ref_List'}, inplace=True)
+            dfXY1['R'] = dfXY1['B_Ref_List']
+
+            dfXYC1 = len(dfXY1['B_Ref_List'])
+            print(f'Total count of rows in the "XY_Ref_List" column: {dfXYC1}') # TAKING XY REFERENCE COUNT FROM THE BEIGN
+            dfXYC2 = dfXY1['S'].value_counts().reset_index()
+
+            dsplcr1['Long Des'] = dsplcr1['Long Des'].str.replace('0201', '')
+            dsplcr1['Long Des'] = dsplcr1['Long Des'].str.replace('0402', '')
+            dsplcr1['Long Des'] = dsplcr1['Long Des'].str.replace('0603', '')
+            dsplcr1['Long Des'] = dsplcr1['Long Des'].str.replace('0805', '')
+            dsplcr1['Long Des'] = dsplcr1['Long Des'].str.replace('1206', '')
+
+        except Exception as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred: {e}"
+
+            # Show error message in a pop-up box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            error_msgbm1 = f"The following columns are missing in BOM Sheet 'XY DATA':\n'Reference CRD as R'\n'X Coordinate as X'\n'Y Coordinate as Y'\n'Angle as A'\n'Side as S'"
+            messagebox.showerror("Error", error_msgbm1)
+            sys.exit(1)  # Exit the program with an error code
+
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx") as writer:
+
+            ds1.to_excel(writer, sheet_name="BOM", index=False)
+            dfXY1.to_excel(writer, sheet_name="XY DATA", index=False)
+            dsn2.to_excel(writer, sheet_name="AVL GROUP", index=False)
+            dcn1.to_excel(writer, sheet_name="PART MASTER", index=False)
+            df_AL1.to_excel(writer, sheet_name="AVL SHEET", index=True)
+            ds3.to_excel(writer, sheet_name="BOM DATA", index=False)
+            count_df = pd.DataFrame({'BOM Ref Count': [dsco3]})
+            count_df.to_excel(writer, sheet_name="BOM Ref Count", index=TRUE)
+            count_df = pd.DataFrame({'XY Ref Count': [dfXYC1]})
+            count_df.to_excel(writer, sheet_name="XY Ref Count", index=TRUE)
+            dfXYC2.to_excel(writer, sheet_name="XY Side Counts", index=True)
+            dsplcr1.to_excel(writer, sheet_name="BOM_SL", index=False)
+            dnsplcr1.to_excel(writer, sheet_name="Orginal_BOM_SL", index=False)
+
+        pass
+        print('The file does not exist.')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        #@@ CRD Inspection @@#
+        print('\n')
+        print("\033[92;4m******CRD CHECK******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+        # Assuming 'BOM DATA' sheet contains a column named 'Bom Ref'
+        df_bom_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM DATA")
+        duplicates_bom_data = df_bom_data[df_bom_data.duplicated(subset='Bom Ref', keep=False)]
+        # Assuming 'XY DATA' sheet contains a column named 'R'
+        df_xy_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY DATA")
+        duplicates_xy_data = df_xy_data[df_xy_data.duplicated(subset='R', keep=False)]
+        # Function to check for duplicates and display an error message
+        def check_and_show_duplicates(df, column_name, sheet_name):
+            duplicates = df[df.duplicated(subset=column_name, keep=False)]
+            if not duplicates.empty:
+                print("Duplicate values in 'Bom Ref' column of 'BOM DATA':")
+                print(duplicates_bom_data['Bom Ref'].tolist())
+                print("\nDuplicate values in 'R' column of 'XY DATA':")
+                print(duplicates_xy_data['R'].tolist())
+                root = tk.Tk()
+                root.withdraw()
+                message = f"Duplicate values found in '{column_name}' column of '{sheet_name}' sheet:\n{duplicates[column_name].tolist()}"
+                messagebox.showerror("Error", message)
+                sys.exit()
+
+        # Check for duplicates in 'Bom Ref' column of 'BOM DATA'
+        check_and_show_duplicates(df_bom_data, 'Bom Ref', 'BOM DATA')
+
+        # Check for duplicates in 'R' column of 'XY DATA'
+        check_and_show_duplicates(df_xy_data, 'R', 'XY DATA')
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        #@@ AVL Inspection @@#
+        print('\n')
+        print("\033[92;4m******AVL LINE INSPECTION******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+        print(os.path.isfile(file_path))
+        print(os.path.isfile(directory_path))
+
+        try:
+            if os.path.isfile(file_path):
+                df_Iav1 = pd.read_csv(file_path)
+
+        except ValueError:
+            df_Iav1 = pd.read_excel(file_path, sheet_name="AVL SHEET", index_col=False) 
+
+            print(df_Iav1)
+
+            # Function to check for missing values between two strings
+        def check_missing_values(row):
+            start_index = None
+            end_index = None
+
+            for i in range(1, len(row) + 1):  # Check up to the last column
+                col_name = f'PTN_{i}'
+                if col_name in row.index:  # Check if the column exists
+                    current_value = row[col_name]
+
+                    if pd.isna(current_value):
+                        if start_index is None:
+                            start_index = i
+                        end_index = i
+                    else:
+                        if start_index is not None and end_index is not None:
+                            show_error(row['Group'], start_index, end_index)
+                            start_index = None
+                            end_index = None
+
+        # Function to show pop-up error message
+        def show_error(group, start_index, end_index):
+            root = tk.Tk()
+            root.withdraw()
+            error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+            messagebox.showerror("Error", error_message)
+
+        # Check for missing values row-wise
+        for index, row in df_Iav1.iterrows():
+            check_missing_values(row)
+
+        # Display the DataFrame with styling
+        print(df_Iav1)
+
+        # Function to check for missing values between two strings
+        def check_missing_values(row):
+            start_index = None
+            end_index = None
+
+            for i in range(1, len(row) + 1):  # Check up to the last column
+                col_name = f'PTN_{i}'
+                if col_name in row.index:  # Check if the column exists
+                    current_value = row[col_name]
+
+                    if pd.isna(current_value):
+                        if start_index is None:
+                            start_index = i
+                        end_index = i
+                    else:
+                        if start_index is not None and end_index is not None:
+                            show_error(row.get('Group', 'Unknown Group'), start_index, end_index)
+                            start_index = None
+                            end_index = None
+
+        # Function to show pop-up error message
+        def show_error(group, start_index, end_index):
+            root = tk.Tk()
+            root.withdraw()
+            
+            error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'.\nDo you want to stop the program?"
+            response = messagebox.askquestion("Error", error_message)
+
+            if response == 'yes':
+                sys.exit(1)
+
+        # ...
+
+        # Check for missing values row-wise
+        for index, row in df_Iav1.iterrows():
+            check_missing_values(row)
+
+        # Display the DataFrame with styling
+        print(df_Iav1)
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        print('\n')
+        print("\033[92;4m*******BOM & XY Verification Progress*******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+    #BOM XY VERIFICATION CODE BOM AND XY DATA AS VISE VERSA
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        # Excel file path
+        dfvbxy1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM DATA")
+        dfvbxy2 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY DATA")
+        
+        dfvbxy3 = pd.merge(dfvbxy1, dfvbxy2, on='B_Ref_List', how='left')
+        dfvbxy4 = pd.merge(dfvbxy2, dfvbxy1, on='B_Ref_List', how='left')
+
+        dfvbxy3["BOM and XY Compare"] = (dfvbxy3["Bom Ref"] == dfvbxy3["R"])
+        dfvbxy3['BOM and XY Compare'] = dfvbxy3['BOM and XY Compare'].replace('TRUE','MATCH')
+        dfvbxy3['BOM and XY Compare'] = dfvbxy3['BOM and XY Compare'].replace('FALSE','MISS_MATCH')
+
+        dfvbxy3 = dfvbxy3.copy()
+        dfvbxy3['BOM and XY Compare'] = dfvbxy3['BOM and XY Compare'].map({True: 'Match', False: 'Miss_Match'})
+        dfvbxy3.sort_values(by='BOM and XY Compare', inplace=True, ascending=False)
+
+        dfvbxy4["XY and BOM Compare"] = (dfvbxy4["R"] == dfvbxy4["Bom Ref"])
+        dfvbxy4['XY and BOM Compare'] = dfvbxy4['XY and BOM Compare'].replace('TRUE','MATCH')
+        dfvbxy4['XY and BOM Compare'] = dfvbxy4['XY and BOM Compare'].replace('FALSE','MISS_MATCH')
+
+        dfvbxy4 = dfvbxy4.copy()
+        dfvbxy4['XY and BOM Compare'] = dfvbxy4['XY and BOM Compare'].map({True: 'Match Mount Part', False: 'Miss_Match No Mount Part'})
+        dfvbxy4.sort_values(by='XY and BOM Compare', inplace=True, ascending=False)
+
+        dfvbxyc3 = dfvbxy3['BOM and XY Compare'].value_counts().reset_index()
+        dfvbxyc4 = dfvbxy4['XY and BOM Compare'].value_counts().reset_index()
+        dfvbxycS3 = dfvbxy3['S'].value_counts().reset_index()
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Bom_List-Verified.xlsx") as writer:
+            dfvbxy3.to_excel(writer, sheet_name="Bom to XY", index=False)
+            dfvbxy4.to_excel(writer, sheet_name="XY to Bom", index=False)
+            #dfvbxyc3.to_excel(writer, sheet_name="BOM and XY Compare", index=True)
+            #dfvbxyc4.to_excel(writer, sheet_name="XY and BOM Compare", index=True)
+
+    # MOVE THE Bo_List-Verified to BOM_List_OP
+        def copy_sheet(source_wb_path, source_sheet_name, target_wb_path, target_sheet_name):
+            # Read the source sheet into a DataFrame
+            df = pd.read_excel(source_wb_path, sheet_name=source_sheet_name)
+
+            # Open the target workbook in append mode
+            with pd.ExcelWriter(target_wb_path, engine='openpyxl', mode='a') as writer:
+                # Write the DataFrame to the target sheet
+                df.to_excel(writer, sheet_name=target_sheet_name, index=False)
+
+        # File paths
+        source_wb_path = 'Bom_List-Verified.xlsx'
+        target_wb_path = 'BOM_List_OP.xlsx'
+
+        # Sheet names
+        source_sheet_name_1 = 'Bom to XY'
+        source_sheet_name_2 = 'XY to Bom'
+
+        target_sheet_name_1 = 'Bom to XY'
+        target_sheet_name_2 = 'XY to Bom'
+        
+        # Copy sheets from source workbook to target workbook
+        copy_sheet(source_wb_path, source_sheet_name_1, target_wb_path, target_sheet_name_1)
+        copy_sheet(source_wb_path, source_sheet_name_2, target_wb_path, target_sheet_name_2)
+
+        file_path = 'Bom_List-Verified.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+        print(os.path.isfile(file_path))
+        print(os.path.isfile(directory_path))
+
+        try:
+            if os.path.isfile(file_path):
+                dt_H1 = pd.read_csv(file_path)
+
+        except ValueError:
+            if os.path.exists("Bom_List-Verified.xlsx"):
+                os.remove("Bom_List-Verified.xlsx")
+        else:
+            print("The file does not exist")
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+            print('\n')
+            print("\033[92;4m*******BOM XY Verification Progress*******\033[0m")
+            print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+    # Arrange single file and Highlight
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        dir_B_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+            # Excel file path
+        dfah1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Bom to XY")
+        dfah2 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY to Bom")
+        dfah3 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM")
+        dfah4 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY DATA")
+        dfah5 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM DATA")
+        dfah6 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="AVL GROUP")
+        dfah7 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="AVL SHEET")
+        dfah8 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="PART MASTER")
+        dfah9 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM_SL")
+        dfah10 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Orginal_BOM_SL")
+
+        # Define a function for row styling
+        def highlight_row(row):
+                return ['background-color: lightgreen' if 'Match' in row.values else
+                        'background-color: yellow' if 'Miss_Match' in row.values else
+                        '' for _ in row]
+            
+            # Apply the styling function to the DataFrame
+        style_df1 = dfah1.style.apply(highlight_row, axis=1)
+
+                # Define a function for row styling
+        def highlight_row(row):
+                return ['background-color: lightgreen' if 'Match Mount Part' in row.values else
+                        'background-color: pink' if 'Miss_Match No Mount Part' in row.values else
+                        '' for _ in row]
+            
+            # Apply the styling function to the DataFrame
+        style_df2 = dfah2.style.apply(highlight_row, axis=1)
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        print('\n') #jan18 old sph & lcr
+        print("\033[92;4m*******SHAPE-PACKAGE Assigning Progress*******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+        ##SHAPE & PACKAGE##
+
+        # Load the Excel file
+        excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+        # Define your column lists
+        column_list = ["PartNumber", "Group", 'Priority', 'RefList', 'Qty', 'Shape', 'Long Des']
+
+        dfshp = pd.read_excel(excel_file_path, sheet_name='BOM' ,usecols=column_list, index_col= False)
+
+        print(dfshp)
+
+        dfshp = dfshp[['PartNumber', 'Long Des']]
+
+        print(dfshp)
+
+        dfshp.rename(columns = {'Long Des':'Description'}, inplace = True)
+
+        #dfshp['Description'] = dfshp['Long Des']
+
+        #dfshp = dfshp['PartNUmber', 'Description']
+
+        dfshp = pd.DataFrame(dfshp)
+        # Define desired shapes
+        desired_shapes = ("0201", "0402", "0603", "0805", "1206")
+
+        # Custom function to extract and separate the shape
+        def extract_shape(description):
+            shape_match = re.search(r'\b\d{4}\b', description)
+            if shape_match:
+                shape = shape_match.group()
+                if shape in desired_shapes:
+                    return shape
+            return None
+
+        # Apply the custom function to create the Shape column
+        dfshp['Shape'] = dfshp['Description'].apply(extract_shape)
+
+        # Display the result
+        print(dfshp[['PartNumber', 'Description', 'Shape']])
+        #--------------------------------------------------------------
+        '''#Desire Tol
+        desired_Tol = ("1%", "5%", "10%", "15%", "20%", "25%", "±1%", "±5%", "±10%", "±15%", "±20%", "±25%")
+
+        # Custom function to extract and separate the shape
+        def extract_tol(description):
+            tol_match = re.search(r'\b\d{2}\b', description)
+            if tol_match:
+                tol = tol_match.group()
+                if tol in desired_Tol:
+                    return tol
+            return None
+
+        # Apply the custom function to create the Shape column
+        dfshp['Tol'] = dfshp['Description'].apply(extract_tol)
+
+        # Display the result
+        print(dfshp[['Description', 'Tol']])'''
+
+        # Custom function to extract and separate the tolerance
+        def extract_tol(description):
+            tol_match = re.search(r'[±]?\d+%', description)
+            if tol_match:
+                return tol_match.group()
+            return None
+
+        # Apply the custom function to create the Tol column
+        dfshp['Tol'] = dfshp['Description'].apply(extract_tol)
+
+        # Display the result
+        print(dfshp[['PartNumber', 'Description', 'Tol']])
+
+        #--------------------------------------------------------------
+        # Define desired component types
+        desired_COMP = ("CAP", "RES", "IND")
+
+        # Custom function to extract and separate the component type
+        def extract_COMPs(description):
+            for comp_type in desired_COMP:
+                    if comp_type.lower() in description.lower():
+                        return comp_type
+            return None
+
+        # Apply the custom function to create the LCRTYPE column
+        dfshp['LCRTYPE'] = dfshp['Description'].apply(extract_COMPs)
+
+        # Define desired Special component types
+        desired_SPERESCOMP = ["MELF"]
+
+        # Custom function to check if the description contains special components
+        def contains_special_res_component(description):
+            for serescomp_type in desired_SPERESCOMP:
+                if serescomp_type.lower() in description.lower():
+                    return True
+            return False
+
+        # Apply the custom function to create the SPERESCOMP column
+        dfshp['SPERESCOMP'] = dfshp['Description'].apply(contains_special_res_component)
+
+        # Transform 'SPERESCOMP' column to 'MELF' when it's True
+        dfshp['SPERESCOMP'] = np.where(dfshp['SPERESCOMP'], 'MELF', '')
+
+        # Define desired Special component types
+        desired_SPETHTCOMP = ["THT"]
+
+        # Custom function to check if the description contains special components
+        def contains_special_tht_component(description):
+            for sethtcomp_type in desired_SPETHTCOMP:
+                if sethtcomp_type.lower() in description.lower():
+                    return True
+            return False
+
+        # Apply the custom function to create the SPERESCOMP column
+        dfshp['SPETHTCOMP'] = dfshp['Description'].apply(contains_special_tht_component)
+
+        # Transform 'SPERESCOMP' column to 'MELF' when it's True
+        dfshp['SPETHTCOMP'] = np.where(dfshp['SPETHTCOMP'], 'THT', '')
+
+        # Define desired Special component types
+        desired_SPESODCOMP = ("ZENER", "DIODE", "SOD")
+
+        # Custom function to extract and separate the component type
+        def extract_SPESODCOMP(description):
+            for sesodcomp_type in desired_SPESODCOMP:
+                if sesodcomp_type.lower() in description.lower():
+                    return sesodcomp_type
+            return None
+
+        # Apply the custom function to create the LCRTYPE column
+        dfshp['SPESODCOMP'] = dfshp['Description'].apply(extract_SPESODCOMP)
+
+        # Define desired Special component types
+        desired_SPECAPCOMP = ("TAN", "Tantalum", "Aluminium","ALLUM", "ALUM", "Electrolytic" ,"ALU")
+
+        # Custom function to extract and separate the component type
+        def extract_SPECAPCOMP(description):
+            for setancomp_type in desired_SPECAPCOMP:
+                if setancomp_type.lower() in description.lower():
+                    return setancomp_type
+            return None
+
+        # Apply the custom function to create the LCRTYPE column
+        dfshp['SPECAPCOMP'] = dfshp['Description'].apply(extract_SPECAPCOMP)
+
+            # Define desired Special component types
+        desired_SPEFERINDCOMP = ("IND", "FERRITEBEAD", "FERRITE","BEAD", "INDUCTOR")
+
+        # Custom function to extract and separate the component type
+        def extract_SPEFERINDCOMP(description):
+            for seferindcomp_type in desired_SPEFERINDCOMP:
+                if seferindcomp_type.lower() in description.lower():
+                    return seferindcomp_type
+            return None
+
+        # Apply the custom function to create the LCRTYPE column
+        dfshp['SPEFERINDCOMP'] = dfshp['Description'].apply(extract_SPEFERINDCOMP)
+
+
+        # Assuming df is your DataFrame
+        dfshp['PACKAGE'] = dfshp['Shape'].replace({'0201': '0802P', '0402': '0802P', '0603': '0804P', '0805': '0804E', '1206': '0804E'})
+
+        dfshp = dfshp.rename(columns={"Description": "Long Desp"})
+
+        # Display the result
+        print(dfshp[['Long Desp', 'Shape', 'LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP', 'SPEFERINDCOMP', 'PACKAGE']])
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        print('\n')
+        print("\033[92;4m*******LCR Generation Progress*******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+        # Function to extract LCR information
+        def extract_component_info(component_line):
+            # Regular expressions for CAPACITOR
+            capacitor_type_match = re.search(r'\b(CAP|Capacitor|MLCC|CAPACITOR)\b', component_line, re.IGNORECASE)
+            capacitor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)F', component_line)
+            capacitor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+            # Regular expressions for RESISTOR
+            resistor_type_match = re.search(r'\b(Res|Resistor|FLIM|RESISTOR)\b', component_line, re.IGNORECASE)
+            resistor_value_match = re.search(r'(\d+(\.\d+)?)\s*([pnuμmkPUNKM]?\w?)\s*(\d+%)?', component_line)
+            resistor_tolerance_match = re.search(r'[±](\d+)%', component_line)
+            # Assign default values
+            LCR_Type = None
+            LCR_Value = None
+            LCR_Unit = None
+            LCR_Tolerance = None
+
+            if capacitor_type_match:
+                LCR_Type = capacitor_type_match.group(1)
+
+            if capacitor_tolerance_match:
+                LCR_Tolerance = capacitor_tolerance_match.group(1)
+
+            if capacitor_value_match:
+                groups = capacitor_value_match.groups()
+                LCR_Value = groups[1] if groups[1] is not None else None
+                LCR_Unit = groups[2] if groups[2] is not None else None
+
+            if resistor_type_match:
+                LCR_Type = resistor_type_match.group(1)
+
+            if resistor_value_match:
+                groups = resistor_value_match.groups()
+                LCR_Value = groups[0] if groups[0] is not None else None
+                LCR_Unit = groups[2] if groups[2] is not None else None
+
+            if resistor_tolerance_match:
+                LCR_Tolerance = resistor_tolerance_match.group(1)
+
+            return LCR_Type, LCR_Value, LCR_Unit, LCR_Tolerance
+
+        # Set your working directory
+        os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+        # Load the Excel file
+        excel_file_path = 'BOM_List_OP.xlsx'  # Replace with your file path
+
+        # Define your column list
+        column_names = ["Long Des", "PartNumber"]
+
+        # Read the Excel file without index_col and add 'PartNumber' to the column_names list
+        dflcr = pd.read_excel(excel_file_path, sheet_name='BOM_SL', usecols=column_names)
+
+        # Add 'PartNumber' as a separate column
+        dflcr['PartNumber'] = pd.read_excel(excel_file_path, sheet_name='BOM_SL', usecols=['PartNumber'])
+
+        # Apply the extract_component_info function to create LCR columns
+        dflcr[['LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']] = dflcr['Long Des'].apply(extract_component_info).apply(pd.Series)
+
+        # Display the result
+        print(dflcr[['PartNumber', 'LCR Type', 'LCR Value', 'LCR Unit', 'LCR Tolerance']])
+
+        # Create a new column 'AVL_Name' based on the condition in 'Priority' column
+        dfah10['AVL Name'] = dfah10.apply(lambda row: row['PartNumber'] if row['Priority'] == 1 else '', axis=1)
+        
+        print(dfah10)
+
+        #start Here to merge
+            # Desired column order
+        desired_order = ['PartNumber','Group','Priority','Long Des','Shape', 'Qty','RefList','AVL Name']
+
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfah10.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        dfah10 = dfah10[common_columns]
+
+        dfah10.rename(columns = {'Long Des':'Description'}, inplace = True)
+        dfah10.rename(columns = {'Shape':'Shape DTA'}, inplace = True)
+
+        dfah10 = pd.merge(dfah10 , dfshp, on='PartNumber', how='left')
+        print(dfah10)
+        dfah10 = pd.merge(dfah10 , dflcr, on='PartNumber', how='left')
+        print(dfah10)
+
+        del dfah10['Long Desp']
+        del dfah10['Long Des']
+
+        dfah10.sort_values(by='Priority', inplace=True, ascending=True)
+        dfah10.sort_values(by='Group', inplace=True, ascending=True)
+
+        F1sl_col = dfah10.pop('PACKAGE') # col-14
+        dfah10.insert(9, 'PACKAGE', F1sl_col)
+
+        # Line are in Kstudy Import don't delete
+
+        #dfah10["LCRTYPE1"] = dfah10['LCRTYPE'].astype(str) +"-"+ dfah10['SPERESCOMP'].astype(str) +"-"+ dfah10['SPETHTCOMP'].astype(str) +"-"+ dfah10["SPESODCOMP"].astype(str) +"-"+ dfah10["SPECAPCOMP"]
+        # Assuming dfah10 is your DataFrame with columns LCRTYPE, SPERESCOMP, SPETHTCOMP, SPESODCOMP, SPECAPCOMP
+        #dfah10["LCRTYPE1"] = dfah10.apply(lambda row: "-".join(str(value) for value in row), axis=1)
+        # OK LINE #dfah10["LCRTYPE1"] = dfah10[['LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP']].astype(str).apply('-'.join, axis=1)
+        # Assuming dfah10 is your DataFrame with columns LCRTYPE, SPERESCOMP, SPETHTCOMP, SPESODCOMP, SPECAPCOMP
+        dfah10["LCRTYPE"] = dfah10[['LCRTYPE', 'SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP', 'SPEFERINDCOMP']].apply(lambda x: ''.join(x.dropna().astype(str)), axis=1) #x: '-'.jo #># x: ''.jo
+        
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('FERRITEBEAD','IND')
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('BEAD','IND')
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('FERRITE','IND')
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('INDIND','IND')
+
+        dfah10["Shape"] = dfah10[['LCRTYPE','Shape']].apply(lambda x: '-'.join(x.dropna().astype(str)), axis=1)
+        # Display the resulting DataFrame
+        print(dfah10)
+
+        # Assuming dfah10 is your DataFrame
+        columns_to_delete = ['SPERESCOMP', 'SPETHTCOMP', 'SPESODCOMP', 'SPECAPCOMP', 'SPEFERINDCOMP']
+
+        # Use the drop method to delete the specified columns
+        dfah10.drop(columns=columns_to_delete, inplace=True)
+
+        dfah10['Shape'] = dfah10['Shape'].str.replace('CAP-0201','C0201')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('CAP-0402','C0402')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('CAP-0603','C0603')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('CAP-0805','C0805')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('CAP-1206','C1206')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('RES-0201','R0201')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('RES-0402','R0402')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('RES-0603','R0603')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('RES-0805','R0805')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('RES-1206','R1206')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('IND-0201','C0201')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('IND-0402','C0402')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('IND-0603','C0603')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('IND-0805','C0805')
+        dfah10['Shape'] = dfah10['Shape'].str.replace('IND-1206','C1206')
+
+        dfah10.rename(columns = {'Tol':'Tolerance'}, inplace = True)
+
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('CAP','CAPACITOR')
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('RES','RESISTOR')
+        dfah10['LCRTYPE'] = dfah10['LCRTYPE'].str.replace('IND','INDUCTOR')
+        
+        # Desired column order
+        desired_order = ['PartNumber','Group','Priority','Description','Shape DTA','Qty','RefList','AVL Name','Shape','PACKAGE','LCRTYPE','LCR Type','LCR Value','LCR Unit','LCR Tolerance','Tolerance']
+        
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfah10.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        dfah10 = dfah10[common_columns]
+
+        dfah9 = dfah10
+
+        dfah9 = dfah9[dfah9['Priority'].isin([0, 1])]
+
+        dfah11 = dfah10.copy()
+
+        dfah11 = dfah11
+
+        # Assuming dfah10 is your DataFrame
+        columns_to_delete = ['Group','Priority','Shape DTA','Qty','RefList','AVL Name','Shape','PACKAGE','LCRTYPE','LCR Type','LCR Tolerance']
+
+        # Use the drop method to delete the specified columns
+        dfah11.drop(columns=columns_to_delete, inplace=True)
+
+            # Desired column order
+        desired_order = ['Description','PartNumber','LCRTYPE','LCR Value','LCR Unit','Tolerance']
+        
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfah11.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        dfah11 = dfah11[common_columns]
+
+        dfah11.rename(columns = {'PartNumber':'PBARNO'}, inplace = True)
+        dfah11['PBARPTN'] = dfah11['PBARNO']
+        dfah11['PBARBAR'] = dfah11['PBARNO']
+        dfah11.insert(3,'PBARQTY', 10000)
+        dfah11.insert(4,'PBARFTYP', 3)
+        dfah11.insert(5,'PBARFPIT', '')
+        dfah11.insert(6,'PBARWDT', '')
+        dfah11.insert(7,'PBARLOQ', '')
+        dfah11.insert(8,'PBARSLQ', '')
+        dfah11.insert(9,'PBARSLM', '')
+        dfah11.insert(10,'PBARVND', '')
+        dfah11.insert(11,'PBARLOT', '')
+        dfah11.insert(12,'PBARDTE', '')
+        dfah11.insert(13,'PBARLOC', '')
+        dfah11.insert(14,'PBARJOB', '')
+        dfah11.insert(15,'PBARSPP', '')
+        dfah11.insert(16,'PBARLCR', '')
+        dfah11.insert(17,'PBARLMT', '')
+        dfah11.insert(18,'PBARNOR', '')
+        dfah11.insert(19,'PBARUPP', '')
+        dfah11.insert(20,'PBARLOW', '')
+        dfah11.insert(21,'PBARFEQ', '')
+        dfah11.insert(22,'PBARVOL', '')
+        dfah11.insert(23,'PBARMEM', '')
+        dfah11.insert(24,'PBARDRYTYP', '')
+        dfah11.insert(25,'PBARMSLVL', '')
+        dfah11.insert(26,'PBARTRYX', '')
+        dfah11.insert(27,'PBARTRYY', '')
+        dfah11.insert(28,'PBARTRYMATRIX', '')
+        dfah11.insert(29,'PBARNOTE1', '')
+        dfah11.insert(30,'PBARNOTE2', '')
+        dfah11.insert(31,'PBARNOTE3', '')
+        dfah11.insert(32,'PBARNOTE4', '')
+        dfah11.insert(33,'PBARMDF', '')
+        dfah11.insert(34,'PBARSAFETYCNT', '')
+        dfah11.insert(35,'PBARTRAYPACKAGE', '')
+        dfah11.insert(36,'PBARUSELIMIT', '')
+        dfah11.insert(37,'PBARDTEFORMAT', '')
+        dfah11.insert(38,'CPBARPTN', '')
+        dfah11.insert(39,'CPBARBAR', '')
+        dfah11.insert(40,'CPBARQTY', '')
+        dfah11.insert(41,'CPBARLOQ', '')
+        dfah11.insert(42,'CPBARSLQ', '')
+        dfah11.insert(43,'CPBARSLM', '')
+        dfah11.insert(44,'CPBARVND', '')
+        dfah11.insert(45,'CPBARLOT', '')
+        dfah11.insert(46,'CPBARDTE', '')
+        dfah11.insert(47,'CPBARLOC', '')
+        dfah11.insert(48,'CPBARMEM', '')
+        dfah11.insert(49,'CPBARNOTE1', '')
+        dfah11.insert(50,'CPBARNOTE2', '')
+        dfah11.insert(51,'CPBARNOTE3', '')
+        dfah11.insert(52,'CPBARNOTE4', '')
+        dfah11.insert(53,'CPBARLIGHTING', '')
+        dfah11.insert(54,'CPBARSAFETYCNT', '')
+        dfah11.insert(55,'PBARUNPSTCHK', '')
+        dfah11.insert(56,'PBARTRYQTY', '')
+        dfah11.insert(57,'PBARPARTSCHG', '')
+        dfah11.insert(58,'PBARSHAPE', '')
+        dfah11.insert(59,'PBARPACKAGE', '')
+        dfah11.insert(60,'PBARDIRECTION', '')
+
+        desired_order = ['Description','PBARNO','PBARPTN','PBARBAR','PBARQTY','PBARFTYP','LCR Value','LCR Unit','Tolerance','PBARFPIT','PBARWDT','PBARLOQ','PBARSLQ','PBARSLM','PBARVND','PBARLOT','PBARDTE','PBARLOC','PBARJOB','PBARSPP','PBARLCR','PBARLMT','PBARNOR','PBARUPP','PBARLOW','PBARFEQ','PBARVOL','PBARMEM','PBARDRYTYP','PBARMSLVL','PBARTRYX','PBARTRYY','PBARTRYMATRIX','PBARNOTE1','PBARNOTE2','PBARNOTE3','PBARNOTE4','PBARMDF','PBARSAFETYCNT','PBARTRAYPACKAGE','PBARUSELIMIT','PBARDTEFORMAT','CPBARPTN','CPBARBAR','CPBARQTY','CPBARLOQ','CPBARSLQ','CPBARSLM','CPBARVND','CPBARLOT','CPBARDTE','CPBARLOC','CPBARMEM','CPBARNOTE1','CPBARNOTE2','CPBARNOTE3','CPBARNOTE4','CPBARLIGHTING','CPBARSAFETYCNT','PBARUNPSTCHK','PBARTRYQTY','PBARPARTSCHG','PBARSHAPE','PBARPACKAGE','PBARDIRECTION']
+            
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfah11.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        dfah11 = dfah11[common_columns]
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Bom_List-Verified.xlsx", engine='openpyxl') as writer:
+            style_df1.to_excel(writer, sheet_name="Bom to XY", index=False)
+            style_df2.to_excel(writer, sheet_name="XY to Bom", index=False)
+            dfah3.to_excel(writer, sheet_name="BOM", index=False)
+            dfah4.to_excel(writer, sheet_name="XY DATA", index=False)
+            dfah5.to_excel(writer, sheet_name="BOM DATA", index=False)
+            dfah6.to_excel(writer, sheet_name="AVL GROUP", index=False)
+            dfah7.to_excel(writer, sheet_name="AVL SHEET", index=False)
+            dfah8.to_excel(writer, sheet_name="PART MASTER", index=False)
+            dfshp.to_excel(writer, sheet_name="SHP-PKG", index=False)
+            dflcr.to_excel(writer, sheet_name="LCR", index=False)
+            dfah9.to_excel(writer, sheet_name="BOM_SL", index=False)
+            dfah10.to_excel(writer, sheet_name="Orginal_BOM_SL", index=False)
+            dfah11.to_excel(writer, sheet_name="Part Master LCR", index=False)
+
+            print('\n')
+            print("\033[92;4m*******BOM XY Verification Progress Complete*******\033[0m")
+            print('\n')
+            
+            print("``````````````````````````````````````````````")
+            print(f"Current Date and Time: {formatted_datetime}")
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(dir_B_path,'\\__BOM__\\',dLbr1)
+            print(f"Bom Name:{dLbr1}")
+            print("``````````````````````````````````````````````")
+            print('\n')
+            print("``````````````````````````````````````````````")
+            print(f'BOM Part-No Qty column SUM: {dsco2}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'Total count of BOM DATA in the "BOM_Ref_List" column: {dsco3}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'Total count of XY in the "Reference" column: {dfXYC1}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'Total count of XY DATA side in the "S" column: {dfXYC2}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'Total count of BOM TO XY DATA side in the "S" column: {dfvbxycS3}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'BOM and XY Compare: {dfvbxyc3}')
+            print("``````````````````````````````````````````````")
+            print("\n")
+            print("``````````````````````````````````````````````")
+            print(f'XY and BOM Compare: {dfvbxyc4}')
+            print("``````````````````````````````````````````````")
+
+    # Define the PySimpleGUI layout
+    layout = [
+        [sg.Multiline(size=(160, 40), font=('Courier', 9), key='-LOGWINDOW-')],
+        [sg.Button('Save to Excel'), sg.Button('Quit')]
+    ]
+
+    # Create the window
+    window = sg.Window("BOM XY VERIFICATION", layout, finalize=True)
+
+    def print_to_log(*args, **kwargs):
+        window['-LOGWINDOW-'].print(*args, **kwargs)
+        window.Refresh()
+
+    def save_to_excel(log_contents):
+        # Get the current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+        # Split log contents into lines
+        lines = log_contents.strip().split('\n')
+
+        # Create a DataFrame with each line in a new row
+        df = pd.DataFrame({'LogContents': lines})
+
+        # Save the DataFrame to the same Excel file with a new sheet
+        excel_file_path = 'Bom_List-Verified.xlsx'
+        with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+            df.to_excel(writer, sheet_name=f'Log_{current_datetime}', index=False)
+
+        return f"Log saved to {excel_file_path}, Sheet: Log_{current_datetime}"
+
+    print_to_log("BOM XY VERIFICATION___Compelete $ PROCESS $")
+
+    sys.stdout.write("\n")
+
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f"Current Date and Time: {formatted_datetime}")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(dir_B_path,'\\__BOM__\\',dLbr1)
+    print_to_log(f"Bom Name:{dLbr1}")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log('\n')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'BOM Part-No Qty column SUM: {dsco2}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'Total count of BOM in the "BOM_Ref_List" column: {dsco3}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'Total count of XY DATA in the "Reference" column: {dfXYC1}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'Total count of XY DATA side in the "S" column: {dfXYC2}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'Total count of BOM TO XY DATA side in the "S" column: {dfvbxycS3}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'BOM and XY Compare: {dfvbxyc3}')
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log("\n")
+    print_to_log("``````````````````````````````````````````````")
+    print_to_log(f'XY and BOM Compare: {dfvbxyc4}')
+    print_to_log("``````````````````````````````````````````````")
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+        elif event == 'Save to Excel':
+            # Get the contents of the log window
+            log_contents = values['-LOGWINDOW-']
+
+            # Save to Excel and get the log information
+            log_info = save_to_excel(log_contents)
+
+            print_to_log(log_info)
+
+    time.sleep (2)
+    # Close the window
+
+    # Assuming feeder verification is completed
+    BOM_XY_verification_completed = True
+
+    if BOM_XY_verification_completed:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+
+        messagebox.showinfo("BOM & XY Verification", "BOM & XY verification has been completed!")
+
+    window.close()
+
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        if os.path.exists("BOM_List_OP.xlsx"):
+            os.remove("BOM_List_OP.xlsx")
+    else:
+        print("The file does not exist")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    Chd = os.getcwd()
+
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        if os.path.exists("BOM_List_OP.xlsx"):
+            os.remove("BOM_List_OP.xlsx")
+    else:
+        print("The file does not exist")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    '''    src_1 = 'Bom_List-Verified.xlsx'
+        os.rename(src_1, dLbr1 +"_XY"+".xlsx")
+        time.sleep (2)
+        window.close()
+        time.sleep (5)'''
+
+    # Check if the file exists before renaming
+    src_1 = 'Bom_List-Verified.xlsx'
+    if os.path.isfile(src_1):
+        os.rename(src_1, f'{dLbr1}_XY.xlsx')
+        print(f"File {src_1} renamed to {dLbr1}_XY.xlsx")
+    else:
+        print(f"File {src_1} does not exist.")
+
+    time.sleep(5)
+
+    print('\n')
+    print("\033[92;4m BOM Generation Complete \033[0m")
+    print('\n')
+    print("\033[92;4m BOM and xy Verfication Found OK \033[0m")
+    print('\n')
+
+    # Notify when the process is completed
+    BXY_List_Generation_Completed = True
+
+    if BXY_List_Generation_Completed:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+
+        messagebox.showinfo("Process Completed", "BOM & XY Verified\nShape, Package & LCR Value has been Generated!")
+
+    sys.exit() #BOM Manipulation
+
+# Program 3: FeederSetup: V-2.0 X
+def program_3():
+
+    print("\033[32;4m*******Feeder and BOM data Verification Version--PY_V-2.1-X interface_GUI/J1624-89P13*******\033[0m")
+
+    '''bil1 = pyfiglet.figlet_format("Version--PY-V1.5 interface_GUI/J0324", width = 300)print(bil1)'''
+
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Format the current date and time as a string
+    #formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    # Format the date and time in a 12-hour clock with AM/PM
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
+
+    print('\n')
+
+    # Print the formatted date and time
+    print(f"\033[31mCurrent Date and Time: {formatted_datetime}\033[0m")
+
+    print('\n')
+
+    '''print(f"Current Year: {current_datetime.year}")
+    print(f"Current Month: {current_datetime.month}")
+    print(f"Current Day: {current_datetime.day}")
+    print(f"Current Hour: {current_datetime.hour}")
+    print(f"Current Minute: {current_datetime.minute}")
+    print(f"Current Second: {current_datetime.second}")'''
+
+    dL1 = input("\033[93mEnter BOM Name :\033[0m")
+    print('\n')
+    dL2 = input("\033[93mEnter Feeder Name :\033[0m")
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+    Chd = os.getcwd()
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Upload"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified"
+
+    if not os.path.isdir(yourfolder):
+        print('Folder Not Exist')
+        os.makedirs(yourfolder)
+
+    os.getcwd()
+    #Chd= os.chdir('D:\\NX_BACKWORK')
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+
+    if os.path.exists("Feeder_List_OPT.xlsx"):
+        os.remove("Feeder_List_OPT.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Feeder_List_OPB.xlsx"):
+        os.remove("Feeder_List_OPB.xlsx")
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Upload-Data.xlsx"):
+        os.remove("Upload-Data.xlsx")
+    else:
+        print("The file does not exist")
+
+    os.getcwd()
+    #Chd= os.chdir('D:\\NX_BACKWORK')
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup')
+    Chd = os.getcwd()
+
+    ##########################################################################################################################################
+
+    #bil2 = pyfiglet.figlet_format("FeederSetup Progress", width = 150)
+    print('\n')
+    print('\033[92;4m******FeederSetup Progress******\033[0m')
+    print('\n')
+    ##########################################################################################################################################
+
+    #LINE1T
+
+    file_path = 'FeederSetup_TL1.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+            
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+        
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 350:
+            # Continue with the rest of your code
+            print(f"dt_H1 line count: {len(dt_H1)}")
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 353.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '353'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in TOP Feeder '351'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+        
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL1: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1-2-','3-2-')
+
+        df1['Location'] = df1['Location'].str.replace('3-1-1-','3-1-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-2-','2-2-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','2-1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1B
+
+    file_path = 'FeederSetup_BL1.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+        
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 350:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 353.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '353'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL1.csv', encoding="utf-8",index_col=False, skiprows=range(2, 351), nrows=3)
+
+                # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-1 Slot Count in BOT Feeder '351'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL1.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL1: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1-2-','3-2-')
+
+        df1['Location'] = df1['Location'].str.replace('3-1-1-','3-1-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-2-','2-2-')
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','2-1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE2T
+
+    file_path = 'FeederSetup_TL2.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 400:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 403.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '403'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in TOP Feeder '401'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL2: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        #df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1','3')
+
+        df1['Location'] = df1['Location'].str.replace('2-1','2')
+
+        df1['Location'] = df1['Location'].str.replace('1-1','1')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE2B
+
+    file_path = 'FeederSetup_BL2.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 400:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 403.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '403'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL2.csv', encoding="utf-8",index_col=False, skiprows=range(2, 401), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-2 Slot Count in BOT Feeder '401'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL2.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL2: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        #df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('3-1','3')
+
+        df1['Location'] = df1['Location'].str.replace('2-1','2')
+
+        df1['Location'] = df1['Location'].str.replace('1-1','1')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+            #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+            #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+            #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+            #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)   
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE3T
+
+    file_path = 'FeederSetup_TL3.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 170:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 173.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '173'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in TOP Feeder '171'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL3: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE3B
+
+    file_path = 'FeederSetup_BL3.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 170:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 173.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '173'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL3.csv', encoding="utf-8",index_col=False, skiprows=range(2, 171), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-3 Slot Count in BOT Feeder '171'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL3: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE4T
+
+    file_path = 'FeederSetup_TL4.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL4.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 82:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 85.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in TOP Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL4.csv', encoding="utf-8",index_col=False, skiprows=range(2, 83), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in TOP Feeder '83'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL4.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL4: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+    
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE4B
+
+    file_path = 'FeederSetup_BL4.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL4.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 82:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 85.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in BOT Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL4.csv', encoding="utf-8",index_col=False, skiprows=range(2, 83), nrows=3)
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4 Slot Count in BOT Feeder '85'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL3.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL4.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL4: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        #df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+        
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1T-C4
+
+    file_path = 'FeederSetup_TL4C.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 227:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 230.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '230'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_TL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in TOP Feeder '228'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+        #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_TL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_TL4C: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','7-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+        
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb1 = load_workbook(Feeder_List_OPT)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPT ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPT.xlsx"
+        wb2 = load_workbook(Feeder_List_OPT)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+            #copy from wb1
+            c = ws1.cell(row=row, column=10)
+            #paste in ws2
+            ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPT.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPT.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "TOP"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['TOP_Side'] = "TOP"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "TOP"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "TOP"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)    
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LINE1B-C4
+
+    file_path = 'FeederSetup_BL4C.csv'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2))
+
+        # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 227:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            print("dt_H1 is either None or its length is not equal to 230.")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '230'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        dt_H1 = pd.read_csv('FeederSetup_BL4C.csv', encoding="utf-8",index_col=False, skiprows=range(2, 228), nrows=3)
+
+            # Check if dt_H1 is defined and the line count is 351
+        if dt_H1 is not None and len(dt_H1) == 3:
+            # Continue with the rest of your code
+            print(dt_H1)
+        else:
+            # Show error message
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = "Error: Either Check the FeederSetup.csv Line-4C Slot Count in BOT Feeder '228'."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        dt_H1['TotalSlots'] = ''
+        dt_H1['TotalSlots'].loc[0] = dt_H1['JobFolder'].loc[2]
+        
+        dt_H1['PlacedParts'] = ''
+        dt_H1['PlacedParts'].loc[0] = dt_H1['JobName'].loc[2]
+
+    #dt_H1.drop(dt_H1.iloc[:, 17:26], inplace=True, axis=1)
+
+        dt_H1['Col1'] = dt_H1['JobName'].str[13:]
+
+        dt_H1['Col2'] = dt_H1['TopBottom'].astype(str).str[:1]
+
+        print(dt_H1.drop(index=[1, 2]))
+
+        dt_H1 = dt_H1.drop(dt_H1.index[[1,2]])
+
+        dt_H1['Side'] = dt_H1['Col1']+"-"+ dt_H1['Col2']
+    
+        dt_H1['Side'] = dt_H1['Side'].replace('T-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-0','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-0','TOP')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('T&B-1','BOT')
+
+        dt_H1['Side'] = dt_H1['Side'].replace('B-1','BOT')
+
+        dt_H1.drop(dt_H1.iloc[:, 13:17], inplace=True, axis=1)
+
+        N9_Col = dt_H1.pop('Side') # col-10
+
+        dt_H1.insert(9, 'Side', N9_Col)
+
+        dt_H1.drop(dt_H1.iloc[:, 10:11], inplace=True, axis=1)
+
+        dt_H1.drop(dt_H1.iloc[:, 15:17], inplace=True, axis=1)
+
+        dt_H1.insert(15, 'CATEGORY', '')
+        dt_H1.insert(16, 'MODEL NAME', '')
+        dt_H1.insert(17, 'CURRENT REVISION', '')
+        dt_H1.insert(18, 'MODIFIED  DATE', '')
+        dt_H1.insert(19, 'MODIFICATION DESCRIPTION', '')
+        dt_H1.insert(20, 'BOM ECO NUMBER', '')
+        dt_H1['Verify-DateTime'] = datetime.now()
+        dt_H1.rename(columns = {'JobFolder':'CUSTOMER NAME'}, inplace = True)
+        dt_H1.rename(columns = {'JobName':'PROGRAM NAME'}, inplace = True)
+        dt_H1.rename(columns = {'Revision':'PRO. Rev'}, inplace = True)
+        dt_H1.rename(columns = {'ModifiedDate':'PRO.ModifiedDate'}, inplace = True)
+
+        dt_H1 = dt_H1[['CUSTOMER NAME','PROGRAM NAME','PRO. Rev','PRO.ModifiedDate','Comments','Product','LogOnUser','Line','SetupName','Side','PanelLength','PanelWidth','PanelThickness','TotalSlots','PlacedParts','CATEGORY','MODEL NAME','CURRENT REVISION','MODIFIED  DATE','MODIFICATION DESCRIPTION','BOM ECO NUMBER','Verify-DateTime']]
+        #CUSTOMER NAME	PROGRAM NAME	PRO. Rev	PRO.ModifiedDate	Comments	Product	LogOnUser	Line	SetupName	Side	PanelLength	PanelWidth	PanelThickness	TotalSlots	PlacedParts	CATEGORY	MODEL NAME	CURRENT REVISION	MODIFIED  DATE	MODIFICATION DESCRIPTION	BOM ECO NUMBER
+
+        print(dt_H1)
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+    #print(dt_H1.drop(index=[1, 2]))
+
+    # NOTE df = pd.read_csv(filename, skiprows=range(2, 20000), nrows=10000)
+    #df = pd.read_csv(csv_filepath , skiprows=2, encoding="utf-8",index_col=False)
+
+    #-----------------------------------------------------------------------------------------------------------------------#
+
+        #df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+
+    # Specify the columns you want to read
+        columns_to_read = ['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList']
+
+        try:
+            df1 = pd.read_csv('FeederSetup_BL4C.csv', skiprows=2, usecols=columns_to_read, encoding="utf-8", index_col=False)
+
+            # Check if all the specified columns are present in the DataFrame
+            if all(column in df1.columns for column in columns_to_read):
+                print("All columns are present in the DataFrame.")
+            else:
+                # Show error message if any columns are missing
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                missing_columns = [column for column in columns_to_read if column not in df1.columns]
+                error_message = f"The following columns are missing in FeederSetup: {', '.join(missing_columns)}"
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+        except Exception as e:
+                # Handle the exception gracefully
+                error_message = f"An error occurred FeederSetup_BL4C: {e}"
+
+                # Show error message in a pop-up box
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showerror("Error", error_message)
+                sys.exit(1)  # Exit the program with an error code
+
+    #df1 = pd.read_csv(csv_filepath,skiprows=2 , usecols=['LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'], encoding="utf-8",index_col=False) 
+    # NOTE Line to usecol to call desire column only 'LineName', 'OrderNum', 'ModelName', 'ModuleNumber', 'SideNo', 'PartNumber', 'FeederName', 'Status', 'Location', 'PackageName', 'PartComment', 'PMABAR', 'ChuteType', 'FeederType', 'TapeWidth', 'FeedPitch', 'PTPMNH', 'QTY', 'RefList'
+
+        df1.dropna(subset=['RefList'], inplace=True)
+
+        df1['SideNo'] = df1['SideNo'].astype(str).str.replace('.', '')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('10', '2')
+
+        df1['SideNo'] = df1['SideNo'].str.replace('00', '1')
+
+        print (df1)
+
+        df1['ModuleNumber'] = df1['ModuleNumber'].astype(str).str.replace('.0', '')
+
+        #df1['ModelName'] = df1['ModelName'].str.replace('1','')
+
+        df1.rename(columns = {'Location':'Lock'}, inplace = True)
+
+        df1.rename(columns = {'LineName':'Location'}, inplace = True)
+
+        df1['OrderNum'] = df1['OrderNum'].str.replace('1','0')
+
+        df1["Location"] = df1['OrderNum'].astype(str) +"-"+ df1['ModuleNumber'].astype(str) +"-"+ df1['SideNo'].astype(str) +"-"+ df1["Lock"]
+
+        df1['Location'] = df1['Location'].str.replace('2-1-1-','7-')
+
+        df1['Location'] = df1['Location'].str.replace('0-1-1-','1-')
+
+        df1['Location'] = df1['Location'].str.replace('0-2-1-','2-')
+
+        df1['Location'] = df1['Location'].str.replace('0-3-1-','3-')
+
+        df1['Location'] = df1['Location'].str.replace('0-4-1-','4-')
+
+        df1['Location'] = df1['Location'].str.replace('0-5-1-','5-')
+
+        df1['Location'] = df1['Location'].str.replace('0-6-1-','6-')
+
+        F1_col = df1.pop('PartNumber') # col-1
+
+        df1.insert(1, 'PartNumber', F1_col)
+
+        df1.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+
+        S2_col = df1.pop('FeederName') # col-2
+
+        df1.insert(2, 'FeederName', S2_col)
+
+        T3_col = df1.pop('FeederType') # col-3 rename to type
+
+        df1.insert(3, 'FeederType', T3_col)
+
+        df1.rename(columns = {'FeederType':'Type'}, inplace = True)
+
+        F4_col = df1.pop('TapeWidth') # col-4 rename to size
+
+        df1.insert(4, 'TapeWidth', F4_col)
+
+        df1.rename(columns = {'TapeWidth':'Size'}, inplace = True)
+
+        F5_col = df1.pop('FeedPitch') # col-5 
+
+        df1.insert(5, 'FeedPitch', F5_col)
+
+        S6_col = df1.pop('PTPMNH') # col-6 rename to Part Height  
+
+        df1.insert(6, 'PTPMNH', S6_col)
+
+        df1.rename(columns = {'PTPMNH':'Part Height'}, inplace = True)
+
+        S7_col = df1.pop('Status') # col-7
+
+        df1.insert(7, 'Status', S7_col)
+
+        E8_col = df1.pop('QTY') # col-8 
+
+        df1.insert(8, 'QTY', E8_col)
+
+        df1.drop(df1.iloc[:, 9:10], inplace=True, axis=1)
+
+        df1.drop(df1.iloc[:, 10:17], inplace=True, axis=1)
+
+        extracted_col = dt_H1["Side"] 
+
+        df1.insert(9, "Side", extracted_col)
+
+        #NEW PN# PARTNO
+        df1['PartNO'] = "PN#"
+        df1["F_Part_No"] = df1['PartNO'].astype(str) +""+ df1['F_Part_No'].astype(str)
+        del df1['PartNO']
+        df1['F_Part_No'] = df1['F_Part_No'].str.replace('.0','')
+        
+    #dt_H1.drop(dt_H1.iloc[:, 13:15], inplace=True, axis=1)'''
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx", mode='w') as writer:  #"C:/Users/Bala Ganesh/Documents/Python/filename_OP.xlsx"
+
+            dt_H1.to_excel(writer, sheet_name="S1", index=False)
+            df1.to_excel(writer, sheet_name="FeederSetup1", index=False)
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb1 = load_workbook(Feeder_List_OPB)
+        ws1 = wb1.active
+        ws1 = wb1.worksheets[0]
+
+        Feeder_List_OPB ="D:\\NX_BACKWORK\\Feeder Setup_PROCESS\\#Output\\FeederSetup\\Feeder_List_OPB.xlsx"
+        wb2 = load_workbook(Feeder_List_OPB)
+        ws2 = wb2.active
+        ws2 = wb2.worksheets[1]
+
+        print(ws1)
+
+        print(ws2)
+
+        for row in range(1, 10):
+        #copy from wb1
+                c = ws1.cell(row=row, column=10)
+        #paste in ws2
+                ws2.cell(row=row-0, column=10, value=c.value)
+
+        print(ws2)
+
+        wb2.save(str('Feeder_List_OPB.xlsx'))
+
+        df1 = pd.read_excel('Feeder_List_OPB.xlsx','FeederSetup1', index_col=False)
+
+        df1['Side'] = df1['Side'].fillna(method='ffill') # NOTE forword fukk added
+
+        df1.rename(columns = {'RefList':'F_Ref_List'}, inplace = True)
+
+        df2 = df1['F_Ref_List'].str.split(' ',expand=True) # RL1 = df to split the reflit column only .str.split ' space ' expand true it will expand no of space
+
+        df3 = pd.concat([df1, df2], axis=1) # NOTE 'reflist next create column 0,1,2,3,4,5,6,7to Nth digite' NOTE df3 = "it split the 0-N value adding brfore ref'. if ihad df2 = "page contain only 0 to N value" 
+
+    # NOTE reflist column to next axis column this line df = nothing df1 split colum next to
+
+    #print("Column headers from list(df.columns.values):", list(df2.columns.values)) # NOTE this line for record to seem the no of header value (df.Columns.Values) no of row count formed. 
+
+        df2 = df3.melt(id_vars=['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List'], var_name='df.columns.values')
+    
+        df2.explode ('F_Ref_List')
+
+        df2.dropna(subset=['value'], inplace=True) # NOTE subset the value column 
+
+        df2.drop(df2.iloc[:, 5:9], inplace=True, axis=1) # NOTE Remove the [FeedPitch,Part Height,Status,QTY]
+
+        df2.drop(df2.iloc[:, 7:9], inplace=True, axis=1)
+
+        df2.rename(columns = {'value':'F_Ref_List'}, inplace = True)
+
+        df2['F_Ref_List'] = df2['F_Ref_List'].str.replace('1:','')
+
+    #df3 = df3.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'PartHeight', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+    # NOTE df3.loc [variable] delete all col after reflist 
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace(' ',',')
+
+        df3['F_Ref_List'] = df3['F_Ref_List'].str.replace('1:','')
+
+        df3_1 = df3.explode('F_Ref_List') # NOTE line to create dummy new page with old content
+
+    #print (df3_1) # NOTE line to create dummy new page with old content
+
+        df3_1.insert(12,'RefList1','') # NOTE line to create dummy new page with old content
+
+        df3_1.drop(df3_1.iloc[:, 12:13], inplace=True, axis=1)
+
+        df3_1.insert(9, 'Tray Dir','')
+        df3_1.insert(10, 'PartComment','')
+        df3_1.insert(11, 'Barcode Label','')
+
+        df4_1 = df3_1['Size'].value_counts()
+        df4_1['Feedersize'] = "BOT"
+        df5_1 = df3_1['Side'].value_counts()
+        df5_1['BOT_Side'] = "BOT"
+        df6_1 = df3_1['FeederName'].value_counts()
+        df6_1['FeederSize'] = "BOT"
+        df7_1 = df3_1['Type'].value_counts()
+        df7_1['FeederType'] = "BOT"
+
+        df3['F_Ref_List'] = df3['F_Ref_List'] .str.strip('[]').str.split(',')
+
+        df3.to_dict()
+
+        df3.explode ('F_Ref_List',ignore_index=True)
+
+        df4 = df3.explode('F_Ref_List',ignore_index=True)
+
+        df4 = df4.loc[:,['Location', 'F_Part_No', 'FeederName', 'Type', 'Size', 'FeedPitch', 'Part Height', 'Status', 'QTY','Side', 'ModelName', 'F_Ref_List']]
+
+        df4.head()
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx") as writer:
+
+            dt_H1.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df.to_excel(writer, sheet_name="FeederSetup0", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+            df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)   
+            df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            df4_1.to_excel(writer, sheet_name="Size", index=TRUE)
+            df5_1.to_excel(writer, sheet_name="Side", index=TRUE)
+            df6_1.to_excel(writer, sheet_name="FeederName", index=TRUE)
+            df7_1.to_excel(writer, sheet_name="Type", index=TRUE)
+
+    pass
+    print('The file does not exist.')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil3 = pyfiglet.figlet_format("FeederSetup Progress Merge", width = 150)
+    print('\n')
+    print("\033[92;4m******FeederSetup Progress Merge******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #LEN MERGE TOP AND BOT
+
+    data_file_folder = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup'
+
+    df=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Home'))
+    df1=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df1.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FL_Upload'))
+    df2=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df2.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FL_Verify'))
+    df3=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df3.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Size'))
+    df4=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df4.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Side'))
+    df5=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df5.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='FeederName'))
+
+    df6=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            df6.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Type'))
+
+    len(df)
+    df_master1 = pd.concat(df, axis=0)
+    len(df1)
+    df_master2 = pd.concat(df1, axis=0)
+    len(df2)
+    df_master3 = pd.concat(df2, axis=0)
+    len(df3)
+    df_master4 = pd.concat(df3, axis=0)
+    len(df4)
+    df_master5 = pd.concat(df4, axis=0)
+    len(df5)
+    df_master6 = pd.concat(df5, axis=0)
+    len(df6)
+    df_master7 = pd.concat(df6, axis=0)
+
+        #NEW PN# PARTNO
+        #df3_1['F_Part_No'] = df3_1['F_Part_No'].str.replace('PN#','')
+        #df4['F_Part_No'] = df4['F_Part_No'].str.replace('PN#','')
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx") as writer:
+        #df_master.to_excel('masterfile.xlsx',index=False)
+            df_master1.to_excel(writer, sheet_name="Home", index=False)
+            df_master2.to_excel(writer, sheet_name="FeederSetup", index=False)
+            df_master3.to_excel(writer, sheet_name="FeederCol", index=False)
+            df_master4.to_excel(writer, sheet_name="FeederSize", index=False)
+            df_master5.to_excel(writer, sheet_name="Total side Count", index=False)
+            df_master6.to_excel(writer, sheet_name="FeederName", index=False)
+            df_master7.to_excel(writer, sheet_name="Type", index=False)
+
+    if os.path.exists("Feeder_List_OPT.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPT.xlsx" , "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Feeder_List_OPT.xlsx")  
+    else:
+        print("The file does not exist")
+
+    if os.path.exists("Feeder_List_OPB.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/FeederSetup/Feeder_List_OPB.xlsx" , "D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Feeder_List_OPB.xlsx")
+    else:
+        print("The file does not exist")
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+        
+    xls=pd.ExcelFile('Feeder_List_OPT.xlsx',engine='openpyxl')
+    dffst11 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="Home")
+    dffst12 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="FL_Upload")
+    dffst13 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="FL_Verify")
+    dffst14 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="Size")
+    dffst15 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="Side")
+    dffst16 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="FeederName")
+    dffst17 = pd.read_excel("Feeder_List_OPT.xlsx", sheet_name="Type")
+
+    dffst12['F_Part_No'] = dffst12['F_Part_No'].str.replace('PN#','')
+    dffst13['F_Part_No'] = dffst13['F_Part_No'].str.replace('PN#','')
+
+    with pd.ExcelWriter('Feeder_List_OPT.xlsx', engine='openpyxl', mode='w') as writer:
+        dffst11.to_excel(writer, sheet_name="Home", index=False)
+        dffst12.to_excel(writer, sheet_name="FL_Upload", index=False)
+        dffst13.to_excel(writer, sheet_name="FL_Verify", index=False)
+        dffst14.to_excel(writer, sheet_name="Size", index=False)
+        dffst15.to_excel(writer, sheet_name="Side", index=False)
+        dffst16.to_excel(writer, sheet_name="FeederName", index=False)
+        dffst17.to_excel(writer, sheet_name="Type", index=False)
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    Chd = os.getcwd()
+        
+    xls=pd.ExcelFile('Feeder_List_OPB.xlsx',engine='openpyxl')
+    dffsb11 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="Home")
+    dffsb12 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="FL_Upload")
+    dffsb13 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="FL_Verify")
+    dffsb14 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="Size")
+    dffsb15 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="Side")
+    dffsb16 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="FeederName")
+    dffsb17 = pd.read_excel("Feeder_List_OPB.xlsx", sheet_name="Type")
+
+    dffsb12['F_Part_No'] = dffsb12['F_Part_No'].str.replace('PN#','')
+    dffsb13['F_Part_No'] = dffsb13['F_Part_No'].str.replace('PN#','')
+
+    with pd.ExcelWriter('Feeder_List_OPB.xlsx', engine='openpyxl', mode='w') as writer:
+        dffsb11.to_excel(writer, sheet_name="Home", index=False)
+        dffsb12.to_excel(writer, sheet_name="FL_Upload", index=False)
+        dffsb13.to_excel(writer, sheet_name="FL_Verify", index=False)
+        dffsb14.to_excel(writer, sheet_name="Size", index=False)
+        dffsb15.to_excel(writer, sheet_name="Side", index=False)
+        dffsb16.to_excel(writer, sheet_name="FeederName", index=False)
+        dffsb17.to_excel(writer, sheet_name="Type", index=False)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil4 = pyfiglet.figlet_format("Program Master List", width = 100)
+    print('\n')
+    print("\033[92;4m******Program Master List******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Master list program update and LOG
+
+    os.getcwd()
+    Chd= os.chdir("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified")
+    Chd = os.getcwd()
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    dfpm1 = pd.read_excel('FeederSetup.xlsx', sheet_name='Home')
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Pro_ML.xlsx") as writer:
+        #df_master.to_excel('masterfile.xlsx',index=False)
+            dfpm1.to_excel(writer, sheet_name="Home", index=False)
+
+    if os.path.exists("Pro_ML.xlsx"):
+        os.rename("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/Pro_ML.xlsx" , "D:/NX_BACKWORK/Database_File/SMT_Master_List/Pro_ML.xlsx")
+    else:
+        print("The file does not exist")
+
+    data_file_folder = 'D:/NX_BACKWORK/Database_File/SMT_Master_List'
+
+    dspm1=[]
+    for file in os.listdir(data_file_folder):
+        if file.endswith('.xlsx'):
+            print('Loading file {0}...'.format(file))
+            dspm1.append(pd.read_excel(os.path.join(data_file_folder,file),sheet_name='Home'))
+
+    len(dspm1)
+    dsf_master1 = pd.concat(dspm1, axis=0)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Database_File/SMT_Master_List/Program_Master_List.xlsx") as writer:
+        dsf_master1.to_excel(writer, sheet_name="Home", index=False)
+
+    print("Tranfer Complete...")
+
+    os.getcwd()
+    Chd= os.chdir("D:/NX_BACKWORK/Database_File/SMT_Master_List")
+    Chd = os.getcwd()
+
+    print("Del Start....")
+
+    if os.path.exists("Pro_ML.xlsx"):
+        os.remove("Pro_ML.xlsx")
+    else:
+        print("The file does not exist")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil5 = pyfiglet.figlet_format("BOM Manipulation", width = 100)
+    print('\n')
+    print("\033[92;4m******BOM Manipulation******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #BOM MANIPULATE
+
+    try:
+        # BOM MANIPULATION
+        os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+        file_path = 'BOM.xlsx'
+
+        if os.path.isfile(file_path):
+            ds1 = pd.read_excel(file_path, index_col=False)
+        else:
+            # Try reading as '.xls' format if '.xlsx' fails
+            file_path = 'BOM.xls'
+            ds1 = pd.read_excel(file_path, index_col=False)
+
+        dfbom1 = ds1
+
+    except ValueError:
+        dfbom1 = pd.read_excel(file_path,index_col=False) 
+
+    except Exception as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred: {e}"
+
+        # Show error message in a pop-up box
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Define your column lists
+    column_list_1 = ['Material', 'AltItemGroup', 'Priority', 'Long. Description', 'Ref.Designator/Circuit Reference', 'Quantity', 'Material Group']
+    column_list_2 = ['Internal P/N', 'Group', 'Priority', 'Description', 'Ref.Designator', 'Qty', 'SMT/THT/Mech']
+
+    # Check which column list is present in the DataFrame
+    if all(column in ds1.columns for column in column_list_1):
+        columns_to_use = column_list_1
+    elif all(column in ds1.columns for column in column_list_2):
+        columns_to_use = column_list_2
+    else:
+        # Show error message if none of the column lists is present
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        missing_columns = [column for column_list in [column_list_1, column_list_2] for column in column_list if column not in ds1.columns]
+        error_message = f"The following columns are missing: {', '.join(missing_columns)}"
+        error_msgbm1 = f"The following columns are missing: in SAP BOM\n'Material'\n'AltItemGroup'\n'Priority'\n'Long. Description'\n'Ref.Designator/Circuit Reference'\n'Quantity'\n'Material Group'"
+        error_msgbm2 = f"The following columns are missing: in Internal BOM\n'Internal P/N'\n'Group'\n'Priority'\n'Description'\n'Ref.Designator'\n'Qty'\n'SMT/THT/Mech'"
+        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", error_msgbm1)
+        messagebox.showerror("Error", error_msgbm2)
+        sys.exit(1)  # Exit the program with an error code
+
+    # Continue with the rest of your code using 'columns_to_use'
+    print(f"Using columns: {columns_to_use}")
+
+    # Rest of your code here
+    # ...
+
+    ds1.rename(
+        columns={'Material':"PartNumber", 'AltItemGroup':"Group", 'Priority':'Priority', 'Long. Description':'Long Des', 'Ref.Designator/Circuit Reference':'RefList', 'Quantity':'Qty','Material Group':'Shape'},
+        inplace=True,
+    )
+
+    ds1.rename(
+        columns={'Internal P/N':"PartNumber", 'Group':"Group", 'Priority':'Priority', 'Description':'Long Des', 'Ref.Designator':'RefList', 'Qty':'Qty','SMT/THT/Mech':'Shape'},
+        inplace=True,
+    )
+
+    print(ds1)
+
+    ds2 = ds1[ds1['Priority'].isin([0, 1])]
+
+    # Assuming ds2 is your DataFrame and 'PartNumber' and 'RefList' are the columns you want to check
+    part_number_column = ds2['PartNumber']
+    ref_list_column = ds2['RefList']
+
+    # Flag to check if an empty value is found
+    empty_value_found = False
+
+    # Iterate through both columns simultaneously using iterrows
+    for index, (part_number_value, ref_list_value) in ds2[['PartNumber', 'RefList']].iterrows():
+        # Check if the 'RefList' value is empty (NaN or None)
+        if pd.isna(ref_list_value):
+            print(f"Error: Empty value found in 'RefList' for 'PartNumber' {part_number_value}")
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Empty value found in 'RefList' for 'PartNumber' {part_number_value}. Program will stop."
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+            #raise ValueError("Empty value found in 'RefList'")
+            #empty_value_found = True
+            #break  # Stop the iteration when the first empty value is found
+
+    # If no empty values are found, print the 'PartNumber' column
+    if not empty_value_found:
+        print(part_number_column)
+        # Continue with the rest of your program
+
+    #file_name ="output.xlsx"
+    #ds1.to_excel(file_name)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM/BOM_List_OP.xlsx") as writer:
+        ds1.to_excel(writer, sheet_name="Orginal_BOM", index=False)
+        ds2.to_excel(writer, sheet_name="BOM", index=False)
+
+        pass
+        print('The file does not exist.')
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+    Chd = os.getcwd()
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            dt_H1 = pd.read_csv(file_path)
+
+    except ValueError:
+        ds1 = pd.read_excel(file_path, sheet_name="BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False) 
+        dsn1 = pd.read_excel(file_path, sheet_name="Orginal_BOM", usecols=['PartNumber', 'Group', 'Priority', 'Long Des', 'RefList', 'Qty','Shape'],index_col=False)
+        
+        ds1 = ds1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        ds1['RefList'] = ds1['RefList'].str.replace("_x000D_","")
+        ds1['RefList'] = ds1['RefList'].str.replace(" ","")
+        ds1['RefList'] = ds1['RefList'].str.replace("\n","")
+        print(ds1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        ds2 = ds1.explode('RefList')
+
+        ds2['RefList'] = ds2['RefList'].str.replace(" "," ")
+
+    #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(ds2)
+
+        ds2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        ds2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        ds2['B_Ref_List'] = ds2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        print(ds2)
+
+        ds2.to_dict()
+
+        ds2.explode ('B_Ref_List',ignore_index=True)
+
+        ds3 = ds2.explode('B_Ref_List',ignore_index=True) # split the Ref below example code
+
+        '''import pandas as pd
+
+        # Sample DataFrame
+        data = {'ID': [1, 2], 'B_Ref_List': [['R1', 'R2'], ['R3', 'R4', 'R5']]}
+
+        ds2 = pd.DataFrame(data)
+
+        # Explode 'B_Ref_List'
+        ds3 = ds2.explode('B_Ref_List', ignore_index=True)
+
+        # Display the result
+        print(ds3)
+        Output:
+            ID B_Ref_List
+        0   1         R1
+        1   1         R2
+        2   2         R3
+        3   2         R4
+        4   2         R5'''
+
+        ds2 = ds2[['Group','Priority','B_Part_No']]
+        dc1 = ds2[['B_Part_No']]
+        dc1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dc1['PBARPTN'] = dc1['PBARNO']
+        dc1['PBARBAR'] = dc1['PBARNO']
+        dc1.insert(3,'PBARQTY', 10000)
+        dc1.insert(4,'PBARFTYP', 3)
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfs2 = ds2[['Group','Priority','B_Part_No']]
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("15","A")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("14","B")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("13","C")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("12","D")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("11","E")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("10","F")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfs2['Priority'] = dfs2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfs2.dropna(subset=['Group'], inplace=True)
+        #df2 = dfs2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+            # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfs2[dfs2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            df2 = dfs2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        ds3.head()
+
+        T10_col = ds3.pop('B_Ref_List') # col-1
+
+        ds3.insert(0, 'B_Ref_List', T10_col)
+
+        ds3 = ds3[['B_Ref_List','B_Part_No','Long Des']]
+
+        ds1.dropna(subset=['RefList'], inplace=True)
+        ds3.dropna(subset=['B_Ref_List'], inplace=True)
+
+    #ONLY AVL PARTMASTER AND GOUPING
+        dsn1 = dsn1[['PartNumber', 'Group','Priority','Long Des','Qty','Shape','RefList']]
+        dsn1['RefList'] = dsn1['RefList'].str.replace("_x000D_","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace(" ","")
+        dsn1['RefList'] = dsn1['RefList'].str.replace("\n","")
+        print(dsn1)
+
+    #ds1 = pd.read_excel('Filename_OP.xlsx','BOM', index_col=False)
+
+        dsn2 = dsn1.explode('RefList')
+
+        dsn2['RefList'] = dsn2['RefList'].str.replace(" "," ")
+
+    #ds2.drop(ds2.iloc[:, 1:6], inplace=True, axis=1)
+
+        print(dsn2)
+
+        dsn2.rename(columns = {'PartNumber':'B_Part_No'}, inplace = True)
+
+        dsn2.rename(columns = {'RefList':'B_Ref_List'}, inplace = True)
+
+        dsn2['B_Ref_List'] = dsn2['B_Ref_List'] .str.strip('[]').str.split(',')
+
+        dsn2.to_dict()
+
+        dsn2.explode ('B_Ref_List',ignore_index=True)
+
+        dsn3 = dsn2.explode('B_Ref_List',ignore_index=True)
+
+        dsn2 = dsn2[['Group','Priority','B_Part_No']]
+
+        # Condition: Check if Priority is only 0
+        if (dsn2['Priority'] == 0).all():
+        # Check if 1 and 2 are not present
+            if not ((dsn2['Priority'] == 1) | (dsn2['Priority'] == 2)).any():
+        # Add 1, 2, 3 in Priority column
+                
+                dsn2['Priority'] = dsn2['Priority']
+                
+        # Append corresponding Dummy_Part rows
+                dummy_data = {'Group': ['B89P13', 'B89P13', 'B89P13'],
+                            'Priority': [1, 2, 3],
+                            'B_Part_No': ['Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3']}
+                
+                dummy_df = pd.DataFrame(dummy_data)
+                dsn2 = pd.concat([dsn2, dummy_df], ignore_index=True)
+
+        # Continue with the rest of your code
+        print(dsn2[['Group', 'Priority', 'B_Part_No']])
+
+        dcn1 = dsn2[['B_Part_No']]
+        duplicate_rows = dcn1[dcn1.duplicated(subset=['B_Part_No'], keep=False)]
+        
+        if not duplicate_rows.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'B_Part_No':\nCheck the BOM! PartNo Col.\n{duplicate_rows}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+        
+        print(dcn1)
+
+        # Assuming 'B_Part_No' contains values like 'Dummy_Part1', 'Dummy_Part2', 'Dummy_Part3'
+        dummy_values = [f'Dummy_Part{i}' for i in range(1, 4)]
+
+        # Remove rows where 'B_Part_No' contains dummy values
+        dcn1 = dcn1[~dcn1['B_Part_No'].isin(dummy_values)]
+
+        dcn1.rename(columns = {'B_Part_No':'PBARNO'}, inplace = True)
+        dcn1['PBARPTN'] = dcn1['PBARNO']
+        dcn1['PBARBAR'] = dcn1['PBARNO']
+        dcn1.insert(3,'PBARQTY', 10000)
+        dcn1.insert(4,'PBARFTYP', 3)
+
+        #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        dfsn2 = dsn2[['Group','Priority','B_Part_No']]
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("15","A")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("14","B")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("13","C")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("12","D")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("11","E")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("10","F")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("9","PTN_9")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("8","PTN_8")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("7","PTN_7")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("6","PTN_6")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("5","PTN_5")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("4","PTN_4")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("3","PTN_3")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("2","PTN_2")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("1","PTN_1")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("0","PTN_0")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("A","PTN_15")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("B","PTN_14")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("C","PTN_13")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("D","PTN_12")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("E","PTN_11")
+        dfsn2['Priority'] = dfsn2['Priority'].astype(str).str.replace("F","PTN_10")
+        dfsn2.dropna(subset=['Group'], inplace=True)
+        #dfn2 = dfsn2.pivot(index='Group',columns='Priority',values='B_Part_No')
+
+        # Assuming 'dfs2' is the DataFrame with 'Group', 'Priority', and 'B_Part_No' columns
+        # Check for duplicate entries in 'Group' and 'Priority'
+        duplicate_entries = dfsn2[dfsn2.duplicated(subset=['Group', 'Priority'], keep=False)]
+
+        if not duplicate_entries.empty:
+            # Show an error message if duplicates are found
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            error_message = f"Duplicate entries found in 'Group' and 'Priority':\n{duplicate_entries}"
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+        # If no duplicates, proceed with pivoting
+        try:
+            dfn2 = dfsn2.pivot(index='Group', columns='Priority', values='B_Part_No')
+        except ValueError as e:
+            # Handle the exception gracefully
+            error_message = f"An error occurred during pivoting: {e}"
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showerror("Error", error_message)
+            sys.exit(1)  # Exit the program with an error code
+
+                # Desired column order
+        desired_order = ['Group Name','PTN_1','PTN_2','PTN_3','PTN_4','PTN_5','PTN_6','PTN_7','PTN_8','PTN_9','PTN_10','PTN_11','PTN_12','PTN_13','PTN_14','PTN_15']
+        #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+        # Create a list of columns present in both DataFrame and desired_order
+        common_columns = [col for col in desired_order if col in dfn2.columns]
+
+        # Reorder the DataFrame based on the desired_order
+        df_AL1 = dfn2[common_columns]
+
+        '''    # Assuming df is your DataFrame
+            column_to_check = 'PTN_15'
+
+            # Check if the column is present
+            if column_to_check not in df_AL1.columns:
+                # Show a pop-up message if the column is not present
+                root = tk.Tk()
+                root.withdraw()  # Hide the main window
+                messagebox.showinfo("Notification", f"The column '{column_to_check}' is missing.")
+
+            # Continue with the rest of your code
+            print("Continuing with the rest of the code...")
+            # Your next line of code here'''
+
+        # Assuming df is your DataFrame
+        column_to_check = 'PTN_11'
+
+        # Check if the column is present
+        if column_to_check in df_AL1.columns:
+            # Show a pop-up message if the column is present
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Notification", f"The column '{column_to_check}' is present.")
+
+        # Continue with the rest of your code
+        print("Continuing with the rest of the code...")
+        # Your next line of code here
+
+        dsn3.head()
+
+        T10_col = dsn3.pop('B_Ref_List') # col-1
+
+        dsn3.insert(0, 'B_Ref_List', T10_col)
+
+        dsn3 = dsn3[['B_Ref_List','B_Part_No','Long Des']]
+
+        dsn1.dropna(subset=['RefList'], inplace=True)
+        dsn3.dropna(subset=['B_Ref_List'], inplace=True)
+
+        #NEW PN# PARTNO
+        ds1['PartNO'] = "PN#"
+        ds1["PartNumber"] = ds1['PartNO'].astype(str) +""+ ds1['PartNumber'].astype(str)
+        del ds1['PartNO']
+        ds3['PartNO'] = "PN#"
+        ds3["B_Part_No"] = ds3['PartNO'].astype(str) +""+ ds3['B_Part_No'].astype(str)
+        del ds3['PartNO']
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx") as writer:
+
+        #dt_H.to_excel(writer, sheet_name="Home", index=False)  
+        #df1.to_excel(writer, sheet_name="FS_upload", index=False)
+        #df2.to_excel(writer, sheet_name="FS_Count", index=False)
+        #df3.to_excel(writer, sheet_name="FS-Program Split", index=False)
+        #df3_1.to_excel(writer, sheet_name="FL_Upload", index=False)
+        #df4.to_excel(writer, sheet_name="FL_Verify", index=False)
+            ds1.to_excel(writer, sheet_name="BOM", index=False)
+            dsn2.to_excel(writer, sheet_name="AVL GROUP", index=False)
+            dcn1.to_excel(writer, sheet_name="Part Master", index=False)
+            #dfn2.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+            df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=True)
+            ds3.to_excel(writer, sheet_name="BOM_Data", index=False)
+        #df2.to_excel(writer, sheet_name="AVL_SHEET", index=True) this line record upto 1 & 0
+        #dc1.to_excel(writer, sheet_name="Part Master", index=False) this line record uoto 1 & 0 
+        #ds2.to_excel(writer, sheet_name="AVL GROUP", index=False) this line record upto PTN1
+        pass
+        print('The file does not exist.')
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        #@@ CRD Inspection @@#
+        print('\n')
+        print("\033[92;4m******CRD CHECK******\033[0m")
+        print('\n')
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+        # Assuming 'BOM DATA' sheet contains a column named 'Bom Ref'
+        df_bom_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM_Data")
+        duplicates_bom_data = df_bom_data[df_bom_data.duplicated(subset='B_Ref_List', keep=False)]
+        # Assuming 'XY DATA' sheet contains a column named 'R'
+        #df_xy_data = pd.read_excel("BOM_List_OP.xlsx", sheet_name="XY DATA")
+
+        # Function to check for duplicates and display an error message
+        def check_and_show_duplicates(df, column_name, sheet_name):
+            duplicates = df[df.duplicated(subset=column_name, keep=False)]
+            if not duplicates.empty:
+                print("Duplicate values in 'B_Ref_List' column of 'BOM_Data':")
+                print(duplicates_bom_data['B_Ref_List'].tolist())
+                root = tk.Tk()
+                root.withdraw()
+                message = f"Duplicate values found in '{column_name}' column of '{sheet_name}' sheet:\n{duplicates[column_name].tolist()}"
+                messagebox.showerror("Error", message)
+                sys.exit()
+
+        # Check for duplicates in 'Bom Ref' column of 'BOM DATA'
+        check_and_show_duplicates(df_bom_data, 'B_Ref_List', 'BOM_Data')
+
+        # Check for duplicates in 'R' column of 'XY DATA'
+        #check_and_show_duplicates(df_xy_data, 'R', 'XY DATA')
+
+    #########################################################################################################################################################################
+    #########################################################################################################################################################################
+
+    ##########################################################################################################################################
+    ##########################################################################################################################################
+        #@@ AVL Inspection @@#
+    ##########################################################################################################################################
+
+    print('\n')
+    print("\033[92;4m******AVL LINE INSPECTION******\033[0m")
+    print('\n')
+
+    ##########################################################################################################################################
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    file_path = 'BOM_List_OP.xlsx'
+    directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified'
+
+    print(os.path.isfile(file_path))
+    print(os.path.isfile(directory_path))
+
+    try:
+        if os.path.isfile(file_path):
+            df_Iav1 = pd.read_csv(file_path)
+
+    except ValueError:
+        df_Iav1 = pd.read_excel(file_path, sheet_name="AVL_SHEET", index_col=False) 
+
+        print(df_Iav1)
+
+        # Function to check for missing values between two strings
+    def check_missing_values(row):
+        start_index = None
+        end_index = None
+
+        for i in range(1, len(row) + 1):  # Check up to the last column
+            col_name = f'PTN_{i}'
+            if col_name in row.index:  # Check if the column exists
+                current_value = row[col_name]
+
+                if pd.isna(current_value):
+                    if start_index is None:
+                        start_index = i
+                    end_index = i
+                else:
+                    if start_index is not None and end_index is not None:
+                        show_error(row['Group'], start_index, end_index)
+                        start_index = None
+                        end_index = None
+
+    # Function to show pop-up error message
+    def show_error(group, start_index, end_index):
+        root = tk.Tk()
+        root.withdraw()
+        error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'."
+        messagebox.showerror("Error", error_message)
+
+    # Check for missing values row-wise
+    for index, row in df_Iav1.iterrows():
+        check_missing_values(row)
+
+    # Display the DataFrame with styling
+    print(df_Iav1)
+
+    # Function to check for missing values between two strings
+    def check_missing_values(row):
+        start_index = None
+        end_index = None
+
+        for i in range(1, len(row) + 1):  # Check up to the last column
+            col_name = f'PTN_{i}'
+            if col_name in row.index:  # Check if the column exists
+                current_value = row[col_name]
+
+                if pd.isna(current_value):
+                    if start_index is None:
+                        start_index = i
+                    end_index = i
+                else:
+                    if start_index is not None and end_index is not None:
+                        show_error(row.get('Group', 'Unknown Group'), start_index, end_index)
+                        start_index = None
+                        end_index = None
+
+    # Function to show pop-up error message
+    def show_error(group, start_index, end_index):
+        root = tk.Tk()
+        root.withdraw()
+        
+        error_message = f"Error: Missing values between PTN_{start_index} and PTN_{end_index} in group '{group}'.\nDo you want to stop the program?"
+        response = messagebox.askquestion("Error", error_message)
+
+        if response == 'yes':
+            sys.exit(1)
+
+    # ...
+
+    # Check for missing values row-wise
+    for index, row in df_Iav1.iterrows():
+        check_missing_values(row)
+
+    # Display the DataFrame with styling
+    print(df_Iav1)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil6 = pyfiglet.figlet_format("Part Master Process", width = 100)
+    print('\n')
+    print("\033[92;4m******Part Master Process******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+        
+    #PART MASTER
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    # Excel file path
+    df_PM1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Part Master")
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx") as writer:
+        df_PM1.to_excel(writer, sheet_name="T_PBAR", index=False)
+    excel_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx'
+
+    # Access database connection parameters
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+    shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_Part Master/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb')
+    access_db_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb'
+    driver = 'Microsoft Access Driver (*.mdb, *.accdb)'
+    user = ''
+    password = ''
+
+    # Set up the connection string
+    conn_str = f"DRIVER={{{driver}}};DBQ={access_db_path};UID={user};PWD={password};"
+
+    # Connect to the Access database
+    print(pyodbc.drivers())
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+
+    # Read Excel data into a pandas DataFrame
+    print('Open Excel....')
+    df = pd.read_excel(excel_file_path)
+    print(df.head(10))
+
+    # Define the table name in the Access database
+    print('open MS Access....')
+    table_name = 'T_PBAR'
+
+    # Check if the table exists
+    existing_tables = [table[2] for table in cursor.tables(tableType='TABLE')]
+    if table_name in existing_tables:
+        # Append data to the existing table
+        for _, row in df.iterrows():
+            insert_query = f'''
+            INSERT INTO {table_name} ({', '.join(df.columns)})
+            VALUES ({', '.join(map(lambda x: f"'{row[x]}'", df.columns))})
+            '''
+            cursor.execute(insert_query)
+            conn.commit()
+            print('writing to access')
+    else:
+        print(f"The table '{table_name}' does notYT exist in the Access database.")
+
+    # Close the database connection
+    conn.close()
+    print('write complete')
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil7 = pyfiglet.figlet_format("AVL Progress", width = 100)
+    print('\n')
+    print("\033[92;4m******AVL Progress******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #AVL#@@#
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+    print(pyodbc.drivers())
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='AVL_SHEET')
+
+    print(df1.head(10))
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    df_AL1 = pd.read_excel('AVL.xlsx', sheet_name='AVL_SHEET')
+
+    #new_column_name  = df_AL1.insert(1,'Group Name', '') #new_column_name = ('Group Name') # Get user input for the new column name
+    # Desired column name
+    desired_column_name = 'Group'
+
+    # Get user input for the new column name
+    new_column_name = ("Group Name")
+
+    # Get user input for the new column value
+    new_column_value = input(f"\033[93mEnter the value for the new column '{new_column_name}': \033[0m")
+    #dL1 = new_column_value
+    # Check if the desired column name exists
+    if desired_column_name in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value) #dL1 = new_column_value
+
+    print(df_AL1)
+
+    try:
+
+        df_AL1['AVL Name']=df_AL1['PTN_1']
+        # Replace values in 'AVL Name' with values from 'PTN_1' where 'PTN_1' is not empty
+        #df_AL1['AVL Name'] = df_AL1['PTN_1'].fillna(df_AL1['AVL Name'])
+
+    except Exception as e:
+        # Handle the exception gracefully
+        error_message = f"An error occurred:\nSomething went wrong while assigning AVL values {e}"
+        error_msg1 = f"Check SF-02 is deleted\nCheck AVL Priority assign Properly {e}"
+        # Show error message in a pop-up box
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showerror("Error", error_message)
+        messagebox.showerror("AVL Error", error_msg1)
+        #sys.exit(1)  # Exit the program with an error code
+
+    first_column = df_AL1.pop('AVL Name')
+
+    df_AL1.insert(2, 'AVL Name', first_column)
+
+    df_AL1.insert(3, 'Comment', '')
+
+    df_AL1['Comment'] = df_AL1['Group']
+
+    #PTN_1>>
+
+    # Desired column name
+    desired_column_name1 = 'PTN_1'
+
+    # New column to insert
+    new_column_name = 'P_1'
+    new_column_value = '1'
+
+    # Check if the desired column name exists
+    if desired_column_name1 in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name1)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value)
+
+    #PTN_2>>
+
+    desired_column_name2 = 'PTN_2'
+
+    # New column to insert
+    new_column_name = 'P_2'
+    new_column_value = '0'
+
+    # Check if the desired column name exists
+    if desired_column_name2 in df_AL1.columns:
+        # Find the index of the desired column
+        index_of_desired_column = df_AL1.columns.get_loc(desired_column_name2)
+        
+        # Insert the new column next to the desired column
+        df_AL1.insert(index_of_desired_column + 1, new_column_name, new_column_value)
+
+    #PTN_3>>
+
+    desired_column_name3 = 'PTN_3'
+    column_to_replace3 = 'PTN_3'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace3 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace3] = df_AL1[column_to_replace3].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name3 = 'P_3'
+        new_column_value3 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name3 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name3)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name3,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name3].any():
+                print(f"Values are present in '{desired_column_name3}' column:")
+                print(df_AL1[desired_column_name3])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name3] != "$", new_column_name3] = 0
+            else:
+                print(f"No values are present in '{desired_column_name3}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name3}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace3}' does not exist in the DataFrame.")
+
+    column_to_replace3 = 'PTN_3'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace3 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace3] = df_AL1[column_to_replace3].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace3}' does not exist in the DataFrame.")
+
+    #PTN_4>>
+
+    desired_column_name4 = 'PTN_4'
+    column_to_replace4 = 'PTN_4'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace4 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace4] = df_AL1[column_to_replace4].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name4 = 'P_4'
+        new_column_value4 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name4 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name4)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name4,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name4].any():
+                print(f"Values are present in '{desired_column_name4}' column:")
+                print(df_AL1[desired_column_name4])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name4] != "$", new_column_name4] = 0
+            else:
+                print(f"No values are present in '{desired_column_name4}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name4}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace4}' does not exist in the DataFrame.")
+
+    column_to_replace4 = 'PTN_4'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace4 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace4] = df_AL1[column_to_replace4].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace4}' does not exist in the DataFrame.")
+
+    #PTN_5>>
+
+    desired_column_name5 = 'PTN_5'
+    column_to_replace5 = 'PTN_5'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace5 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace5] = df_AL1[column_to_replace5].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name5 = 'P_5'
+        new_column_value5 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name5 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name5)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name5,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name5].any():
+                print(f"Values are present in '{desired_column_name5}' column:")
+                print(df_AL1[desired_column_name5])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name5] != "$", new_column_name5] = 0
+            else:
+                print(f"No values are present in '{desired_column_name5}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name5}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace5}' does not exist in the DataFrame.")
+
+    column_to_replace5 = 'PTN_5'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace5 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace5] = df_AL1[column_to_replace5].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace5}' does not exist in the DataFrame.")
+
+    #PTN_6>>
+
+    desired_column_name6 = 'PTN_6'
+    column_to_replace6 = 'PTN_6'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace6 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace6] = df_AL1[column_to_replace6].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name6 = 'P_6'
+        new_column_value6 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name6 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name6)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name6,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name6].any():
+                print(f"Values are present in '{desired_column_name6}' column:")
+                print(df_AL1[desired_column_name6])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name6] != "$", new_column_name6] = 0
+            else:
+                print(f"No values are present in '{desired_column_name6}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name6}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace6}' does not exist in the DataFrame.")
+
+    column_to_replace6 = 'PTN_6'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace6 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace6] = df_AL1[column_to_replace6].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace6}' does not exist in the DataFrame.")
+
+    #PTN_7>>
+
+    desired_column_name7 = 'PTN_7'
+    column_to_replace7 = 'PTN_7'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace7 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace7] = df_AL1[column_to_replace7].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name7 = 'P_7'
+        new_column_value7 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name7 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name7)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name7,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name7].any():
+                print(f"Values are present in '{desired_column_name7}' column:")
+                print(df_AL1[desired_column_name7])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name7] != "$", new_column_name7] = 0
+            else:
+                print(f"No values are present in '{desired_column_name7}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name7}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace7}' does not exist in the DataFrame.")
+
+    column_to_replace7 = 'PTN_7'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace7 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace7] = df_AL1[column_to_replace7].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace7}' does not exist in the DataFrame.")
+
+    #PTN_8>>
+
+    desired_column_name8 = 'PTN_8'
+    column_to_replace8 = 'PTN_8'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace8 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace8] = df_AL1[column_to_replace8].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name8 = 'P_8'
+        new_column_value8 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name8 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name8)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name8,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name8].any():
+                print(f"Values are present in '{desired_column_name8}' column:")
+                print(df_AL1[desired_column_name8])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name8] != "$", new_column_name8] = 0
+            else:
+                print(f"No values are present in '{desired_column_name8}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name8}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace8}' does not exist in the DataFrame.")
+
+    column_to_replace8 = 'PTN_8'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace8 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace8] = df_AL1[column_to_replace8].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace8}' does not exist in the DataFrame.")
+
+    #PTN_9>>
+
+    desired_column_name9 = 'PTN_9'
+    column_to_replace9 = 'PTN_9'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace9 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace9] = df_AL1[column_to_replace9].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name9 = 'P_9'
+        new_column_value9 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name9 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name9)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name9,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name9].any():
+                print(f"Values are present in '{desired_column_name9}' column:")
+                print(df_AL1[desired_column_name9])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name9] != "$", new_column_name9] = 0
+            else:
+                print(f"No values are present in '{desired_column_name9}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name9}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace9}' does not exist in the DataFrame.")
+
+    column_to_replace9 = 'PTN_9'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace9 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace9] = df_AL1[column_to_replace9].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace9}' does not exist in the DataFrame.")
+
+    #PTN_10>>
+
+    desired_column_name10 = 'PTN_10'
+    column_to_replace10 = 'PTN_10'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace10 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace10] = df_AL1[column_to_replace10].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name10 = 'P_10'
+        new_column_value10 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name10 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name10)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name10,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name10].any():
+                print(f"Values are present in '{desired_column_name10}' column:")
+                print(df_AL1[desired_column_name10])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name10] != "$", new_column_name10] = 0
+            else:
+                print(f"No values are present in '{desired_column_name10}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name10}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace10}' does not exist in the DataFrame.")
+
+    column_to_replace10 = 'PTN_10'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace10 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace10] = df_AL1[column_to_replace10].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace10}' does not exist in the DataFrame.")
+
+    #PTN_11>>
+
+    desired_column_name11 = 'PTN_11'
+    column_to_replace11 = 'PTN_11'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace11 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace11] = df_AL1[column_to_replace11].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name11 = 'P_11'
+        new_column_value11 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name11 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name11)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name11,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name11].any():
+                print(f"Values are present in '{desired_column_name11}' column:")
+                print(df_AL1[desired_column_name11])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name11] != "$", new_column_name11] = 0
+            else:
+                print(f"No values are present in '{desired_column_name11}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name11}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace11}' does not exist in the DataFrame.")
+
+    column_to_replace11 = 'PTN_11'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace11 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace11] = df_AL1[column_to_replace11].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace11}' does not exist in the DataFrame.")
+
+    #PTN_12>>
+
+    desired_column_name12 = 'PTN_12'
+    column_to_replace12 = 'PTN_12'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace12 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace12] = df_AL1[column_to_replace12].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name12 = 'P_12'
+        new_column_value12 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name12 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name12)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name12,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name12].any():
+                print(f"Values are present in '{desired_column_name12}' column:")
+                print(df_AL1[desired_column_name12])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name12] != "$", new_column_name12] = 0
+            else:
+                print(f"No values are present in '{desired_column_name12}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name12}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace12}' does not exist in the DataFrame.")
+
+    column_to_replace12 = 'PTN_12'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace12 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace12] = df_AL1[column_to_replace12].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace12}' does not exist in the DataFrame.")
+
+    #PTN_13>>
+
+    desired_column_name13 = 'PTN_13'
+    column_to_replace13 = 'PTN_13'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace13 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace13] = df_AL1[column_to_replace13].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name13 = 'P_13'
+        new_column_value13 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name13 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name13)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name13,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name13].any():
+                print(f"Values are present in '{desired_column_name13}' column:")
+                print(df_AL1[desired_column_name13])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name13] != "$", new_column_name13] = 0
+            else:
+                print(f"No values are present in '{desired_column_name13}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name13}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace13}' does not exist in the DataFrame.")
+
+    column_to_replace13 = 'PTN_13'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace13 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace13] = df_AL1[column_to_replace13].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace13}' does not exist in the DataFrame.")
+
+    #PTN_14>>
+
+    desired_column_name14 = 'PTN_14'
+    column_to_replace14 = 'PTN_14'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace14 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace14] = df_AL1[column_to_replace14].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name14 = 'P_14'
+        new_column_value14 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name14 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name14)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name14,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name14].any():
+                print(f"Values are present in '{desired_column_name14}' column:")
+                print(df_AL1[desired_column_name14])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name14] != "$", new_column_name14] = 0
+            else:
+                print(f"No values are present in '{desired_column_name14}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name14}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace14}' does not exist in the DataFrame.")
+
+    column_to_replace14 = 'PTN_14'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace14 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace14] = df_AL1[column_to_replace14].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace14}' does not exist in the DataFrame.")
+
+    #PTN_15>>
+
+    desired_column_name15 = 'PTN_15'
+    column_to_replace15 = 'PTN_15'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace15 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace15] = df_AL1[column_to_replace15].replace(np.nan, "$")
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+
+        # New column to insert
+        new_column_name15 = 'P_15'
+        new_column_value15 = '0'
+
+        # Check if the desired column name exists
+        if desired_column_name15 in df_AL1.columns:
+            # Find the index of the desired column
+            index_of_desired_column = df_AL1.columns.get_loc(desired_column_name15)
+
+            # Insert the new column next to the desired column
+            df_AL1.insert(index_of_desired_column + 1, new_column_name15,  '')
+
+            # Check if values are present in the desired column
+            if df_AL1[desired_column_name15].any():
+                print(f"Values are present in '{desired_column_name15}' column:")
+                print(df_AL1[desired_column_name15])
+
+            # Set the values in the new column to zero for cells where values are present in the desired column
+                df_AL1.loc[df_AL1[desired_column_name15] != "$", new_column_name15] = 0
+            else:
+                print(f"No values are present in '{desired_column_name15}' column.")
+
+            print("\nUpdated DataFrame:")
+            print(df_AL1)
+        else:
+            print(f"Column '{desired_column_name15}' does not exist in the DataFrame.")
+    else:
+        print(f"Column '{column_to_replace15}' does not exist in the DataFrame.")
+
+    column_to_replace15 = 'PTN_15'
+
+    # Check if the column exists in the DataFrame
+    if column_to_replace15 in df_AL1.columns:
+        # Replace NaN values with "$" in the specified column
+        df_AL1[column_to_replace15] = df_AL1[column_to_replace15].replace("$", np.NaN)
+        print("\nDataFrame after replacement:")
+        print(df_AL1)
+    else:
+        print(f"Column '{column_to_replace15}' does not exist in the DataFrame.")
+
+    print(df_AL1.head(5))
+
+    del df_AL1['Group']
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    # Example DataFrame
+    data = pd.read_excel('AVL.xlsx', sheet_name='AVL_SHEET')
+    df_AL1 = pd.DataFrame(data)
+
+    # Desired column order
+    desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10']
+    #desired_order = ['Group Name','AVL Name','Comment','PTN_1','P_1','PTN_2','P_2','PTN_3','P_3','PTN_4','P_4','PTN_5','P_5','PTN_6','P_6','PTN_7','P_7','PTN_8','P_8','PTN_9','P_9','PTN_10','P_10','PTN_11','P_11','PTN_12','P_12','PTN_13','P_13','PTN_14','P_14','PTN_15','P_15']
+
+    # Create a list of columns present in both DataFrame and desired_order
+    common_columns = [col for col in desired_order if col in df_AL1.columns]
+
+    # Reorder the DataFrame based on the desired_order
+    df_AL1 = df_AL1[common_columns]
+
+    # Display the reordered DataFrame
+    print(df_AL1)
+
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.xlsx") as writer:
+        df_AL1.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+        df_AL1.T.reset_index().T.to_excel(writer, sheet_name="AVL_SHEET", header=False ,index=False)
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+
+    #read_file = pd.read_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.xlsx',skiprows=0)
+
+    read_file = pd.read_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.xlsx')
+
+    read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.txt', index = None, header= None)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+
+    # Replace '0.0' with '0' in the content
+    modified_content = content.replace('0.0', '0')
+
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(modified_content)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC20 = content.replace(',,,,,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC20)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC19 = content.replace(',,,,,,,,,,,,,,,,,,,', '')
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC19)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC18 = content.replace(',,,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC18)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC17 = content.replace(',,,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC17)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC16 = content.replace(',,,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC16)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC15 = content.replace(',,,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC15)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC14 = content.replace(',,,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC14)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC13 = content.replace(',,,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC13)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC12 = content.replace(',,,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC12)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC11 = content.replace(',,,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC11)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC10 = content.replace(',,,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC10)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC9 = content.replace(',,,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC9)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC8 = content.replace(',,,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC8)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC7 = content.replace(',,,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC7)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC6 = content.replace(',,,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC6)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC5 = content.replace(',,,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC5)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC4 = content.replace(',,,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC4)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC3 = content.replace(',,,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC3)
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC2 = content.replace(',,', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC2)
+        #output_file.write('MC2','MC3','MC4','MC5','MC6','MC7','MC8','MC9','MC10','MC11','MC12','MC13','MC14','MC15','MC16','MC17','MC18','MC19','MC20')
+
+    '''# Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC1 = content.replace('+', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC1)'''
+
+    # Specify the path to your text file
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+
+    # Read the content of the text file
+    with open(txt_file_path, 'r') as file:
+        content = file.read()
+    MC0 = content.replace('.0', '')
+    # Write the modified content back to the text file
+    with open('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt', 'w') as output_file:
+        output_file.write(MC0)
+
+    print(f"AVL CREATED: D:/NX_BACKWORK/r'AVL.txt")
+
+    # Specify the path to your text file
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    txt_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.txt'
+    df = pd.read_table(txt_file_path, delimiter='\t', quoting=3)  # 3 corresponds to QUOTE_NONE
+    csv_file_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv'
+    df.to_csv(csv_file_path, index=False, sep='\t')  # 0 corresponds to QUOTE_NONE
+
+    #read_file = pd.read_table (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.txt', sep='"')
+    #read_file.to_excel (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVList.xlsx', index=None)
+    #read_file.to_csv (r'D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Verified\AVL.csv', index = None, header= None)
+
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil8 = pyfiglet.figlet_format("Feeder Verification", width = 100)
+    print('\n')
+    print("\033[92;4m******Feeder Verification******\033[0m")
+    print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #FEEDER VERIFICATION CODE BOM AND FEEDER AS VISE VERSA
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df1 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM_Data')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    df2 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederCol')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    df111 = pd.read_excel('BOM_List_OP.xlsx', sheet_name='BOM')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    xls = pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    df112 = pd.read_excel('FeederSetup.xlsx', sheet_name='FeederSetup')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+        df1.to_excel(writer, sheet_name="BOM_Data", index=False)
+        df2.to_excel(writer, sheet_name="FeederCol", index=False)
+        df111.to_excel(writer, sheet_name="BOM", index=False)
+        df112.to_excel(writer, sheet_name="FeederSetup", index=False)
+
+    xls = pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM_Data')
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederCol')
+    df111 = pd.read_excel("FeederVerify.xlsx", sheet_name='BOM')
+    df112 = pd.read_excel("FeederVerify.xlsx", sheet_name='FeederSetup')
+        
+    df2['Feeder Reference'] = df2['F_Ref_List']
+    df1.rename(columns = {'B_Ref_List':'F_Ref_List'}, inplace = True)
+        #df1['B_Ref.List'] = df1['F_Ref_List']
+    df3 = pd.merge(df1 , df2, on='F_Ref_List', how='left')
+    df3.rename(columns = {'F_Ref_List':'BOM Reference'}, inplace = True)
+    df1.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+    print(df1,df2)
+
+    df111.rename(columns = {'PartNumber':'F_Part_No'}, inplace = True)
+    df111 = df111[['F_Part_No','Long Des']]
+    df113 = pd.merge(df111 , df112, on='F_Part_No', how='inner') # Merge on 'F_Part_No'
+    df113.rename(columns = {'F_Part_No':'Part Number'}, inplace = True)
+    df113.rename(columns = {'Location':'Feeder Location'}, inplace = True)
+    df113.rename(columns = {'Long Des':'Part Description'}, inplace = True)
+    df113.rename(columns = {'F_Ref_List':'Reference'}, inplace = True)
+    df113 = df113[['Feeder Location','FeederName','Type','Size','FeedPitch','Part Height','Part Number','Part Description','Reference','QTY','Side','ModelName']]
+
+    df3["BOM and Feeder Compare"] = (df3["B_Part_No"] == df3["F_Part_No"])
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('TRUE','MATCH')
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].replace('FALSE','MISS_MATCH')
+
+    df3 = df3.copy()
+    df3['BOM and Feeder Compare'] = df3['BOM and Feeder Compare'].map({True: 'Match', False: 'Miss_Match'})
+    df3.sort_values(by='BOM and Feeder Compare', inplace=True, ascending=False)
+
+    df4 = df3['BOM and Feeder Compare'].value_counts()
+    #df4 = df3['Size'].value_counts()
+    df5 = df3['Side'].value_counts()
+    #df6 = df3['F_Ref_List'].value_counts()
+    #df7 = df3['B_Part_No'].value_counts() #LINE MOVED BELOW
+    #df8 = df3['B_Ref.List'].value_counts() 
+    #df9 = df3['F_Part_No'].value_counts() #LINE MOVED BELOW
+    #df10 = df3['FeederName'].value_counts()
+    df11 = len(df1['B_Ref_List'])
+    print(f'Total count of rows in the "B_Ref_List" column: {df11}')
+    df12 = len(df2['F_Ref_List'])
+    print(f'Total count of rows in the "F_Ref_List" column: {df12}')
+    print('***')
+    dbf1 = print(df1)
+    print('***')
+    dbf2 = print(df2)
+    print('***')
+    dbf2 = df2.copy()
+    dbf1 = df1.copy()
+    dbf2_col = dbf2.pop('Feeder Reference')
+    dbf2.insert(1, 'Feeder Reference', dbf2_col)
+    dbf2.rename(columns = {'F_Ref_List':'B_Ref_List'}, inplace = True)
+    dbf3 = pd.merge(dbf2 , dbf1, on='B_Ref_List', how='left')
+
+    dbf3["Feeder and BOM Compare"] = (dbf3["F_Part_No"] == dbf3["B_Part_No"])
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('TRUE','MATCH')
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].replace('FALSE','MISS_MATCH')
+
+    dbf3 = dbf3.copy()
+    dbf3['Feeder and BOM Compare'] = dbf3['Feeder and BOM Compare'].map({True: 'Match', False: 'Miss_Match'})
+    dbf3.sort_values(by='Feeder and BOM Compare', inplace=True, ascending=False)
+
+    dbf4 = dbf3['Feeder and BOM Compare'].value_counts()
+
+    #NEW PN# PART NO
+
+    df3['F_Part_No'] = df3['F_Part_No'].str.replace('PN#','')
+    df3['B_Part_No'] = df3['B_Part_No'].str.replace('PN#','')
+
+    dbf3['F_Part_No'] = dbf3['F_Part_No'].str.replace('PN#','')
+    dbf3['B_Part_No'] = dbf3['B_Part_No'].str.replace('PN#','')
+
+
+    # Define a function for row styling
+    def highlight_row(row):
+        return ['background-color: lightgreen' if 'Match' in row.values else
+                'background-color: yellow' if 'Miss_Match' in row.values else
+                '' for _ in row]
+
+    # Apply the styling function to the DataFrame
+    styled_df3 = df3.style.apply(highlight_row, axis=1)
+
+    # Define a function for row styling
+    def highlight_row(row):
+        return ['background-color: lightgreen' if 'Match' in row.values else
+                'background-color: yellow' if 'Miss_Match' in row.values else
+                '' for _ in row]
+
+    # Apply the styling function to the DataFrame
+    styled_dbf3 = dbf3.style.apply(highlight_row, axis=1)
+
+    #NEW PN# PART NO
+    df113['Part Number'] = df113['Part Number'].str.replace('PN#','')
+    df1['B_Part_No'] = df1['B_Part_No'].str.replace('PN#','')
+    df2['F_Part_No'] = df2['F_Part_No'].str.replace('PN#','')
+
+    df7 = df3['B_Part_No'].value_counts()
+    df9 = df3['F_Part_No'].value_counts()
+
+    # Save the styled DataFrame to Excel
+    with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx") as writer:
+
+            styled_df3.to_excel(writer, sheet_name="Verify_data_BAF", index=False, engine='openpyxl')
+            df4.to_excel(writer, sheet_name="BOM and Feeder Compare",index=TRUE)
+            #dbf2.to_excel(writer, sheet_name="Verify_data_FAB", index=False)
+            styled_dbf3.to_excel(writer, sheet_name="Verify_data_FAB", index=False, engine='openpyxl')
+            dbf4.to_excel(writer, sheet_name="Feeder and BOM Compare",index=TRUE)
+            df113.to_excel(writer, sheet_name="Upload_data", index=False)
+            df1.to_excel(writer, sheet_name="BOM_data", index=False)
+            df2.to_excel(writer, sheet_name="Feeder_data", index=False)
+            df5.to_excel(writer, sheet_name="Side",index=TRUE)
+            #df6.to_excel(writer, sheet_name="F_Ref_List",index=TRUE)
+            df7.to_excel(writer, sheet_name="B_Part_No",index=TRUE)
+            #df8.to_excel(writer, sheet_name="B_Ref.List",index=TRUE)
+            df9.to_excel(writer, sheet_name="F_Part_No",index=TRUE)
+            #df10.to_excel(writer, sheet_name="FeederName",index=TRUE)
+            # Save the count to an Excel file
+            count_df = pd.DataFrame({'BOM_Data Ref, Count': [df11]})
+            count_df.to_excel(writer, sheet_name="BOM Count", index=TRUE)
+            count_df = pd.DataFrame({'Feeder_Data Ref, Count': [df12]})
+            count_df.to_excel(writer, sheet_name="Feeder Count", index=TRUE)
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+        #CHANGE THE PN# IN EVERY PART NO#  BOM_List_OP & 
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('BOM_List_OP.xlsx',engine='openpyxl')
+    dfblop1 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM")
+    dfblop2 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="AVL GROUP")
+    dfblop3 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="Part Master")
+    dfblop4 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="AVL_SHEET")
+    dfblop5 = pd.read_excel("BOM_List_OP.xlsx", sheet_name="BOM_Data")
+
+    dfblop1['PartNumber'] = dfblop1['PartNumber'].str.replace('PN#','')
+    dfblop5['B_Part_No'] = dfblop5['B_Part_No'].str.replace('PN#','')
+
+    with pd.ExcelWriter('BOM_List_OP.xlsx', engine='openpyxl', mode='w') as writer:
+        dfblop1.to_excel(writer, sheet_name="BOM", index=False)
+        dfblop2.to_excel(writer, sheet_name="AVL GROUP", index=False)
+        dfblop3.to_excel(writer, sheet_name="Part Master", index=False)
+        dfblop4.to_excel(writer, sheet_name="AVL_SHEET", index=False)
+        dfblop5.to_excel(writer, sheet_name="BOM_Data", index=False)
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('FeederSetup.xlsx',engine='openpyxl')
+    dffstb11 = pd.read_excel("FeederSetup.xlsx", sheet_name="Home")
+    dffstb12 = pd.read_excel("FeederSetup.xlsx", sheet_name="FeederSetup")
+    dffstb13 = pd.read_excel("FeederSetup.xlsx", sheet_name="FeederCol")
+    dffstb14 = pd.read_excel("FeederSetup.xlsx", sheet_name="FeederSize")
+    dffstb15 = pd.read_excel("FeederSetup.xlsx", sheet_name="Total side Count")
+    dffstb16 = pd.read_excel("FeederSetup.xlsx", sheet_name="FeederName")
+    dffstb17 = pd.read_excel("FeederSetup.xlsx", sheet_name="Type")
+
+    dffstb12['F_Part_No'] = dffstb12['F_Part_No'].str.replace('PN#','')
+    dffstb13['F_Part_No'] = dffstb13['F_Part_No'].str.replace('PN#','')
+
+    with pd.ExcelWriter('FeederSetup.xlsx', engine='openpyxl', mode='w') as writer:
+        dffstb11.to_excel(writer, sheet_name="Home", index=False)
+        dffstb12.to_excel(writer, sheet_name="FeederSetup", index=False)
+        dffstb13.to_excel(writer, sheet_name="FeederCol", index=False)
+        dffstb14.to_excel(writer, sheet_name="FeederSize", index=False)
+        dffstb15.to_excel(writer, sheet_name="Total side Count", index=False)
+        dffstb16.to_excel(writer, sheet_name="FeederName", index=False)
+        dffstb17.to_excel(writer, sheet_name="Type", index=False)
+
+        
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #bil9 = pyfiglet.figlet_format("FeederSetup Verification Result", width = 200)
+    print('\n')
+    print("\033[92;4m******FeederSetup Verification Result******\033[0m")
+    print('\n')
+    for i in range(100):
+        row = "="*i + ">"
+        sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
+        sys.stdout.flush()
+        time.sleep(0.1)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    print("\033[1;92;4mFeederSetup_Verification__Compelete $ PROCESS $\033[0m")
+
+    print('\n')
+
+    # Print the current date
+    print("\033[35mCurrent Date:\033[0m", current_datetime.date())
+
+    # Print the current time
+    print("\033[35mCurrent Time:\033[0m", current_datetime.time())
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
+    dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
+    df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
+    dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
+    dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
+    dbf3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_FAB")
+    dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
+    dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
+    dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
+    dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+    print('\n')
+
+    # Print the formatted date and time
+    print(f"\033[35mDate and Time: {formatted_datetime}\033[0m")
+
+    print('\n')
+
+    rc = len(df1)
+    rc1 = len(dfs1)
+
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(Chd,'\\__BOM__\\',dL1)
+    print(Chd,'\\__FeederSetup__\\',dL2)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds1 = print("BOM Count:",rc)
+    print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds9 = print("Feeder Count:",rc1)
+    print('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds2 = print("BOT & TOP Count:")
+    ds2 = print(df2)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds3 = print("Compare Count:")
+    ds3 = print(df3)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds4 = print("Compare Count:")
+    ds4 = print(df4)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Feeder duplicate Reference")
+    print(dfsg21)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("BOM duplicate Reference")
+    print(dfsg22)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Miss Match Row BOM to Feeder")
+    print(dfsg31) 
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Miss Match Row Feeder to BOM")
+    print(dfsg32) 
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    # Define the PySimpleGUI layout
+    layout = [
+        [sg.Multiline(size=(160, 40), font=('Courier', 9), key='-LOGWINDOW-')],
+        [sg.Button('Save to Excel'), sg.Button('Quit')]
+    ]
+
+    # Create the window
+    window = sg.Window("FeederSetup", layout, finalize=True)
+
+    def print_to_log(*args, **kwargs):
+        window['-LOGWINDOW-'].print(*args, **kwargs)
+        window.Refresh()
+
+    def save_to_excel(log_contents):
+        # Get the current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+        # Split log contents into lines
+        lines = log_contents.strip().split('\n')
+
+        # Create a DataFrame with each line in a new row
+        df = pd.DataFrame({'LogContents': lines})
+
+        # Save the DataFrame to the same Excel file with a new sheet
+        excel_file_path = 'FeederVerify.xlsx'
+        with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+            df.to_excel(writer, sheet_name=f'Log_{current_datetime}', index=False)
+
+        return f"Log saved to {excel_file_path}, Sheet: Log_{current_datetime}"
+
+    print_to_log("FeederSetup_Verification_Result_Compelete $ PROCESS $")
+
+    sys.stdout.write("\n")
+
+    #################################################################
+
+    os.getcwd()
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    xls=pd.ExcelFile('FeederVerify.xlsx',engine='openpyxl')
+    df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM_data")
+    dfs1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder_data")
+    df2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Side")
+    df3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    df4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfs21 = pd.read_excel('Feederverify.xlsx', sheet_name="Feeder_data", usecols=['Location','F_Part_No','FeederName','Type','Size','FeedPitch','Part Height','Status','QTY','Side','ModelName','F_Ref_List','Feeder Reference'],index_col=False)
+    dfs22 = pd.read_excel('Feederverify.xlsx', sheet_name="BOM_data", usecols=['B_Ref_List','B_Part_No','Long Des'],index_col=False)
+    dfs3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_BAF")
+    dbf3 = pd.read_excel("FeederVerify.xlsx", sheet_name="Verify_data_FAB")
+    dfsg21 = dfs21[dfs21['Feeder Reference'].duplicated() == True]
+    dfsg22 = dfs22[dfs22['B_Ref_List'].duplicated() == True]
+    dfsg31 = dfs3[dfs3['BOM and Feeder Compare'].str.contains('Miss_Match')]
+    dfsg32 = dbf3[dbf3['Feeder and BOM Compare'].str.contains('Miss_Match')]
+
+    print_to_log('\n')
+    # Print the formatted date and time
+    print_to_log(f"Date and Time: {formatted_datetime}")
+    print_to_log('\n')
+    rc = len(df1)
+    rc1 = len(dfs1)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('BOM NAME:', dL1)
+    print_to_log(Chd,'\\__BOM__\\',dL1)
+    print_to_log('\n')
+    print_to_log('FeederSetup NAME:', dL2)
+    print_to_log(Chd,'\\__FeederSetup__\\',dL2)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds1 = print_to_log("BOM Count:",rc)
+    print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx, Sheetname=BOM_data')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds9 = print_to_log("Feeder Count:",rc1)
+    print_to_log('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx, Sheetname=Feedercol')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds2 = print_to_log("BOT & TOP Count:")
+    ds2 = print_to_log(df2)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds3 = print_to_log("Compare Count:")
+    ds3 = print_to_log(df3)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    ds4 = print_to_log("Compare Count:")
+    ds4 = print_to_log(df4)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Feeder duplicate Reference")
+    print_to_log(dfsg21)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("BOM duplicate Reference")
+    print_to_log(dfsg22)
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Miss Match Row BOM to Feeder")
+    print_to_log(dfsg31) 
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log('\n')
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print_to_log("Miss Match Row Feeder to BOM")
+    print_to_log(dfsg32) 
+    print_to_log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    ##########################################################################################################################################
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+        elif event == 'Save to Excel':
+            # Get the contents of the log window
+            log_contents = values['-LOGWINDOW-']
+
+            # Save to Excel and get the log information
+            log_info = save_to_excel(log_contents)
+
+            print_to_log(log_info)
+
+    time.sleep (2)
+    # Close the window
+
+    # Assuming feeder verification is completed
+    feeder_verification_completed = True
+
+    if feeder_verification_completed:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+
+        messagebox.showinfo("Feeder Verification", "Feeder verification has been completed!")
+
+    window.close()
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    # Process to Next Upload if Match count ok
+
+    os.getcwd()
+
+    Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+    Chd = os.getcwd()
+
+    for i in range(100):
+        row = "="*i + ">"
+        sys.stdout.write("%s\r %d%%\r" %(row, i + 1))
+        sys.stdout.flush()
+        time.sleep(0.1)
+
+    print("\033[1;92;4mFeederSetup___Uploading in Progress $ PROCESS $\033[0m")
+
+    print('\n')
+
+    # Load Excel sheets into pandas dataframes
+    dfmc1 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM and Feeder Compare")
+    dfmc2 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder and BOM Compare")
+    dfmc3 = pd.read_excel("FeederVerify.xlsx", sheet_name="BOM Count")
+    dfmc4 = pd.read_excel("FeederVerify.xlsx", sheet_name="Feeder Count")
+    #df3 = pd.read_excel('excel_sheet3.xlsx')
+
+    print(dfmc1)
+    print(dfmc2)
+    print(dfmc3)
+    print(dfmc4)
+
+    # Function to get numeric value safely
+    def get_numeric_value(df, index, column):
+        try:
+            return df.loc[index, column]
+        except KeyError:
+            return None
+
+    # Get numeric inputs from specific cells in the "count" column
+    num1_index0 = dfmc1.loc[0, 'count']
+    num1_index1 = get_numeric_value(dfmc1, 1, 'count')
+
+    num2_index0 = dfmc2.loc[0, 'count']
+    num2_index1 = get_numeric_value(dfmc2, 1, 'count')
+
+    num3_index0 = dfmc3.loc[0, 'BOM_Data Ref, Count']  # Note: Case-sensitive column name
+    num3_index1 = get_numeric_value(dfmc3, 1, 'BOM_Data Ref, Count')
+
+    num4_index0 = dfmc4.loc[0, 'Feeder_Data Ref, Count']  # Note: Case-sensitive column name
+    num4_index1 = get_numeric_value(dfmc4, 1, 'Feeder_Data Ref, Count')
+
+    # Compare the numeric values
+    if num1_index0 == num2_index0 == num3_index0 == num4_index0 and \
+    (num1_index1 is None or num1_index1 == num2_index1 == num3_index1 == num4_index1):
+        print("Numeric values are the same. Proceeding to the next line of code.")
+
+        # Print the values
+        print("\nValues at index 0:")
+        print("num1:", num1_index0)
+        print("num2:", num2_index0)
+        print("num3:", num3_index0)
+        print("num4:", num4_index0)
+
+        if num1_index1 is not None:
+            print("\nValues at index 1:")
+            print("num1:", num1_index1)
+            print("num2:", num2_index1)
+            print("num3:", num3_index1)
+            print("num4:", num4_index1)
+
+        else:
+            print("Numeric values are not the same. Cannot proceed.")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #CREATE & SEPRATE FEEDER LOADING LIST DATA
+
+        os.getcwd()
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        df1 = pd.read_excel("FeederVerify.xlsx", sheet_name="Upload_data")
+
+        df1.sort_values(by='Side', inplace=True, ascending=True)
+        df2_1 = df1
+    #del.TOP
+        df1 = df1[df1["Side"].str.contains("TOP")==False]
+        df2 = df1[df1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+        df2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df3 = df1[df1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+        df3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df4 = df1[df1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+        df4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+    #del.BOT
+        df2_1 = df2_1[df2_1["Side"].str.contains("BOT")==False]
+        df2_2 = df2_1[df2_1["ModelName"].str.contains("AIMEX2|AIMEX3|AIMEX-IIIC_2|AIMEX-IIIC_3")==False]
+        df2_2.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df2_3 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX3|AIMEX-IIIC_1|AIMEX-IIIC_3")==False]
+        df2_3.sort_values(by='Feeder Location', inplace=True, ascending=True)
+        df2_4 = df2_1[df2_1["ModelName"].str.contains("NXT|AIMEX2|AIMEX-IIIC_1|AIMEX-IIIC_2")==False]
+        df2_4.sort_values(by='Feeder Location', inplace=True, ascending=True)
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx") as writer:
+            df2.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+            df3.to_excel(writer, sheet_name="AMX2_B", index=False)
+            df4.to_excel(writer, sheet_name="AMX3_B", index=False)
+        
+            df2_2.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+            df2_3.to_excel(writer, sheet_name="AMX2_T", index=False)
+            df2_4.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Upload data to merge and del side and Module
+        
+        os.getcwd()
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        df1 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_B")
+        df1["Remarks"] = df1['Side'].astype(str) +"--"+ df1['ModelName']
+        del df1['Side']
+        del df1['ModelName']
+
+        df2 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_B")
+        df2["Remarks"] = df2['Side'].astype(str) +"--"+ df2['ModelName']
+        del df2['Side']
+        del df2['ModelName']
+
+        df3 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_B")
+        df3["Remarks"] = df3['Side'].astype(str) +"--"+ df3['ModelName']
+        del df3['Side']
+        del df3['ModelName']
+
+        df4 = pd.read_excel("Upload-Data.xlsx", sheet_name="NXT&AMX1_T")
+        df4["Remarks"] = df4['Side'].astype(str) +"--"+ df4['ModelName']
+        del df4['Side']
+        del df4['ModelName']
+
+        df5 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX2_T")
+        df5["Remarks"] = df5['Side'].astype(str) +"--"+ df5['ModelName']
+        del df5['Side']
+        del df5['ModelName']
+
+        df6 = pd.read_excel("Upload-Data.xlsx", sheet_name="AMX3_T")
+        df6["Remarks"] = df6['Side'].astype(str) +"--"+ df6['ModelName']
+        del df6['Side']
+        del df6['ModelName']
+
+        with pd.ExcelWriter("D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx") as writer:
+            df1.to_excel(writer, sheet_name="NXT&AMX1_B", index=False)
+            df2.to_excel(writer, sheet_name="AMX2_B", index=False)
+            df3.to_excel(writer, sheet_name="AMX3_B", index=False)
+            df4.to_excel(writer, sheet_name="NXT&AMX1_T", index=False)
+            df5.to_excel(writer, sheet_name="AMX2_T", index=False)
+            df6.to_excel(writer, sheet_name="AMX3_T", index=False)
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+        #bil10 = pyfiglet.figlet_format("Feeder Loading List Progress", width = 200)
+        print('\n')
+        print("\033[1;92;4m******Feeder Loading List Progress******\033[0m")
+        print('\n')
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #Feeder List change
+
+        shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Database_File/SMT_FeederSetup/Line X Sample.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx')
+
+            ##BOT FEEDER LIST
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'NXT&AMX1_B'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'NXT'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "NXT&AMX1_B", "NXT", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX2_B'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'AIMEX 2'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX2_B", "AIMEX 2", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX3_B'
+
+            # Destination Excel file 
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx'
+        destination_sheet_name = 'AIMEX 3'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample B.xlsx", "AMX3_B", "AIMEX 3", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+            ##TOP FEEDER LIST
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'NXT&AMX1_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'NXT'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "NXT&AMX1_T", "NXT", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX2_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'AIMEX 2'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX2_T", "AIMEX 2", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+            # Source Excel file
+        source_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data-TB.xlsx'
+        source_sheet_name = 'AMX3_T'
+
+            # Destination Excel file
+        destination_file = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx'
+        destination_sheet_name = 'AIMEX 3'
+
+        def copy_data_with_offset(source_file, destination_file, source_sheet_name, destination_sheet_name, offset):
+                # Load the source workbook
+                source_workbook = openpyxl.load_workbook(source_file)
+                source_sheet = source_workbook[source_sheet_name]
+
+                # Load the destination workbook
+                destination_workbook = openpyxl.load_workbook(destination_file)
+                destination_sheet = destination_workbook[destination_sheet_name]
+
+                # Iterate through the source sheet and copy data to the destination sheet with an offset
+                for row_index, row in enumerate(source_sheet.iter_rows(values_only=True), start=1):
+                    # Offset the row index by the specified offset
+                    destination_row = row_index + offset
+
+                    # Copy data to the destination sheet
+                    for col_index, value in enumerate(row, start=1):
+                        destination_sheet.cell(row=destination_row, column=col_index, value=value)
+
+                # Save the changes to the destination workbook
+                destination_workbook.save(destination_file)
+
+            # Example usage:
+        copy_data_with_offset("Upload-Data-TB.xlsx", "Line X Sample T.xlsx", "AMX3_T", "AIMEX 3", offset=5)
+            # Example usage:copy_data("source_workbook.xlsx", "destination_workbook.xlsx", "Sheet1", "Sheet2")
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    ##########################################################################################################################################
+
+    #CREATEBACKUPFOLDER
+
+        yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output"
+
+        if not os.path.isdir(yourfolder):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder)
+
+        yourfolder1 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\BOM"
+
+        if not os.path.isdir(yourfolder1):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder1)
+
+        yourfolder2 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\FeederSetup"
+
+        if not os.path.isdir(yourfolder2):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder2)
+
+        yourfolder3 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Upload"
+
+        if not os.path.isdir(yourfolder3):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder3)
+
+        yourfolder4 = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#_Output\Verified"
+
+        if not os.path.isdir(yourfolder4):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder4)
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM')
+        Chd = os.getcwd()
+
+        file_path = 'BOM_List_OP.xlsx'
+        directory_path = 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/BOM'
+
+        print(os.path.isfile(file_path))
+        print(os.path.isfile(directory_path))
+
+        try:
+            if os.path.isfile(file_path):
+                dt_H1 = pd.read_csv(file_path)
+
+        except ValueError:
+            if os.path.exists("BOM_List_OP.xlsx"):
+                os.remove("BOM_List_OP.xlsx")
+        else:
+            print("The file does not exist")
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        if os.path.exists("Feeder_List_OPT.xlsx"):
+            os.remove("Feeder_List_OPT.xlsx")
+        else:
+            print("The file does not exist")
+
+        if os.path.exists("Feeder_List_OPB.xlsx"):
+            os.remove("Feeder_List_OPB.xlsx")
+        else:
+            print("The file does not exist")
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output')
+
+        yourfolder = r"D:\NX_BACKWORK\Feeder Setup_PROCESS\#Output\Line_X"
+
+        if not os.path.isdir(yourfolder):
+            print('Folder Not Exist')
+            os.makedirs(yourfolder)
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload')
+        Chd = os.getcwd()
+
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Upload-Data.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Upload-Data.xlsx')
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/PartMaster.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/PartMaster.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/MODEL.mdb', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/MODEL.mdb')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample T.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample T.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Upload/Line X Sample B.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/Line X Sample B.xlsx')
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified')
+        Chd = os.getcwd()
+
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/BOM_List_OP.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/BOM_List_OP.xlsx')
+        #shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederSetup.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederSetup.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/FeederVerify.xlsx', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/FeederVerify.xlsx')
+        shutil.copyfile('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Verified/AVL.csv', 'D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X/AVL.CSV')
+
+        ##########################################################################################################################################
+
+        os.getcwd()
+        Chd= os.chdir('D:/NX_BACKWORK/Feeder Setup_PROCESS/#Output/Line_X')
+        Chd = os.getcwd()
+
+        #src_1 = 'Upload-Data.xlsx'
+        #os.rename(src_1, dL2 +"_UD"+".xlsx")
+
+        #src_2 = 'PartMaster.xlsx'
+        #os.rename(src_2, dL2 +"_PM"+".xlsx")
+
+        src_3 = 'MODEL.mdb'
+        os.rename(src_3, dL2 +"_PM-Model"+".mdb")
+
+        #src_4 = 'BOM_List_OP.xlsx'
+        #os.rename(src_4, dL1 +"_BOM"+".xlsx")
+
+        #src_5 = 'FeederSetup.xlsx'
+        #os.rename(src_5, dL2 +"_FS"+".xlsx")
+
+        src_6 = 'FeederVerify.xlsx'
+        os.rename(src_6, dL2 +"_FV"+".xlsx")
+
+        src_7 = 'AVL.csv'
+        os.rename(src_7, dL1 +"_AVL"+".csv")
+
+        src_8 = 'Line X Sample T.xlsx'
+        os.rename(src_8, dL1 +"_T"+".xlsx")
+
+        src_9 = 'Line X Sample B.xlsx'
+        os.rename(src_9, dL1 +"_B"+".xlsx")
+        
+        time.sleep (2)
+
+        window.close()
+
+        time.sleep (5)
+
+        print('\n')
+        print('\033[92;3mFeeder Setup Generation Complete\033[0m')
+        print('\n')
+        print('\033[92;3mBOM and Feeder Verfication Found OK\033[0m')
+        print('\n')
+
+        # Assuming feeder verification is completed
+        Feeder_List_Generation_Completed = True
+
+        if Feeder_List_Generation_Completed:
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+
+            messagebox.showinfo("Feeder Loading List", "Feeder Loading List has been Generated!")
+
+    else:
+        # Abort the process
+        print("Counts are different. Aborting the process.")
+        # Show error message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        error_message = "Counts are different. Aborting the Feeder Loading Process\nCheck the Feeder Verfied for Miss_Match."
+        messagebox.showerror("Error", error_message)
+        # Exit the script
+
+    sys.exit() #FeederSetup X
+
+# Display menu
+print("\033[92;40mFeederSetup & BOM Manipulator\033[0m \033[1;34;40mSYRMA\033[0m \033[1;36;40mSGS\033[0m \n\n\033[92;40mManipulator PY V-4 J1624 Select a program: \033[0m")
+print("\n")
+print("1. FeederSetup: V-2.1") #89P13
+print("2. BOM Manipulation: V-1.2") #89P13
+print("3. FeederSetup: V-2.1-X") #89P13
+print("4. Exit Program") #70599
+print("\n")
+# Get user choice
+choice = input("\033[1;36;40mChoose the program number: \033[0m")
+
+# Run the selected program
+if choice == '1':
+    program_1()
+elif choice == '2':
+    program_2()
+elif choice == '3':
+    program_3()
+elif choice == '4':
+    print("\n")
+    print("\033[1;31;40mExiting the program.\033[0m")
+    print("\nThank You")
+    #print("\033[30;47m“I reminded myself that the best way to win was to not need to win. The best performances are accomplished when you are relaxed and free of doubt.” \n― A.P.J. Abdul Kalam, Wings of Fire\033[0m")
+    # Show a message box and wait for the user to close it
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showinfo("Program Terminated", "Exiting the Program")
+    sys.exit()
+else:
+    print("Invalid choice. Exiting.")
+    print("\nThank You") #"\nAchievements Bug fix Jan 16 2024 Completed"
+    #print("\033[30;47mDon't take rest after your first victory because if you fail in second, more lips are waiting to say that your first victory was just luck." "\n― A.P.J. Abdul Kalam\033[0m")
+    #print("\n")
+    #print("\033[30;47mDon't worry when you are not recognized, but strive to be worthy of recognition." "\n― Abraham Lincoln\033[0m")
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showinfo("Program Terminated", "Enter Invalid choice!")
+    messagebox.showinfo("Program Dev", "SIG#00110111 00110000 00110101 00111001 00111001\n01000010 00111000 00111001 01010000 00110001 00110011")
+    sys.exit()

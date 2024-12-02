@@ -1,0 +1,114 @@
+import pandas as pd
+import numpy as np
+import lxml
+import os
+from os import getcwd
+import openpyxl
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
+import xlsxwriter
+from io import StringIO
+import csv as csv
+import linecache
+import ast
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox 
+from tkinter.filedialog import askopenfile
+import seaborn as ssn
+import matplotlib
+import matplotlib as mlp
+from matplotlib import pyplot as plt
+from io import BytesIO
+import time
+import sys
+import xlwings as xw
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+import pyxcelframe
+from openpyxl import load_workbook
+from pyxcelframe import copy_cell_style
+from pyxcelframe import insert_frame
+from pyxcelframe import insert_columns
+from pyxcelframe import sheet_to_sheet
+from pyxcelframe import column_last_row
+import PySimpleGUI as sg
+import subprocess
+import threading
+import urllib
+import urllib.parse
+import sqlalchemy 
+import sqlalchemy_access as sq_a
+import sqlalchemy_pyodbc_mssql as sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import shutil
+import pyodbc
+import pypyodbc
+import odbc
+import psycopg2
+import mysql.connector as sql  #1
+import MySQLdb as sql
+from sqlite3 import dbapi2 as sqlite
+import sqlite3
+from datetime import datetime #2
+import re
+from plyer import notification
+import xlrd
+
+
+# Program 1: Sum
+def program_1():
+    num1 = float(input("Enter the first number: "))
+    num2 = float(input("Enter the second number: "))
+    result = num1 + num2
+    print(f"The sum is: {result}")
+
+# Program 2: Subtract
+def program_2():
+    num1 = float(input("Enter the first number: "))
+    num2 = float(input("Enter the second number: "))
+    result = num1 - num2
+    print(f"The difference is: {result}")
+
+# Program 3: Multiply
+def program_3():
+    num1 = float(input("Enter the first number: "))
+    num2 = float(input("Enter the second number: "))
+    result = num1 * num2
+    print(f"The product is: {result}")
+
+# Program 4: Divide
+def program_4():
+    num1 = float(input("Enter the numerator: "))
+    num2 = float(input("Enter the denominator: "))
+    if num2 == 0:
+        print("Error: Division by zero is not allowed.")
+    else:
+        result = num1 / num2
+        print(f"The quotient is: {result}")
+
+# Display menu
+print("Select a program:")
+print("1. Sum")
+print("2. Subtract")
+print("3. Multiply")
+print("4. Divide")
+
+# Get user choice
+choice = input("Enter the program number (1-4): ")
+
+# Run the selected program
+if choice == '1':
+    program_1()
+elif choice == '2':
+    program_2()
+elif choice == '3':
+    program_3()
+elif choice == '4':
+    program_4()
+else:
+    print("Invalid choice. Exiting.")
+    sys.exit()
